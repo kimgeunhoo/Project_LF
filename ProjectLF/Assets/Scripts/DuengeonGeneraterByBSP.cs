@@ -9,6 +9,7 @@ namespace BSPDuengeonGenrator
         Room, // 바닥
         Path, // 통로
         Wall, // 벽
+        Door, // 문
     }
 
     public class TreeNode
@@ -45,6 +46,7 @@ namespace BSPDuengeonGenrator
         [SerializeField]
         private Vector2Int mapSize;
 
+        // 노드 값이 라인의 갯수를 판별
         [Header("Node Value")]
         [SerializeField]
         private int maxNode;
@@ -64,6 +66,8 @@ namespace BSPDuengeonGenrator
         private Transform lineHolder;
         [SerializeField]
         private GameObject rectangle;
+        [SerializeField]
+        private GameObject LineRenderer;
 
         // 타일맵 배치
         [Header("Tile")]
@@ -77,7 +81,7 @@ namespace BSPDuengeonGenrator
         [SerializeField]
         private TileBase[] PathTiles;
 
-        [Header("Wall, FloorTile")]
+        [Header("Wall, FloorTile, Door")]
         // 바닥과 벽을 정의
         [SerializeField]
         private Tilemap floorTilemap;
@@ -88,6 +92,11 @@ namespace BSPDuengeonGenrator
         private TileBase floorTile;
         [SerializeField]
         private TileBase wallTile;
+        [SerializeField]
+        private TileBase doorTile;
+
+        [SerializeField]
+        private int doorHalfwidth;
 
         // 맵 데이터 배열 생성, 초기화
         private TileType[,] mapData;
@@ -111,9 +120,14 @@ namespace BSPDuengeonGenrator
             GenerateRoad(rootNode, 0);
             // 벽 생성 범위 체크
             GeneratedCheckWalls();
+            // 문 생성
+            GenerateDoors();
             // 벽 생성
             CreateWallAroundByRoom();
+
            
+
+            //LineRenderer.SetActive(false);
         }
 
         // 벽 함수 초기화
@@ -224,6 +238,92 @@ namespace BSPDuengeonGenrator
             GenerateRoad(treeNode.rightTree, depth + 1);
         }
 
+        // 문 생성 함수
+        private void GenerateDoors()
+        {
+            for (int x = 1; x < mapSize.x - 1; x++)
+            {
+                for (int y = 1; y < mapSize.y - 1; y++)
+                {
+                    if (mapData[x, y] != TileType.Path) continue;
+
+                    // 통로 타일이 방과 접해 있는지 체크
+                    bool hasRoomNeighbor =
+                        mapData[x + 1, y] == TileType.Room ||
+                        mapData[x - 1, y] == TileType.Room ||
+                        mapData[x, y + 1] == TileType.Room ||
+                        mapData[x, y - 1] == TileType.Room;
+
+                    if (!hasRoomNeighbor) continue;
+
+                    // 주변 벽 체크
+                    bool surrondedByWall =
+                        mapData[x + 1, y] == TileType.Wall ||
+                        mapData[x - 1, y] == TileType.Wall ||
+                        mapData[x, y + 1] == TileType.Wall ||
+                        mapData[x, y - 1] == TileType.Wall;
+
+                    // 통로 방향 판별
+                    // 수평 통로는 좌/우, 수직은 상하 Path
+                    bool hasLeft = (mapData[x - 1, y] == TileType.Path);
+                    bool hasRight = (mapData[x + 1, y] == TileType.Path);
+                    bool hasDown = (mapData[x, y - 1] == TileType.Path);
+                    bool hasUp = (mapData[x, y + 1] == TileType.Path);
+
+                    int horizontal = (hasLeft ? 1 : 0) + (hasRight ? 1 : 0);
+                    int vertical = (hasDown ? 1 : 0) + (hasUp ? 1 : 0);
+
+                    // 통로가 수평으로 더 이어져 있다면 문은 세로 3칸
+                    // 통로가 수직으로 이어져 있다면 가로 3칸
+                    if(horizontal >= vertical)
+                    {
+                        PlaceDoorVertical(x, y);
+                    }
+                    else
+                    {
+                        PlaceDoorHoriaontal(x, y);
+                    }
+
+                    if (surrondedByWall)
+                    {
+                        mapData[x, y] = TileType.Door;
+                    }
+                }
+            }
+        }
+        private void PlaceDoorVertical(int x, int y)
+        {
+            for(int w = - doorHalfwidth; w <= doorHalfwidth; w++)
+            {
+                int ny = y + w;
+                if (!IsInsideMap(x, ny)) continue;
+
+                // path 칸만 door 변경
+                if (mapData[x, ny] == TileType.Path)
+                {
+                    mapData[x, ny] = TileType.Door;
+                }
+
+            }
+        }
+
+        private void PlaceDoorHoriaontal(int x, int y)
+        {
+            for (int w = -doorHalfwidth; w <= doorHalfwidth; w++)
+            {
+                int nx = x + w;
+                if (!IsInsideMap(nx, y)) continue;
+
+                // path 칸만 door 변경
+                if (mapData[nx, y] == TileType.Path)
+                {
+                    mapData[nx, y] = TileType.Door;
+                }
+
+            }
+        }
+
+
         // 방 중심 계산
         private Vector2Int GetRoomCenter(RectInt room)
         {
@@ -240,6 +340,12 @@ namespace BSPDuengeonGenrator
                 {
                     int ny = y + w;
                     if (!IsInsideMap(x, ny)) continue;
+
+                    // 이미 같은 경로에 통로가 생성되어 있다면 스킵한다
+                    if (mapData[x, ny] == TileType.Path) continue;
+
+                    // 방도 마찬가지
+                    if (mapData[x, ny] == TileType.Room) continue;
 
                     mapData[x, ny] = TileType.Path;
 
@@ -258,6 +364,12 @@ namespace BSPDuengeonGenrator
                 {
                     int nx = x + w;
                     if (!IsInsideMap(nx, y)) continue;
+
+                    // 이미 같은 경로에 통로가 생성되어 있다면 스킵한다
+                    if (mapData[nx, y] == TileType.Path) continue;
+
+                    // 방도 마찬가지
+                    if (mapData[nx, y] == TileType.Room) continue;
 
                     mapData[nx, y] = TileType.Path;
 
@@ -337,22 +449,17 @@ namespace BSPDuengeonGenrator
                     {
                         wallTilemap.SetTile(pos, wallTile);
                     }
+                    else if (mapData[x, y] == TileType.Door)
+                    {
+                        floorTilemap.SetTile(pos, doorTile);
+                    }
 
                 }
 
             }
         }
 
-
-
-        private int GetCenterX(RectInt size)
-        {
-            return size.x + size.width / 2;
-        }
-        private int GetCenterY(RectInt size)
-        {
-            return size.y + size.height / 2;
-        }
+        
 
         // ----------------- 이미지 그리는 메서드 ------------------------------
         // 라인 렌더러를 이용해 라인을 그리는 메소드
@@ -451,32 +558,16 @@ namespace BSPDuengeonGenrator
 
             }
         }
-        // 길 연결 메서드
-        //private void GenerateRoad(TreeNode treeNode, int n)
-        //{
-        //    // 노드가 최하위일 때는 길을 연결하지 않음. 최하위 노드는 자식 트리가 없다.
-        //    if (depth == maxNode) return;
-        //    // 자식 트리의 던전 중앙 위치를 가져옴
-        //    int x1 = GetCenterX(treeNode.leftTree.dungeonSize);
-        //    int x2 = GetCenterX(treeNode.rightTree.dungeonSize);
-        //    int y1 = GetCenterY(treeNode.leftTree.dungeonSize);
-        //    int y2 = GetCenterY(treeNode.rightTree.dungeonSize);
-        //    // x1과 x2중 값이 작은 곳부터 값이 큰 곳까지 타일 생성
-        //    for (int x = Mathf.Min(x1, x2); x <= Mathf.Max(x1, x2); x++)
-        //    {
-        //        TileBase selectedTile = PathTiles[Random.Range(0, PathTiles.Length)];
-        //        // mapSize x / 2를 빼는 이유는 화면 중앙 맞추기 위함
-        //        tilemap.SetTile(new Vector3Int(x - mapSize.x / 2, y1 - mapSize.y / 2, 0), selectedTile);
-        //    }
-        //    for (int y = Mathf.Min(y1, y2); y <= Mathf.Max(y1, y2); y++)
-        //    {
-        //        TileBase selectedTile = PathTiles[Random.Range(0, PathTiles.Length)];
-        //        tilemap.SetTile(new Vector3Int(x2 - mapSize.x / 2, y - mapSize.y / 2, 0), selectedTile);
-        //    }
 
-        //    GenerateRoad(treeNode.leftTree, depth + 1);
-        //    GenerateRoad(treeNode.rightTree, depth + 1);
-        //}
+        private int GetCenterX(RectInt size)
+        {
+            return size.x + size.width / 2;
+        }
+        private int GetCenterY(RectInt size)
+        {
+            return size.y + size.height / 2;
+        }
+
     }
 
 }
