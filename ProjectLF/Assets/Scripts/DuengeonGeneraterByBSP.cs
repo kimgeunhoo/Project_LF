@@ -12,6 +12,35 @@ namespace BSPDuengeonGenrator
         Door, // 문
     }
 
+    public enum RoomType
+    {
+        Start, // 스폰 포인트
+        Stairs, // 계단
+        Shop, // 상점
+        Encounter, // 랜덤 인카운터
+        Monster, // 몬스터 룸
+    }
+
+    public class RoomInfo
+    {
+        private RectInt rect;
+        private RoomType type;
+
+        private TreeNode m_tree;
+
+        public RoomInfo(RectInt rect)
+        {
+            this.rect = rect;
+            this.type = RoomType.Start;
+
+        }
+
+        public Vector2Int Center =>
+            new Vector2Int(rect.x + rect.width / 2, rect.y + rect.height / 2);
+    }
+
+
+
     public class TreeNode
     {
         public TreeNode leftTree;
@@ -98,6 +127,10 @@ namespace BSPDuengeonGenrator
         [SerializeField]
         private int doorHalfwidth;
 
+        [Header("SpawnPoint")]
+        [SerializeField]
+        private Vector3 spawnPoint;
+
         // 맵 데이터 배열 생성, 초기화
         private TileType[,] mapData;
         // 0 = 빈공간
@@ -125,7 +158,6 @@ namespace BSPDuengeonGenrator
             // 벽 생성
             CreateWallAroundByRoom();
 
-           
 
             //LineRenderer.SetActive(false);
         }
@@ -457,6 +489,12 @@ namespace BSPDuengeonGenrator
                 }
 
             }
+        }
+
+        // ----------------- 스폰 포인트 지정 메서드 ---------------------------
+        private void PlayerSpawnPoint()
+        {
+            
         }
 
         
