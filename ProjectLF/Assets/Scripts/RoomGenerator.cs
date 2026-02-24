@@ -62,6 +62,7 @@ public class RoomGenerater : MonoBehaviour
         // 부모 트리의 던전 크기는 자식 트리의 던전 크기 그대로 사용
         return treeNode.leftTree.dungeonSize;
     }
+
     // 크기에 맞춰 타일을 생성하는 메소드
     private void OnDrawDungeon(int x, int y, int width, int height)
     {
