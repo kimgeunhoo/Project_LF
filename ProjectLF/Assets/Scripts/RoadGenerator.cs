@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 using static BspTree;
 using static DuengeonData;
 
-public class CorriderGenerator : MonoBehaviour
+public class RoadGenerator : MonoBehaviour
 {
     // 노드 값이 라인의 갯수를 판별
     [Header("Node Value")]
@@ -30,8 +30,15 @@ public class CorriderGenerator : MonoBehaviour
     private TileBase[] PathTiles;
 
     // 맵 데이터 배열 생성, 초기화
-    private TileType[,] mapData;
+    private TileType[,] mapData; 
+    
+    private DuengeonContext ctx;
 
+    public void Run(DuengeonContext ctx)
+    {
+        this.ctx = ctx;
+        GenerateRoad(ctx.Root, 0);
+    }
     // 길 연결 메서드
     private void GenerateRoad(TreeNode treeNode, int depth)
     {

@@ -11,7 +11,6 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private Vector3 movePosition = new Vector3();
 
-
     private void Start()
     {
         rigid = GetComponent<Rigidbody2D>();

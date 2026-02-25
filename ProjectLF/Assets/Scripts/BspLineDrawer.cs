@@ -17,6 +17,7 @@ public class BspLineDrawer : MonoBehaviour
     [SerializeField]
     private Vector2Int mapSize;
 
+    private DuengeonContext ctx;
 
     // 라인 렌더러를 이용해 라인을 그리는 메소드
     private void OnDrawLine(Vector2 from, Vector2 to)

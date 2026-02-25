@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace BSPDuengeonGenrator
+namespace OldDuengeonGenrator
 {
     public enum TileType
     {
@@ -153,13 +153,6 @@ namespace BSPDuengeonGenrator
         [SerializeField]
         private GameObject MonsterMarkerPrefab;
 
-        private static DuengeonContext ctx;
-        BspSplitter bspSplitter = new BspSplitter();
-        RoomGenerater roomGenerater = new RoomGenerater();
-        WallGenerator wallGenerator = new WallGenerator();
-        RoadGenerator roadGenerator = new RoadGenerator();
-        DoorGenerator doorGenerator = new DoorGenerator();
-
         private void Awake()
         {
             // 벽과 관련된 데이터 배열 생성
@@ -168,16 +161,16 @@ namespace BSPDuengeonGenrator
             OnDrawRectangle(0, 0, mapSize.x, mapSize.y);
             // 루트가 될 트리 생성
             TreeNode rootNode = new TreeNode(0, 0, mapSize.x, mapSize.y);
-            // 트리 분할 메서드            
-            bspSplitter.Run(ctx);
+            // 트리 분할
+            DivideTree(rootNode, 0);
             // 방 생성
-            roomGenerater.Run(ctx);
+            GenerateDeungeuon(rootNode, 0);
             // 길 연결
-            roadGenerator.Run(ctx);
+            GenerateRoad(rootNode, 0);
             // 벽 생성 범위 체크
-            wallGenerator.Run(ctx);
+            GeneratedCheckWalls();
             // 문 생성
-            doorGenerator.Run(ctx);
+            GenerateDoors();
             // 벽 생성
             CreateWallAroundByRoom();
 
@@ -242,7 +235,7 @@ namespace BSPDuengeonGenrator
                 DivideTree(treeNode.leftTree, n + 1);
                 DivideTree(treeNode.rightTree, n + 1);
             }
-            
+
         }
         // 방 생성 메서드
         private RectInt GenerateDeungeuon(TreeNode treeNode, int node)
@@ -277,7 +270,7 @@ namespace BSPDuengeonGenrator
         private void GenerateRoad(TreeNode treeNode, int depth)
         {
             // 노드가 최하위일 때는 길을 연결하지 않음. 최하위 노드는 자식 트리가 없다.
-            if (depth == maxNode) 
+            if (depth == maxNode)
                 return;
             // 자식 트리의 던전 중앙 위치를 가져옴
             RectInt leftRoom = treeNode.leftTree.dungeonSize;
@@ -321,7 +314,7 @@ namespace BSPDuengeonGenrator
                         mapData[x, y + 1] == TileType.Room ||
                         mapData[x, y - 1] == TileType.Room;
 
-                    if (!hasRoomNeighbor) 
+                    if (!hasRoomNeighbor)
                         continue;
 
                     // 주변 벽 체크
@@ -343,7 +336,7 @@ namespace BSPDuengeonGenrator
 
                     // 통로가 수평으로 더 이어져 있다면 문은 세로 3칸
                     // 통로가 수직으로 이어져 있다면 가로 3칸
-                    if(horizontal >= vertical)
+                    if (horizontal >= vertical)
                     {
                         PlaceDoorVertical(x, y);
                     }
@@ -361,10 +354,10 @@ namespace BSPDuengeonGenrator
         }
         private void PlaceDoorVertical(int x, int y)
         {
-            for(int w = - doorHalfwidth; w <= doorHalfwidth; w++)
+            for (int w = -doorHalfwidth; w <= doorHalfwidth; w++)
             {
                 int ny = y + w;
-                if (!IsInsideMap(x, ny)) 
+                if (!IsInsideMap(x, ny))
                     continue;
 
                 // path 칸만 door 변경
@@ -404,12 +397,12 @@ namespace BSPDuengeonGenrator
         // 수평 통로
         private void CreateHorizontalCorridor(int xStart, int xEnd, int y)
         {
-            for (int x = Mathf.Min(xStart, xEnd); x <= Mathf.Max(xStart, xEnd); x++) 
+            for (int x = Mathf.Min(xStart, xEnd); x <= Mathf.Max(xStart, xEnd); x++)
             {
                 for (int w = -1; w <= 1; w++) // 통로 두께 계산
                 {
                     int ny = y + w;
-                    if (!IsInsideMap(x, ny)) 
+                    if (!IsInsideMap(x, ny))
                         continue;
 
                     // 이미 같은 경로에 통로가 생성되어 있다면 스킵한다
@@ -417,7 +410,7 @@ namespace BSPDuengeonGenrator
                         continue;
 
                     // 방도 마찬가지
-                    if (mapData[x, ny] == TileType.Room) 
+                    if (mapData[x, ny] == TileType.Room)
                         continue;
 
                     mapData[x, ny] = TileType.Path;
@@ -436,15 +429,15 @@ namespace BSPDuengeonGenrator
                 for (int w = -1; w <= 1; w++) // 통로 두께 계산
                 {
                     int nx = x + w;
-                    if (!IsInsideMap(nx, y)) 
+                    if (!IsInsideMap(nx, y))
                         continue;
 
                     // 이미 같은 경로에 통로가 생성되어 있다면 스킵한다
-                    if (mapData[nx, y] == TileType.Path) 
+                    if (mapData[nx, y] == TileType.Path)
                         continue;
 
                     // 방도 마찬가지
-                    if (mapData[nx, y] == TileType.Room) 
+                    if (mapData[nx, y] == TileType.Room)
                         continue;
 
                     mapData[nx, y] = TileType.Path;
@@ -458,7 +451,7 @@ namespace BSPDuengeonGenrator
         // 맵 범위 체크 (예외방지)
         private bool IsInsideMap(int x, int y)
         {
-            return x >= 0 && y >= 0 && x< mapSize.x && y < mapSize.y;
+            return x >= 0 && y >= 0 && x < mapSize.x && y < mapSize.y;
         }
 
 
@@ -538,7 +531,7 @@ namespace BSPDuengeonGenrator
         // 리프 방 수집
         private void CollectLeafRooms(TreeNode node, int depth, List<RoomInfo> rooms)
         {
-            if (node == null) 
+            if (node == null)
                 return;
 
             if (depth == maxNode)
@@ -547,14 +540,14 @@ namespace BSPDuengeonGenrator
                 return;
             }
 
-            CollectLeafRooms(node.leftTree, depth+1, rooms);
-            CollectLeafRooms(node.rightTree, depth+1, rooms);
+            CollectLeafRooms(node.leftTree, depth + 1, rooms);
+            CollectLeafRooms(node.rightTree, depth + 1, rooms);
         }
 
         // 방 할당 로직
         private void AssignRoomTypes(List<RoomInfo> rooms)
         {
-            if(rooms.Count < 3)
+            if (rooms.Count < 3)
             {
                 Debug.Log("방이 3개 미만이라 배치 불가");
                 return;
@@ -576,13 +569,13 @@ namespace BSPDuengeonGenrator
             // 남은 부분: 인카운터 몬스터 약 2:8 비율로
             for (int i = 0; i < rooms.Count; i++)
             {
-                if (i == startIndex || i == stairIndex || i == shopIndex) 
+                if (i == startIndex || i == stairIndex || i == shopIndex)
                     continue;
                 rooms[i].type = (Random.value < 0.2f) ? RoomType.Encounter : RoomType.Monster;
             }
 
         }
-        
+
         // 계단 위치 지정
         private int GetFarthestRoomIndex(List<RoomInfo> rooms, int startIndex, HashSet<int> excludeIndices)
         {
@@ -591,9 +584,9 @@ namespace BSPDuengeonGenrator
             int index = -1;
             int bestDistance = int.MinValue;
 
-            for(int i = 0; i < rooms.Count; i++)
+            for (int i = 0; i < rooms.Count; i++)
             {
-                if (i == startIndex) 
+                if (i == startIndex)
                     continue;
                 if (excludeIndices != null && excludeIndices.Contains(i))
                     continue;
@@ -643,7 +636,7 @@ namespace BSPDuengeonGenrator
             {
                 for (int i = 0; i < rooms.Count; i++)
                 {
-                    if(!excludeIndices.Contains(i)) 
+                    if (!excludeIndices.Contains(i))
                         return i;
                 }
             }
@@ -679,10 +672,10 @@ namespace BSPDuengeonGenrator
         // ----------------- 스폰 포인트 지정 메서드 ---------------------------
         private void PlayerSpawnPoint()
         {
-            
+
         }
 
-        
+
 
         // ----------------- 이미지 그리는 메서드 ------------------------------
         // 라인 렌더러를 이용해 라인을 그리는 메소드
@@ -719,38 +712,6 @@ namespace BSPDuengeonGenrator
         }
 
         // -----------------레거시 메서드-----------------------------
-
-        //private void Awake()
-        //{
-        //    // 벽과 관련된 데이터 배열 생성
-        //    InitializeMap();
-        //    // 던전 사이즈에 맞게 벽을 그림
-        //    OnDrawRectangle(0, 0, mapSize.x, mapSize.y);
-        //    // 루트가 될 트리 생성
-        //    TreeNode rootNode = new TreeNode(0, 0, mapSize.x, mapSize.y);
-        //    // 트리 분할
-        //    DivideTree(rootNode, 0);
-        //    // 방 생성
-        //    GenerateDeungeuon(rootNode, 0);
-        //    // 길 연결
-        //    GenerateRoad(rootNode, 0);
-        //    // 벽 생성 범위 체크
-        //    GeneratedCheckWalls();
-        //    // 문 생성
-        //    GenerateDoors();
-        //    // 벽 생성
-        //    CreateWallAroundByRoom();
-
-        //    List<RoomInfo> rooms = new List<RoomInfo>();
-        //    CollectLeafRooms(rootNode, 0, rooms);
-        //    AssignRoomTypes(rooms);
-        //    SpawnRoomMarkers(rooms);
-
-        //    //LineRenderer.SetActive(false);
-        //}
-
-
-
 
         // 체크형 벽 감지
         private void GenerateWalls()

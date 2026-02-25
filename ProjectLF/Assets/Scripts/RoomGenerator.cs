@@ -35,6 +35,13 @@ public class RoomGenerater : MonoBehaviour
     [SerializeField]
     private Tilemap tilemap;
 
+    private DuengeonContext ctx;
+    public void Run(DuengeonContext ctx)
+    {
+        this.ctx = ctx;
+        GenerateDeungeuon(ctx.Root, 0);
+    }
+
     // 방 생성 메서드
     private RectInt GenerateDeungeuon(TreeNode treeNode, int node)
     {

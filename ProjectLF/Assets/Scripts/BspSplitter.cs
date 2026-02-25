@@ -31,6 +31,14 @@ public class BspSplitter : MonoBehaviour
     [SerializeField]
     private GameObject LineRenderer;
 
+    private DuengeonContext ctx;
+    public void Run(DuengeonContext ctx)
+    {
+        this.ctx = ctx;
+        DivideTree(ctx.Root, 0);
+    }
+
+
     // Àç±Í ÇÔ¼ö
     private void DivideTree(TreeNode treeNode, int n)
     {

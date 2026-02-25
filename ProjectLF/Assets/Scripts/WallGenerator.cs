@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using static DuengeonData;
 
 public class WallGenerator : MonoBehaviour
@@ -7,14 +8,35 @@ public class WallGenerator : MonoBehaviour
     [SerializeField]
     private Vector2Int mapSize;
 
+    [Header("Wall, FloorTile, Door")]
+    // 바닥과 벽을 정의
+    [SerializeField]
+    private Tilemap floorTilemap;
+    [SerializeField]
+    private Tilemap wallTilemap;
+    [SerializeField]
+    private TileBase floorTile;
+
+    [SerializeField]
+    private TileBase wallTile;
+    [SerializeField]
+    private TileBase doorTile;
+
     // 맵 데이터 배열 생성, 초기화
     private TileType[,] mapData;
     // 0 = 빈공간
     // 1 = 바닥
     // 2 = 벽
+    private DuengeonContext ctx;
+    public void Run(DuengeonContext ctx)
+    {
+        this.ctx = ctx;
+        GeneratedCheckWalls(ctx);
+        CreateWallAroundByRoom(ctx);
+    }
 
     // 벽 체크 메서드
-    private void GeneratedCheckWalls()
+    private void GeneratedCheckWalls(DuengeonContext ctx)
     {
         for (int x = 0; x < mapSize.x; x++)
         {
@@ -55,6 +77,32 @@ public class WallGenerator : MonoBehaviour
                     mapData[nx, ny] = TileType.Wall;
                 }
             }
+        }
+    }
+
+    private void CreateWallAroundByRoom(DuengeonContext ctx)
+    {
+        for (int x = 0; x < mapSize.x; x++)
+        {
+            for (int y = 0; y < mapSize.y; y++)
+            {
+                Vector3Int pos = new Vector3Int(x - mapSize.x / 2, y - mapSize.y / 2);
+
+                if (mapData[x, y] == TileType.Room)
+                {
+                    floorTilemap.SetTile(pos, floorTile);
+                }
+                else if (mapData[x, y] == TileType.Wall)
+                {
+                    wallTilemap.SetTile(pos, wallTile);
+                }
+                else if (mapData[x, y] == TileType.Door)
+                {
+                    floorTilemap.SetTile(pos, doorTile);
+                }
+
+            }
+
         }
     }
 }

@@ -20,9 +20,15 @@ public class DoorGenerator : MonoBehaviour
     [SerializeField]
     private int doorHalfwidth;
 
+    private DuengeonContext ctx;
+    public void Run(DuengeonContext ctx)
+    {
+        this.ctx = ctx;
+        GenerateDoors(ctx);
+    }
 
     // 문 생성 함수
-    private void GenerateDoors()
+    private void GenerateDoors(DuengeonContext ctx)
     {
         for (int x = 1; x < mapSize.x - 1; x++)
         {
