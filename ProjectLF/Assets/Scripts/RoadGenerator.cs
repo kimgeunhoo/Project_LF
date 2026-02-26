@@ -2,10 +2,10 @@ using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static BspTree;
-using static DuengeonData;
 
-public class RoadGenerator : MonoBehaviour
+public class RoadGenerator : DuengeonData
 {
+
     // 노드 값이 라인의 갯수를 판별
     [Header("Node Value")]
     [SerializeField]

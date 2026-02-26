@@ -4,6 +4,7 @@ using static BspTree;
 
 public class BspSplitter : MonoBehaviour
 {
+
     [Header("Map Size")]
     [SerializeField]
     private Vector2Int mapSize;
@@ -32,6 +33,7 @@ public class BspSplitter : MonoBehaviour
     private GameObject LineRenderer;
 
     private DuengeonContext ctx;
+
     public void Run(DuengeonContext ctx)
     {
         this.ctx = ctx;

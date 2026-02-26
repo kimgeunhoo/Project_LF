@@ -2,12 +2,11 @@ using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using static DuengeonData;
 
-public class CheckInsideMap : MonoBehaviour
+public class CheckInsideMap : DuengeonData
 {
     [Header("Map Size")]
     [SerializeField]
     private Vector2Int mapSize;
-
     // 맵 데이터 배열 생성, 초기화
     private TileType[,] mapData;
     // 0 = 빈공간

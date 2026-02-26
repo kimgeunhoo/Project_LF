@@ -25,6 +25,8 @@ public class DuengeonData : MonoBehaviour
     [SerializeField]
     private Vector2Int mapSize;
 
+    public Vector2Int MapSize { get { return mapSize; } }
+
     // 노드 값이 라인의 갯수를 판별
     [Header("Node Value")]
     [SerializeField]
@@ -32,11 +34,17 @@ public class DuengeonData : MonoBehaviour
     [SerializeField]
     private int minNode;
 
+    public int MaxNode { get { return maxNode; } }
+    public int MinNode { get { return maxNode; } }
+
     [Header("Room Magnification")]
     [SerializeField]
     private float minDivideSize;
     [SerializeField]
     private float maxDivideSize;
+
+    public float MinDivideSize { get { return minDivideSize; } }
+    public float MaxDivideSize { get { return maxDivideSize; } }
 
     [Header("Wall, FloorTile, Door")]
     // 바닥과 벽을 정의
@@ -44,7 +52,6 @@ public class DuengeonData : MonoBehaviour
     private Tilemap floorTilemap;
     [SerializeField]
     private Tilemap wallTilemap;
-
     [SerializeField]
     private TileBase floorTile;
     [SerializeField]
@@ -52,8 +59,24 @@ public class DuengeonData : MonoBehaviour
     [SerializeField]
     private TileBase doorTile;
 
+    [Header("Random TileArray")]
+    [SerializeField]
+    private TileBase[] pathTiles;
+
+    public Tilemap FloorTilemap { get { return floorTilemap; } }
+    public Tilemap WallTilemap { get { return wallTilemap; } }
+
+    public TileBase FloorTile { get { return floorTile; } }
+    public TileBase WallTile { get { return wallTile; } }   
+    public TileBase DoorTile { get { return doorTile; } }
+
+    public TileBase[] PathTiles { get { return pathTiles; } }
+
+    // 맵데이터
     [SerializeField]
     private TileType[,] mapData;
+
+    public TileType[,] MapData { get { return mapData; } }
 
 
     [Header("Random Liner")]
@@ -64,7 +87,12 @@ public class DuengeonData : MonoBehaviour
     [SerializeField]
     private GameObject rectangle;
     [SerializeField]
-    private GameObject LineRenderer;
+    private GameObject lineRenderer;
+
+    public GameObject Line { get { return line; } }
+    public Transform LineHolder { get { return lineHolder; } }
+    public GameObject Rectangle { get { return rectangle; } }
+    public GameObject LineRenderer { get  { return lineRenderer; } }
 
     public class RoomInfo
     {
