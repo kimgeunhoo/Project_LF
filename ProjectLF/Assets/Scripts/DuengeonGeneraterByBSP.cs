@@ -2,74 +2,76 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using BSPDuengeonGenrator.Core;
+using BSPDuengeonGenrator.Config;
+using BSPDuengeonGenrator.Generation;
 
 namespace BSPDuengeonGenrator
 {
-    public enum TileType
-    {
-        Empty, // 0 빈 공간
-        Room, // 바닥
-        Path, // 통로
-        Wall, // 벽
-        Door, // 문
-    }
+    //public enum TileType
+    //{
+    //    Empty, // 0 빈 공간
+    //    Room, // 바닥
+    //    Path, // 통로
+    //    Wall, // 벽
+    //    Door, // 문
+    //}
 
-    public enum RoomType
-    {
-        Start, // 스폰 포인트
-        Stairs, // 계단
-        Shop, // 상점
-        Encounter, // 랜덤 인카운터
-        Monster, // 몬스터 룸
-    }
+    //public enum RoomType
+    //{
+    //    Start, // 스폰 포인트
+    //    Stairs, // 계단
+    //    Shop, // 상점
+    //    Encounter, // 랜덤 인카운터
+    //    Monster, // 몬스터 룸
+    //}
 
-    public class RoomInfo
-    {
-        private RectInt rect;
-        public RoomType type;
+    //public class RoomInfo
+    //{
+    //    private RectInt rect;
+    //    public RoomType type;
 
-        private TreeNode m_tree;
+    //    private TreeNode m_tree;
 
-        public RoomInfo(RectInt rect)
-        {
-            this.rect = rect;
-            this.type = RoomType.Monster;
+    //    public RoomInfo(RectInt rect)
+    //    {
+    //        this.rect = rect;
+    //        this.type = RoomType.Monster;
+    //    }
 
-        }
-
-        public Vector2Int Center =>
-            new Vector2Int(rect.x + rect.width / 2, rect.y + rect.height / 2);
-    }
-
+    //    public Vector2Int Center =>
+    //        new Vector2Int(rect.x + rect.width / 2, rect.y + rect.height / 2);
+    //}
 
 
-    public class TreeNode
-    {
-        public TreeNode leftTree;
-        public TreeNode rightTree;
-        public TreeNode parentTree;
-        // RectInt 
-        // 정수 좌표(x, y)와 크기(width, height)로 정의되는 2D 직사각형 구조체
-        public RectInt treeSize;
-        public RectInt dungeonSize;
+
+    //public class TreeNode
+    //{
+    //    public TreeNode leftTree;
+    //    public TreeNode rightTree;
+    //    public TreeNode parentTree;
+    //    // RectInt 
+    //    // 정수 좌표(x, y)와 크기(width, height)로 정의되는 2D 직사각형 구조체
+    //    public RectInt treeSize;
+    //    public RectInt dungeonSize;
 
 
-        private TileBase[] RoomTiles;
+    //    private TileBase[] RoomTiles;
 
-        // 맵 데이터 생성, 초기화
-        //private int[,] mapData = new int[mapSize.x, mapSize.y];
-        // 0 = 빈공간
-        // 1 = 바닥
-        // 2 = 벽
+    //    // 맵 데이터 생성, 초기화
+    //    //private int[,] mapData = new int[mapSize.x, mapSize.y];
+    //    // 0 = 빈공간
+    //    // 1 = 바닥
+    //    // 2 = 벽
 
-        public TreeNode(int _x, int _y, int _width, int _height)
-        {
-            treeSize.x = _x;
-            treeSize.y = _y;
-            treeSize.width = _width;
-            treeSize.height = _height;
-        }
-    }
+    //    public TreeNode(int _x, int _y, int _width, int _height)
+    //    {
+    //        treeSize.x = _x;
+    //        treeSize.y = _y;
+    //        treeSize.width = _width;
+    //        treeSize.height = _height;
+    //    }
+    //}
 
     public class DuengeonGeneraterByBSP : MonoBehaviour
     {
@@ -170,6 +172,8 @@ namespace BSPDuengeonGenrator
             InitializeMap();
             // 던전 사이즈에 맞게 벽을 그림
             OnDrawRectangle(0, 0, mapSize.x, mapSize.y);
+
+            
             // 루트가 될 트리 생성
             TreeNode rootNode = new TreeNode(0, 0, mapSize.x, mapSize.y);
             // 트리 분할 메서드            
@@ -241,23 +245,23 @@ namespace BSPDuengeonGenrator
 
             // start 시작 지점
             int startIndex = Random.Range(0, rooms.Count);
-            rooms[startIndex].type = RoomType.Start;
+            rooms[startIndex].Type = RoomType.Start;
 
             // stair 계단
             int stairIndex = GetFarthestRoomIndex(rooms, startIndex, excludeIndices: null);
-            rooms[startIndex].type = RoomType.Stairs;
+            rooms[startIndex].Type = RoomType.Stairs;
 
             // 계단, 시작지점 제외한 중간 지점(랜덤)
             var excluded = new HashSet<int> { startIndex, stairIndex };
             int shopIndex = GetMidDistanceRoomIndex(rooms, startIndex, stairIndex, excluded);
-            rooms[shopIndex].type = RoomType.Shop;
+            rooms[shopIndex].Type = RoomType.Shop;
 
             // 남은 부분: 인카운터 몬스터 약 2:8 비율로
             for (int i = 0; i < rooms.Count; i++)
             {
                 if (i == startIndex || i == stairIndex || i == shopIndex) 
                     continue;
-                rooms[i].type = (Random.value < 0.2f) ? RoomType.Encounter : RoomType.Monster;
+                rooms[i].Type = (Random.value < 0.2f) ? RoomType.Encounter : RoomType.Monster;
             }
 
         }
@@ -332,7 +336,7 @@ namespace BSPDuengeonGenrator
         {
             foreach (var room in rooms)
             {
-                GameObject prefab = room.type switch
+                GameObject prefab = room.Type switch
                 {
                     RoomType.Start => startMarkerPrefab,
                     RoomType.Stairs => stairMarkerPrefab,

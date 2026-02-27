@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static BSPDuengeonGenrator.DuengeonGeneraterByBSP;
+using BSPDuengeonGenrator.Config;
+using BSPDuengeonGenrator.Core;
 
 public class RoomDefinition : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class RoomDefinition : MonoBehaviour
     {
         foreach (var room in rooms)
         {
-            GameObject prefab = room.type switch
+            GameObject prefab = room.Type switch
             {
                 RoomType.Start => startMarkerPrefab,
                 RoomType.Stairs => stairMarkerPrefab,

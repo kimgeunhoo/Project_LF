@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static DuengeonData;
+using BSPDuengeonGenrator.Config;
 
 public class TileMapRenderer : MonoBehaviour
 {

@@ -1,30 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static BspTree;
-using static DuengeonData;
+using BSPDuengeonGenrator.Config;
 
-public sealed class DuengeonContext : MonoBehaviour
+namespace BSPDuengeonGenrator.Core
 {
-    public Vector2Int MapSize;
-    public TileType[,] MapData;
+    public sealed class DuengeonContext : MonoBehaviour
+    {
+        public Vector2Int MapSize;
+        public TileType[,] MapData;
 
-    public int MaxNode;
-    public int MinNode;
-    public float MinDivideSize;
-    public float MaxDivideSize;
+        public int MaxNode;
+        public int MinNode;
+        public float MinDivideSize;
+        public float MaxDivideSize;
 
-    public TreeNode Root;
+        public BspTree.TreeNode Root;
 
-    // 렌더 리소스
-    public Tilemap FloorTilemap;
-    public Tilemap WallTilemap;
+        // 렌더 리소스
+        public Tilemap FloorTilemap;
+        public Tilemap WallTilemap;
 
-    public TileBase FloorTile;
-    public TileBase WallTile;
-    public TileBase DoorTile;
-    public TileBase[] PathTiles;
+        public TileBase FloorTile;
+        public TileBase WallTile;
+        public TileBase DoorTile;
+        public TileBase[] PathTiles;
 
-    // 결과물
-    public List<RoomInfo> Rooms = new List<RoomInfo>();
+        // 결과물
+        public List<DuengeonData.RoomInfo> Rooms = new List<DuengeonData.RoomInfo>();
+    }
+
 }

@@ -1,6 +1,6 @@
 using System.Xml.Linq;
 using UnityEngine;
-using static BspTree;
+using BSPDuengeonGenrator.Core;
 
 public class BspSplitter : MonoBehaviour
 {

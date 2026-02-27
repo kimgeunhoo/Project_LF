@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class BspTree : MonoBehaviour
+namespace BSPDuengeonGenrator.Core
 {
-    public class TreeNode
+
+    public class TreeNode : MonoBehaviour
     {
         public TreeNode leftTree;
         public TreeNode rightTree;
@@ -29,5 +30,6 @@ public class BspTree : MonoBehaviour
             treeSize.width = _width;
             treeSize.height = _height;
         }
+
     }
 }

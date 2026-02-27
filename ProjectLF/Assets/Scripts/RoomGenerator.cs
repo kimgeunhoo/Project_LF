@@ -1,8 +1,8 @@
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static BspTree;
-using static DuengeonData;
+using BSPDuengeonGenrator.Config;
+using BSPDuengeonGenrator.Core;
 
 public class RoomGenerater : MonoBehaviour
 {

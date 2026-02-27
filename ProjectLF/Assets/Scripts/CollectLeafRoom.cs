@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using UnityEngine;
-using static BspTree;
-using static DuengeonData;
+using BSPDuengeonGenrator.Core;
+using BSPDuengeonGenrator.Config;
 
 public class CollectLeafRoom : MonoBehaviour
 {
@@ -12,6 +12,8 @@ public class CollectLeafRoom : MonoBehaviour
     private int maxNode;
     [SerializeField]
     private int minNode;
+
+    DuengeonContext context;
 
     // 리프 방 수집
     private void CollectLeafRooms(TreeNode node, int depth, List<RoomInfo> rooms)

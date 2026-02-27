@@ -1,5 +1,7 @@
 using System.Drawing;
 using UnityEngine;
+using BSPDuengeonGenrator.Core;
+using BSPDuengeonGenrator.Config;
 
 public class BspLineDrawer : MonoBehaviour
 {
