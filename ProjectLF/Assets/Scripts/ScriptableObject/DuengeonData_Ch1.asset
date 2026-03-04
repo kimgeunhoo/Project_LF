@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b90b3ac20d3ab04db6459c36b22a453, type: 3}
+  m_Name: DuengeonData_Ch1
+  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Config.DuengeonData
+  mapSize: {x: 100, y: 100}
+  maxNode: 5
+  minNode: 5
+  minDivideSize: 0.4
+  maxDivideSize: 0.6
+  floorTile: {fileID: 11400000, guid: cd739c4b4eb31934494017ea1d34324b, type: 2}
+  wallTile: {fileID: 11400000, guid: 96945c2584c47b44ebe75d015b3cde49, type: 2}
+  doorTile: {fileID: 11400000, guid: b52eb31537a3c0f4d9b909925745af72, type: 2}
+  pathTiles:
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: ae68d965a4218a94ca2134f0ae2007c4, type: 2}
+  - {fileID: 11400000, guid: 6da925407638afc4db4e37eb2ec98c76, type: 2}
+  - {fileID: 11400000, guid: 6a5be8683b2bb5c4cafdd9a8407e5654, type: 2}
+  - {fileID: 11400000, guid: fedab419fdbdeea488795e51c83727c9, type: 2}
+  - {fileID: 11400000, guid: abe9370c58435f244a894542a9d0f78d, type: 2}
+  line: {fileID: 3806480354315292991, guid: 4cdd22b8718bcbd47af6618f0dbb68b1, type: 3}
+  lineHolder: {fileID: 3753848740367929461, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
+  rectangle: {fileID: 7597152152662077364, guid: fd3131a82801e1a49bb05a8b7f179d7d, type: 3}
+  lineRenderer: {fileID: 2352065182494810184, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}

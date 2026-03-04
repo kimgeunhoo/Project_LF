@@ -25,8 +25,8 @@ namespace BSPDuengeonGenrator.Config
     }
 
 
-
-    public class DuengeonData : MonoBehaviour
+    [CreateAssetMenu(menuName ="Duengeon/Data")]
+    public class DuengeonData : ScriptableObject
     {
         
         // 맵 사이즈
@@ -58,10 +58,7 @@ namespace BSPDuengeonGenrator.Config
 
         // 바닥과 벽을 정의
         [Header("Wall, FloorTile, Door")]
-        [SerializeField]
-        private Tilemap floorTilemap;
-        [SerializeField]
-        private Tilemap wallTilemap;
+
         [SerializeField]
         private TileBase floorTile;
         [SerializeField]
@@ -73,9 +70,6 @@ namespace BSPDuengeonGenrator.Config
         [Header("Random TileArray")]
         [SerializeField]
         private TileBase[] pathTiles;
-
-        public Tilemap FloorTilemap { get { return floorTilemap; } }
-        public Tilemap WallTilemap { get { return wallTilemap; } }
 
         public TileBase FloorTile { get { return floorTile; } }
         public TileBase WallTile { get { return wallTile; } }
@@ -104,14 +98,6 @@ namespace BSPDuengeonGenrator.Config
         public Transform LineHolder { get { return lineHolder; } }
         public GameObject Rectangle { get { return rectangle; } }
         public GameObject LineRenderer { get { return lineRenderer; } }
-
-        // 방 정보 정의
-        
-
-        private void DungeonConfig()
-        {
-
-        }
 
     }
     public class RoomInfo

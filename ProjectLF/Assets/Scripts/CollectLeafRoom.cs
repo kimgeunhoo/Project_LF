@@ -4,30 +4,34 @@ using UnityEngine;
 using BSPDuengeonGenrator.Core;
 using BSPDuengeonGenrator.Config;
 
-public class CollectLeafRoom : MonoBehaviour
+namespace BSPDuengeonGenrator.marker
 {
-    // 노드 값이 라인의 갯수를 판별
-    [Header("Node Value")]
-    [SerializeField]
-    private int maxNode;
-    [SerializeField]
-    private int minNode;
-
-    DuengeonContext context;
-
-    // 리프 방 수집
-    private void CollectLeafRooms(TreeNode node, int depth, List<RoomInfo> rooms)
+    public class CollectLeafRoom : MonoBehaviour
     {
-        if (node == null)
-            return;
+        // 노드 값이 라인의 갯수를 판별
+        [Header("Node Value")]
+        [SerializeField]
+        private int maxNode;
+        [SerializeField]
+        private int minNode;
 
-        if (depth == maxNode)
+        DuengeonContext context;
+
+        // 리프 방 수집
+        private void CollectLeafRooms(TreeNode node, int depth, List<RoomInfo> rooms)
         {
-            rooms.Add(new RoomInfo(node.dungeonSize));
-            return;
-        }
+            if (node == null)
+                return;
 
-        CollectLeafRooms(node.leftTree, depth + 1, rooms);
-        CollectLeafRooms(node.rightTree, depth + 1, rooms);
+            if (depth == maxNode)
+            {
+                rooms.Add(new RoomInfo(node.dungeonSize));
+                return;
+            }
+
+            CollectLeafRooms(node.leftTree, depth + 1, rooms);
+            CollectLeafRooms(node.rightTree, depth + 1, rooms);
+        }
     }
+
 }

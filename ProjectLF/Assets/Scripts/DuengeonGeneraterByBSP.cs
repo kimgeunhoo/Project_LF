@@ -77,7 +77,7 @@ namespace BSPDuengeonGenrator
     {
         [Header("Duengeon Data")]
         [SerializeField]
-        private DuengeonData data;
+        private DuengeonData duengeonData;
 
         [Header("Map Size")]
         [SerializeField]
@@ -159,12 +159,14 @@ namespace BSPDuengeonGenrator
         [SerializeField]
         private GameObject MonsterMarkerPrefab;
 
-        private static DuengeonContext ctx;
-        BspSplitter bspSplitter = new BspSplitter();
-        RoomGenerater roomGenerater = new RoomGenerater();
-        WallGenerator wallGenerator = new WallGenerator();
-        RoadGenerator roadGenerator = new RoadGenerator();
-        DoorGenerator doorGenerator = new DoorGenerator();
+
+        private static DuengeonContext ctx = new DuengeonContext();
+
+        private BspSplitter bspSplitter;
+        private RoomGenerater roomGenerater;
+        private WallGenerator wallGenerator;
+        private RoadGenerator roadGenerator;
+        private DoorGenerator doorGenerator;
 
         private void Awake()
         {
@@ -173,18 +175,42 @@ namespace BSPDuengeonGenrator
             // 던전 사이즈에 맞게 벽을 그림
             OnDrawRectangle(0, 0, mapSize.x, mapSize.y);
 
+            // 컨텍스트에 값 대입
+            ctx.MapSize = duengeonData.MapSize;
+            ctx.MapData = duengeonData.MapData;
+            ctx.MaxNode = duengeonData.MaxNode;
+            ctx.MinNode = duengeonData.MinNode;
+            ctx.MaxDivideSize = duengeonData.MaxDivideSize;
+            ctx.MinDivideSize = duengeonData.MinDivideSize;
             
+            ctx.FloorTilemap = floorTilemap;
+            ctx.WallTilemap = wallTilemap;
+
+            ctx.FloorTile = duengeonData.FloorTile;
+            ctx.WallTile = duengeonData.WallTile;
+            ctx.DoorTile = duengeonData.DoorTile;
+            ctx.PathTiles = duengeonData.PathTiles;
+
+            ctx.Rooms = new List<RoomInfo>();
+
             // 루트가 될 트리 생성
             TreeNode rootNode = new TreeNode(0, 0, mapSize.x, mapSize.y);
+            ctx.Root = rootNode;
+
             // 트리 분할 메서드            
+            bspSplitter = GetComponent<BspSplitter>();
             bspSplitter.Run(ctx);
             // 방 생성
+            roomGenerater = GetComponent<RoomGenerater>();
             roomGenerater.Run(ctx);
             // 길 연결
+            roadGenerator = GetComponent<RoadGenerator>();
             roadGenerator.Run(ctx);
             // 벽 생성 범위 체크, 생성
+            wallGenerator = GetComponent<WallGenerator>();
             wallGenerator.Run(ctx);
             // 문 생성
+            doorGenerator = GetComponent<DoorGenerator>();
             doorGenerator.Run(ctx);
 
             List<RoomInfo> rooms = new List<RoomInfo>();
@@ -199,10 +225,10 @@ namespace BSPDuengeonGenrator
         {
             var ctx = new DuengeonContext();
 
-            ctx.MapSize = data.MapSize;
-            ctx.MaxNode = data.MaxNode;
-            ctx.PathTiles = data.PathTiles;
-            ctx.FloorTile = data.FloorTile;
+            ctx.MapSize = duengeonData.MapSize;
+            ctx.MaxNode = duengeonData.MaxNode;
+            ctx.PathTiles = duengeonData.PathTiles;
+            ctx.FloorTile = duengeonData.FloorTile;
 
 
             ctx.FloorTilemap = floorTilemap;

@@ -15,7 +15,7 @@ namespace BSPDuengeonGenrator.Core
         public float MinDivideSize;
         public float MaxDivideSize;
 
-        public BspTree.TreeNode Root;
+        public TreeNode Root;
 
         // 렌더 리소스
         public Tilemap FloorTilemap;
@@ -27,7 +27,7 @@ namespace BSPDuengeonGenrator.Core
         public TileBase[] PathTiles;
 
         // 결과물
-        public List<DuengeonData.RoomInfo> Rooms = new List<DuengeonData.RoomInfo>();
+        public List<RoomInfo> Rooms = new List<RoomInfo>();
     }
 
 }

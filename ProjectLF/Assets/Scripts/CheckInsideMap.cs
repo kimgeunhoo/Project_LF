@@ -2,7 +2,7 @@ using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using BSPDuengeonGenrator.Config;
 
-namespace BSPDuengeonGenrator
+namespace BSPDuengeonGenrator.Generation
 {
     public class CheckInsideMap : MonoBehaviour
     {
