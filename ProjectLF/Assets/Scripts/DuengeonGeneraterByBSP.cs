@@ -5,73 +5,10 @@ using UnityEngine.Tilemaps;
 using BSPDuengeonGenrator.Core;
 using BSPDuengeonGenrator.Config;
 using BSPDuengeonGenrator.Generation;
+using BSPDuengeonGenrator.Rendering;
 
 namespace BSPDuengeonGenrator
 {
-    //public enum TileType
-    //{
-    //    Empty, // 0 빈 공간
-    //    Room, // 바닥
-    //    Path, // 통로
-    //    Wall, // 벽
-    //    Door, // 문
-    //}
-
-    //public enum RoomType
-    //{
-    //    Start, // 스폰 포인트
-    //    Stairs, // 계단
-    //    Shop, // 상점
-    //    Encounter, // 랜덤 인카운터
-    //    Monster, // 몬스터 룸
-    //}
-
-    //public class RoomInfo
-    //{
-    //    private RectInt rect;
-    //    public RoomType type;
-
-    //    private TreeNode m_tree;
-
-    //    public RoomInfo(RectInt rect)
-    //    {
-    //        this.rect = rect;
-    //        this.type = RoomType.Monster;
-    //    }
-
-    //    public Vector2Int Center =>
-    //        new Vector2Int(rect.x + rect.width / 2, rect.y + rect.height / 2);
-    //}
-
-
-
-    //public class TreeNode
-    //{
-    //    public TreeNode leftTree;
-    //    public TreeNode rightTree;
-    //    public TreeNode parentTree;
-    //    // RectInt 
-    //    // 정수 좌표(x, y)와 크기(width, height)로 정의되는 2D 직사각형 구조체
-    //    public RectInt treeSize;
-    //    public RectInt dungeonSize;
-
-
-    //    private TileBase[] RoomTiles;
-
-    //    // 맵 데이터 생성, 초기화
-    //    //private int[,] mapData = new int[mapSize.x, mapSize.y];
-    //    // 0 = 빈공간
-    //    // 1 = 바닥
-    //    // 2 = 벽
-
-    //    public TreeNode(int _x, int _y, int _width, int _height)
-    //    {
-    //        treeSize.x = _x;
-    //        treeSize.y = _y;
-    //        treeSize.width = _width;
-    //        treeSize.height = _height;
-    //    }
-    //}
 
     public class DuengeonGeneraterByBSP : MonoBehaviour
     {
@@ -167,39 +104,28 @@ namespace BSPDuengeonGenrator
         private WallGenerator wallGenerator;
         private RoadGenerator roadGenerator;
         private DoorGenerator doorGenerator;
-
+        private BspLineDrawer lineDrawer;
         private void Awake()
         {
+            // 데이터 무결성 체크
+            if(duengeonData == null)
+            {
+                Debug.LogError("[Generator] duengeonData가 할당되지 않았습니다.");
+            }
+            
+            // ctx 정의
+            ctx = Build();
             // 벽과 관련된 데이터 배열 생성
             InitializeMap();
             // 던전 사이즈에 맞게 벽을 그림
             OnDrawRectangle(0, 0, mapSize.x, mapSize.y);
 
-            // 컨텍스트에 값 대입
-            ctx.MapSize = duengeonData.MapSize;
-            ctx.MapData = duengeonData.MapData;
-            ctx.MaxNode = duengeonData.MaxNode;
-            ctx.MinNode = duengeonData.MinNode;
-            ctx.MaxDivideSize = duengeonData.MaxDivideSize;
-            ctx.MinDivideSize = duengeonData.MinDivideSize;
-            
-            ctx.FloorTilemap = floorTilemap;
-            ctx.WallTilemap = wallTilemap;
-
-            ctx.FloorTile = duengeonData.FloorTile;
-            ctx.WallTile = duengeonData.WallTile;
-            ctx.DoorTile = duengeonData.DoorTile;
-            ctx.PathTiles = duengeonData.PathTiles;
-
-            ctx.Rooms = new List<RoomInfo>();
-
-            // 루트가 될 트리 생성
-            TreeNode rootNode = new TreeNode(0, 0, mapSize.x, mapSize.y);
-            ctx.Root = rootNode;
-
             // 트리 분할 메서드            
             bspSplitter = GetComponent<BspSplitter>();
             bspSplitter.Run(ctx);
+            //Splitter로 값 가져오고 라인 그리기
+            lineDrawer.OnDrawLine(ctx);
+
             // 방 생성
             roomGenerater = GetComponent<RoomGenerater>();
             roomGenerater.Run(ctx);
@@ -214,7 +140,7 @@ namespace BSPDuengeonGenrator
             doorGenerator.Run(ctx);
 
             List<RoomInfo> rooms = new List<RoomInfo>();
-            CollectLeafRooms(rootNode, 0, rooms);
+            CollectLeafRooms(ctx.Root, 0, rooms);
             AssignRoomTypes(rooms);
             SpawnRoomMarkers(rooms);
 
@@ -225,14 +151,27 @@ namespace BSPDuengeonGenrator
         {
             var ctx = new DuengeonContext();
 
+            // 컨텍스트에 값 대입
             ctx.MapSize = duengeonData.MapSize;
+            ctx.MapData = duengeonData.MapData;
             ctx.MaxNode = duengeonData.MaxNode;
-            ctx.PathTiles = duengeonData.PathTiles;
-            ctx.FloorTile = duengeonData.FloorTile;
-
+            ctx.MinNode = duengeonData.MinNode;
+            ctx.MaxDivideSize = duengeonData.MaxDivideSize;
+            ctx.MinDivideSize = duengeonData.MinDivideSize;
 
             ctx.FloorTilemap = floorTilemap;
             ctx.WallTilemap = wallTilemap;
+
+            ctx.FloorTile = duengeonData.FloorTile;
+            ctx.WallTile = duengeonData.WallTile;
+            ctx.DoorTile = duengeonData.DoorTile;
+            ctx.PathTiles = duengeonData.PathTiles;
+
+            ctx.Rooms = new List<RoomInfo>();
+
+            // 루트가 될 트리 생성
+            TreeNode rootNode = new TreeNode(0, 0, mapSize.x, mapSize.y);
+            ctx.Root = rootNode;
 
             return ctx;
         }

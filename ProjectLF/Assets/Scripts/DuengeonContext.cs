@@ -10,6 +10,7 @@ namespace BSPDuengeonGenrator.Core
         public Vector2Int MapSize;
         public TileType[,] MapData;
 
+        // 노드 사이즈
         public int MaxNode;
         public int MinNode;
         public float MinDivideSize;
@@ -25,6 +26,9 @@ namespace BSPDuengeonGenrator.Core
         public TileBase WallTile;
         public TileBase DoorTile;
         public TileBase[] PathTiles;
+
+        // Drawer가 읽는 값
+        public List<LineSegment> SplitLines = new List<LineSegment>();
 
         // 결과물
         public List<RoomInfo> Rooms = new List<RoomInfo>();

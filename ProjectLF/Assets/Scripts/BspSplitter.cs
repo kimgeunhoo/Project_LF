@@ -1,13 +1,12 @@
-using System.Xml.Linq;
-using UnityEngine;
-using BSPDuengeonGenrator.Core;
 using BSPDuengeonGenrator.Config;
+using BSPDuengeonGenrator.Core;
 using BSPDuengeonGenrator.Generation;
 using BSPDuengeonGenrator.Rendering;
+using System.Xml.Linq;
+using UnityEngine;
 
 namespace BSPDuengeonGenrator.Generation
 {
-
     public class BspSplitter : MonoBehaviour
     {
 
@@ -23,13 +22,14 @@ namespace BSPDuengeonGenrator.Generation
 
         private DuengeonContext ctx;
 
-        BspLineDrawer lineDrawer;
-
-        private void Awake()
+        // 라인 렌더링은 따로 호출시킨다.
+        private LineRenderInterface lineRender;
+        public BspSplitter(LineRenderInterface _lineRender = null)
         {
-            lineDrawer = GetComponent<BspLineDrawer>();
+            this.lineRender = _lineRender;
         }
 
+ 
         public void Run(DuengeonContext ctx)
         {
             this.ctx = ctx;
@@ -57,16 +57,20 @@ namespace BSPDuengeonGenrator.Generation
                     treeNode.leftTree = new TreeNode(size.x, size.y, split, size.height);
                     // x 값에 split값을 더해 좌표 설정. 이전 트리의 width값에 split값을 빼 가로 길이 설정
                     treeNode.rightTree = new TreeNode(size.x + split, size.y, size.width - split, size.height);
-                    OnDrawLine(new Vector2(size.x + split, size.y),
-                        new Vector2(size.x + split, size.y + size.height));
+
+                    ctx.SplitLines.Add(new LineSegment(
+                        new Vector2(size.x + split, size.y),
+                        new Vector2(size.x + split, size.y + size.height)));
                 }
                 // 세로
                 else
                 {
                     treeNode.leftTree = new TreeNode(size.x, size.y, size.width, split);
                     treeNode.rightTree = new TreeNode(size.x, size.y + split, size.width, size.height - split);
-                    OnDrawLine(new Vector2(size.x, size.y + split),
-                        new Vector2(size.x + size.width, size.y + split));
+
+                    ctx.SplitLines.Add(new LineSegment(
+                        new Vector2(size.x, size.y + split),
+                        new Vector2(size.x + size.width, size.y + split)));
                 }
                 // 분할한 트리의 부모 트리를 매개 변수로 받은 트리로 할당
                 treeNode.leftTree.parentTree = treeNode;
@@ -78,12 +82,6 @@ namespace BSPDuengeonGenrator.Generation
             }
         }
 
-        private void OnDrawLine(Vector2 from, Vector2 to)
-        {
-            LineRenderer lineRenderer = Instantiate(line, lineHolder).GetComponent<LineRenderer>();
-            lineRenderer.SetPosition(0, from - ctx.MapSize / 2);
-            lineRenderer.SetPosition(1, to - ctx.MapSize / 2);
-        }
     }
 
 }
