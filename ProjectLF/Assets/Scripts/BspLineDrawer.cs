@@ -22,7 +22,7 @@ namespace BSPDuengeonGenrator.Rendering
         // 라인 렌더러를 이용해 라인을 그리는 메소드
         public void OnDrawLine(DuengeonContext ctx)
         {
-            
+
             foreach (var seg in ctx.SplitLines)
             {
                 LineRenderer lineRenderer = Instantiate(line, lineHolder).GetComponent<LineRenderer>();

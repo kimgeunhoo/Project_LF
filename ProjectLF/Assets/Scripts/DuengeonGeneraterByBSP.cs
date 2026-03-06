@@ -123,6 +123,8 @@ namespace BSPDuengeonGenrator
             // 트리 분할 메서드            
             bspSplitter = GetComponent<BspSplitter>();
             bspSplitter.Run(ctx);
+
+            lineDrawer = GetComponent<BspLineDrawer>();
             //Splitter로 값 가져오고 라인 그리기
             lineDrawer.OnDrawLine(ctx);
 
@@ -175,7 +177,6 @@ namespace BSPDuengeonGenrator
 
             return ctx;
         }
-
 
         // 벽 함수 초기화
         private void InitializeMap()
@@ -297,6 +298,8 @@ namespace BSPDuengeonGenrator
             }
             return index;
         }
+
+        // 방 마커 출력
         private void SpawnRoomMarkers(List<RoomInfo> rooms)
         {
             foreach (var room in rooms)

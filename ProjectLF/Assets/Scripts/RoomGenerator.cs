@@ -8,31 +8,6 @@ namespace BSPDuengeonGenrator.Generation
 {
     public class RoomGenerater : MonoBehaviour
     {
-        [Header("Map Size")]
-        [SerializeField]
-        private Vector2Int mapSize;
-
-        // 맵 데이터 배열 생성, 초기화
-        private TileType[,] mapData;
-        // 0 = 빈공간
-        // 1 = 바닥
-        // 2 = 벽
-
-        // 노드 값이 라인의 갯수를 판별
-        [Header("Node Value")]
-        [SerializeField]
-        private int maxNode;
-        [SerializeField]
-        private int minNode;
-
-        [Header("Random TileArray")]
-        [SerializeField]
-        private TileBase[] PathTiles;
-
-        // 타일맵 배치
-        [Header("Tile")]
-        [SerializeField]
-        private Tile tile;
         // 타일맵 랜덤변수
         [SerializeField]
         private Tilemap tilemap;
@@ -47,7 +22,7 @@ namespace BSPDuengeonGenrator.Generation
         // 방 생성 메서드
         private RectInt GenerateDeungeuon(TreeNode treeNode, int node)
         {
-            if (node == maxNode)
+            if (node == ctx.MaxNode)
             {
                 RectInt size = treeNode.treeSize;
                 // 트리 범위 내에서 무작위 크기 선택, 최소 크기 : width / 2
@@ -75,13 +50,20 @@ namespace BSPDuengeonGenrator.Generation
         // 크기에 맞춰 타일을 생성하는 메소드
         private void OnDrawDungeon(int x, int y, int width, int height)
         {
+            //if (ctx == null) { Debug.LogError("[OnDrawDuengeon] ctx null"); return; }
+            //if (ctx.MapData == null) { Debug.LogError("[OnDrawDuengeon] MapData null"); return; }
+            //if (ctx.FloorTilemap == null && ctx.FloorTilemap == null) { Debug.LogError("[OnDrawDuengeon] Tilemap null"); return; }
+            //if (ctx.PathTiles == null || ctx.PathTiles.Length == 0) { Debug.LogError("[OnDrawDuengeon] PathTiles empty"); return; }
+
+            //// 실제 사용 타일맵 확인용 로그
+            //Debug.Log($"[OnDrawDuengeon] x={x} y={y} w={width} h={height}");
             for (int i = x; i < x + width; i++)
             {
                 for (int j = y; j < y + height; j++)
                 {
-                    mapData[i, j] = TileType.Room;
-                    TileBase selectedTile = PathTiles[Random.Range(0, PathTiles.Length)];
-                    tilemap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2), selectedTile);
+                    ctx.MapData[i, j] = TileType.Room;
+                    TileBase selectedTile = ctx.PathTiles[Random.Range(0, ctx.PathTiles.Length)];
+                    tilemap.SetTile(new Vector3Int(i - ctx.MapSize.x / 2, j - ctx.MapSize.y / 2), selectedTile);
                 }
             }
         }

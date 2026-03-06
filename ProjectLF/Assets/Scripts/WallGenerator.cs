@@ -7,10 +7,6 @@ namespace BSPDuengeonGenrator.Generation
 {
     public class WallGenerator : MonoBehaviour
     {
-        [Header("Map Size")]
-        [SerializeField]
-        private Vector2Int mapSize;
-
         [Header("Wall, FloorTile, Door")]
         // 바닥과 벽을 정의
         [SerializeField]
@@ -41,9 +37,9 @@ namespace BSPDuengeonGenrator.Generation
         // 벽 체크 메서드
         private void GeneratedCheckWalls(DuengeonContext ctx)
         {
-            for (int x = 0; x < mapSize.x; x++)
+            for (int x = 0; x < ctx.MapSize.x; x++)
             {
-                for (int y = 0; y < mapSize.y; y++)
+                for (int y = 0; y < ctx.MapSize.y; y++)
                 {
 
                     // 주변 8칸 중 바닥이 하나라도 있다면
@@ -69,15 +65,15 @@ namespace BSPDuengeonGenrator.Generation
                     int nx = x + dx;
                     int ny = y + dy;
                     // 맵 범위 체크
-                    if (nx < 0 || ny < 0 || nx >= mapSize.x || ny >= mapSize.y)
+                    if (nx < 0 || ny < 0 || nx >= ctx.MapSize.x || ny >= ctx.MapSize.y)
                     {
                         continue;
                     }
 
                     // empty를 wall로
-                    if (mapData[nx, ny] == TileType.Empty)
+                    if (ctx.MapData[nx, ny] == TileType.Empty)
                     {
-                        mapData[nx, ny] = TileType.Wall;
+                        ctx.MapData[nx, ny] = TileType.Wall;
                     }
                 }
             }
@@ -85,11 +81,11 @@ namespace BSPDuengeonGenrator.Generation
 
         private void CreateWallAroundByRoom(DuengeonContext ctx)
         {
-            for (int x = 0; x < mapSize.x; x++)
+            for (int x = 0; x < ctx.MapSize.x; x++)
             {
-                for (int y = 0; y < mapSize.y; y++)
+                for (int y = 0; y < ctx.MapSize.y; y++)
                 {
-                    Vector3Int pos = new Vector3Int(x - mapSize.x / 2, y - mapSize.y / 2);
+                    Vector3Int pos = new Vector3Int(x - ctx.MapSize.x / 2, y - ctx.MapSize.y / 2);
 
                     if (mapData[x, y] == TileType.Room)
                     {

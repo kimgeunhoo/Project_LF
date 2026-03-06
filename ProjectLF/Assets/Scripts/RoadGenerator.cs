@@ -11,17 +11,6 @@ namespace BSPDuengeonGenrator.Generation
     public class RoadGenerator : MonoBehaviour
     {
 
-        // 노드 값이 라인의 갯수를 판별
-        [Header("Node Value")]
-        [SerializeField]
-        private int maxNode;
-        [SerializeField]
-        private int minNode;
-
-        [Header("Map Size")]
-        [SerializeField]
-        private Vector2Int mapSize;
-
         // 타일맵 배치
         [Header("Tile")]
         [SerializeField]
@@ -29,13 +18,6 @@ namespace BSPDuengeonGenrator.Generation
         // 타일맵 랜덤변수
         [SerializeField]
         private Tilemap tilemap;
-
-        [Header("Random TileArray")]
-        [SerializeField]
-        private TileBase[] PathTiles;
-
-        // 맵 데이터 배열 생성, 초기화
-        private TileType[,] mapData;
 
         private DuengeonContext ctx;
 
@@ -48,7 +30,7 @@ namespace BSPDuengeonGenrator.Generation
         private void GenerateRoad(TreeNode treeNode, int depth)
         {
             // 노드가 최하위일 때는 길을 연결하지 않음. 최하위 노드는 자식 트리가 없다.
-            if (depth == maxNode) return;
+            if (depth == ctx.MaxNode) return;
             // 자식 트리의 던전 중앙 위치를 가져옴
             RectInt leftRoom = treeNode.leftTree.dungeonSize;
             RectInt rightRoom = treeNode.rightTree.dungeonSize;
@@ -84,15 +66,15 @@ namespace BSPDuengeonGenrator.Generation
                     if (!IsInsideMap(x, ny)) continue;
 
                     // 이미 같은 경로에 통로가 생성되어 있다면 스킵한다
-                    if (mapData[x, ny] == TileType.Path) continue;
+                    if (ctx.MapData[x, ny] == TileType.Path) continue;
 
                     // 방도 마찬가지
-                    if (mapData[x, ny] == TileType.Room) continue;
+                    if (ctx.MapData[x, ny] == TileType.Room) continue;
 
-                    mapData[x, ny] = TileType.Path;
+                    ctx.MapData[x, ny] = TileType.Path;
 
-                    TileBase selectedTile = PathTiles[Random.Range(0, PathTiles.Length)];
-                    tilemap.SetTile(new Vector3Int(x - mapSize.x / 2, ny - mapSize.y / 2, 0), selectedTile);
+                    TileBase selectedTile = ctx.PathTiles[Random.Range(0, ctx.PathTiles.Length)];
+                    tilemap.SetTile(new Vector3Int(x - ctx.MapSize.x / 2, ny - ctx.MapSize.y / 2, 0), selectedTile);
                 }
             }
         }
@@ -108,15 +90,15 @@ namespace BSPDuengeonGenrator.Generation
                     if (!IsInsideMap(nx, y)) continue;
 
                     // 이미 같은 경로에 통로가 생성되어 있다면 스킵한다
-                    if (mapData[nx, y] == TileType.Path) continue;
+                    if (ctx.MapData[nx, y] == TileType.Path) continue;
 
                     // 방도 마찬가지
-                    if (mapData[nx, y] == TileType.Room) continue;
+                    if (ctx.MapData[nx, y] == TileType.Room) continue;
 
-                    mapData[nx, y] = TileType.Path;
+                    ctx.MapData[nx, y] = TileType.Path;
 
-                    TileBase selectedTile = PathTiles[Random.Range(0, PathTiles.Length)];
-                    tilemap.SetTile(new Vector3Int(nx - mapSize.x / 2, y - mapSize.y / 2, 0), selectedTile);
+                    TileBase selectedTile = ctx.PathTiles[Random.Range(0, ctx.PathTiles.Length)];
+                    tilemap.SetTile(new Vector3Int(nx - ctx.MapSize.x / 2, y - ctx.MapSize.y / 2, 0), selectedTile);
                 }
             }
         }
@@ -130,7 +112,7 @@ namespace BSPDuengeonGenrator.Generation
         // 맵 범위 체크 (예외방지)
         private bool IsInsideMap(int x, int y)
         {
-            return x >= 0 && y >= 0 && x < mapSize.x && y < mapSize.y;
+            return x >= 0 && y >= 0 && x < ctx.MapSize.x && y < ctx.MapSize.y;
         }
 
     }
