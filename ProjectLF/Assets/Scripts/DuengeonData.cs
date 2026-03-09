@@ -66,6 +66,11 @@ namespace BSPDuengeonGenrator.Config
         [SerializeField]
         private TileBase doorTile;
 
+        [SerializeField]
+        private int doorHalfwidth;
+
+        public int DoorHalfwidth { get { return doorHalfwidth; } }
+
         // ≈∏¿œ∏ 
         [Header("Random TileArray")]
         [SerializeField]

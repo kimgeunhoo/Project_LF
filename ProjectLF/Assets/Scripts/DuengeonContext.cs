@@ -15,12 +15,14 @@ namespace BSPDuengeonGenrator.Core
         public int MinNode;
         public float MinDivideSize;
         public float MaxDivideSize;
+        public int DoorHalfwidth;
 
         public TreeNode Root;
 
         // ·»´õ ¸®¼Ò½º
         public Tilemap FloorTilemap;
         public Tilemap WallTilemap;
+        public Tilemap DoorTilemap;
 
         public TileBase FloorTile;
         public TileBase WallTile;

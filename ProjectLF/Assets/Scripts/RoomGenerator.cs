@@ -54,7 +54,6 @@ namespace BSPDuengeonGenrator.Generation
             //if (ctx.MapData == null) { Debug.LogError("[OnDrawDuengeon] MapData null"); return; }
             //if (ctx.FloorTilemap == null && ctx.FloorTilemap == null) { Debug.LogError("[OnDrawDuengeon] Tilemap null"); return; }
             //if (ctx.PathTiles == null || ctx.PathTiles.Length == 0) { Debug.LogError("[OnDrawDuengeon] PathTiles empty"); return; }
-
             //// 실제 사용 타일맵 확인용 로그
             //Debug.Log($"[OnDrawDuengeon] x={x} y={y} w={width} h={height}");
             for (int i = x; i < x + width; i++)
@@ -63,6 +62,7 @@ namespace BSPDuengeonGenrator.Generation
                 {
                     ctx.MapData[i, j] = TileType.Room;
                     TileBase selectedTile = ctx.PathTiles[Random.Range(0, ctx.PathTiles.Length)];
+                    
                     tilemap.SetTile(new Vector3Int(i - ctx.MapSize.x / 2, j - ctx.MapSize.y / 2), selectedTile);
                 }
             }

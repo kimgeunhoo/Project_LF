@@ -1,27 +1,42 @@
+using BSPDuengeonGenrator.Config;
+using BSPDuengeonGenrator.Core;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using BSPDuengeonGenrator.Config;
 
 namespace BSPDuengeonGenrator.Rendering
 {
     public class TileMapRenderer : MonoBehaviour
     {
-        [Header("Wall, FloorTile, Door")]
-        // 바닥과 벽을 정의
-        [SerializeField]
-        private Tilemap floorTilemap;
-        [SerializeField]
-        private Tilemap wallTilemap;
+        public void Run(DuengeonContext ctx)
+        {
+            CreateWallAroundByRoom(ctx);
+        }
 
-        [SerializeField]
-        private TileBase floorTile;
-        [SerializeField]
-        private TileBase wallTile;
-        [SerializeField]
-        private TileBase doorTile;
+        private void CreateWallAroundByRoom(DuengeonContext ctx)
+        {
+            for (int x = 0; x < ctx.MapSize.x; x++)
+            {
+                for (int y = 0; y < ctx.MapSize.y; y++)
+                {
+                    Vector3Int pos = new Vector3Int(x - ctx.MapSize.x / 2, y - ctx.MapSize.y / 2);
 
-        [SerializeField]
-        private TileType[,] mapData;
+                    if (ctx.MapData[x, y] == TileType.Room)
+                    {
+                        ctx.FloorTilemap.SetTile(pos, ctx.FloorTile);
+                    }
+                    else if (ctx.MapData[x, y] == TileType.Wall)
+                    {
+                        ctx.WallTilemap.SetTile(pos, ctx.WallTile);
+                    }
+                    else if (ctx.MapData[x, y] == TileType.Door)
+                    {
+                        ctx.DoorTilemap.SetTile(pos, ctx.DoorTile);
+                    }
+
+                }
+
+            }
+        }
 
     }
 

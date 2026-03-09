@@ -61,6 +61,8 @@ namespace BSPDuengeonGenrator
         private Tilemap floorTilemap;
         [SerializeField]
         private Tilemap wallTilemap;
+        [SerializeField]
+        private Tilemap doorTilemap;
 
         [SerializeField]
         private TileBase floorTile;
@@ -76,11 +78,7 @@ namespace BSPDuengeonGenrator
         [SerializeField]
         private Vector3 spawnPoint;
 
-        // 맵 데이터 배열 생성, 초기화
-        private TileType[,] mapData;
-        // 0 = 빈공간
-        // 1 = 바닥
-        // 2 = 벽
+      
 
         [Header("Room Markers (Debug)")]
         [SerializeField]
@@ -105,6 +103,7 @@ namespace BSPDuengeonGenrator
         private RoadGenerator roadGenerator;
         private DoorGenerator doorGenerator;
         private BspLineDrawer lineDrawer;
+        private TileMapRenderer tileMapRenderer;
         private void Awake()
         {
             // 데이터 무결성 체크
@@ -134,12 +133,16 @@ namespace BSPDuengeonGenrator
             // 길 연결
             roadGenerator = GetComponent<RoadGenerator>();
             roadGenerator.Run(ctx);
-            // 벽 생성 범위 체크, 생성
-            wallGenerator = GetComponent<WallGenerator>();
-            wallGenerator.Run(ctx);
             // 문 생성
             doorGenerator = GetComponent<DoorGenerator>();
             doorGenerator.Run(ctx);
+            // 벽 생성 범위 체크
+            wallGenerator = GetComponent<WallGenerator>();
+            wallGenerator.Run(ctx);
+            // 최종 타일맵 생성
+            tileMapRenderer = GetComponent<TileMapRenderer>();
+            tileMapRenderer.Run(ctx);
+
 
             List<RoomInfo> rooms = new List<RoomInfo>();
             CollectLeafRooms(ctx.Root, 0, rooms);
@@ -155,7 +158,6 @@ namespace BSPDuengeonGenrator
 
             // 컨텍스트에 값 대입
             ctx.MapSize = duengeonData.MapSize;
-            ctx.MapData = duengeonData.MapData;
             ctx.MaxNode = duengeonData.MaxNode;
             ctx.MinNode = duengeonData.MinNode;
             ctx.MaxDivideSize = duengeonData.MaxDivideSize;
@@ -163,16 +165,20 @@ namespace BSPDuengeonGenrator
 
             ctx.FloorTilemap = floorTilemap;
             ctx.WallTilemap = wallTilemap;
+            ctx.DoorTilemap = doorTilemap;
 
             ctx.FloorTile = duengeonData.FloorTile;
             ctx.WallTile = duengeonData.WallTile;
             ctx.DoorTile = duengeonData.DoorTile;
             ctx.PathTiles = duengeonData.PathTiles;
+            ctx.DoorHalfwidth = duengeonData.DoorHalfwidth;
 
             ctx.Rooms = new List<RoomInfo>();
 
+            // 맵 데이터는 런타임 배열이므로 dungeonData에서 가져오지 않는다.
+            ctx.MapData = new TileType[ctx.MapSize.x, ctx.MapSize.y];
             // 루트가 될 트리 생성
-            TreeNode rootNode = new TreeNode(0, 0, mapSize.x, mapSize.y);
+            TreeNode rootNode = new TreeNode(0, 0, ctx.MapSize.x, ctx.MapSize.y);
             ctx.Root = rootNode;
 
             return ctx;
@@ -181,7 +187,7 @@ namespace BSPDuengeonGenrator
         // 벽 함수 초기화
         private void InitializeMap()
         {
-            mapData = new TileType[mapSize.x, mapSize.y];
+            ctx.MapData = new TileType[mapSize.x, mapSize.y];
         }
  
         // 리프 방 수집
@@ -205,6 +211,7 @@ namespace BSPDuengeonGenrator
         {
             if(rooms.Count < 3)
             {
+                Debug.Log($"방 개수: {rooms.Count}");
                 Debug.Log("방이 3개 미만이라 배치 불가");
                 return;
             }
