@@ -85,7 +85,7 @@ namespace BSPDuengeonGenrator.Generation
                 // path Ä­¸¸ door º¯°æ
                 if (ctx.MapData[x, ny] == TileType.Path)
                 {
-                    Debug.Log($"[GenerateDoors] Door created at ({x}, {y})");
+                    //Debug.Log($"[GenerateDoors] Door created at ({x}, {y})");
                     ctx.MapData[x, ny] = TileType.Door;
                 }
 

@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: DuengeonData_Ch1
   m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Config.DuengeonData
   mapSize: {x: 100, y: 100}
-  maxNode: 5
-  minNode: 5
-  minDivideSize: 0.4
+  maxNode: 4
+  minNode: 1
+  minDivideSize: 0.3
   maxDivideSize: 0.6
   floorTile: {fileID: 11400000, guid: cd739c4b4eb31934494017ea1d34324b, type: 2}
   wallTile: {fileID: 11400000, guid: 96945c2584c47b44ebe75d015b3cde49, type: 2}
   doorTile: {fileID: 11400000, guid: b52eb31537a3c0f4d9b909925745af72, type: 2}
+  doorHalfwidth: 0
   pathTiles:
   - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
   - {fileID: 11400000, guid: ae68d965a4218a94ca2134f0ae2007c4, type: 2}
@@ -28,6 +29,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fedab419fdbdeea488795e51c83727c9, type: 2}
   - {fileID: 11400000, guid: abe9370c58435f244a894542a9d0f78d, type: 2}
   line: {fileID: 3806480354315292991, guid: 4cdd22b8718bcbd47af6618f0dbb68b1, type: 3}
-  lineHolder: {fileID: 3753848740367929461, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
   rectangle: {fileID: 7597152152662077364, guid: fd3131a82801e1a49bb05a8b7f179d7d, type: 3}
   lineRenderer: {fileID: 2352065182494810184, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}

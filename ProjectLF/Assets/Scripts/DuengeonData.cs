@@ -93,14 +93,11 @@ namespace BSPDuengeonGenrator.Config
         [SerializeField]
         private GameObject line;
         [SerializeField]
-        private Transform lineHolder;
-        [SerializeField]
         private GameObject rectangle;
         [SerializeField]
         private GameObject lineRenderer;
 
         public GameObject Line { get { return line; } }
-        public Transform LineHolder { get { return lineHolder; } }
         public GameObject Rectangle { get { return rectangle; } }
         public GameObject LineRenderer { get { return lineRenderer; } }
 

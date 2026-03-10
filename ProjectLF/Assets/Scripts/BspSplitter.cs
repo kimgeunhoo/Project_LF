@@ -3,6 +3,7 @@ using BSPDuengeonGenrator.Core;
 using BSPDuengeonGenrator.Generation;
 using BSPDuengeonGenrator.Rendering;
 using System.Xml.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace BSPDuengeonGenrator.Generation
@@ -32,15 +33,19 @@ namespace BSPDuengeonGenrator.Generation
  
         public void Run(DuengeonContext ctx)
         {
+            Debug.Log($"[BspSplitter.Run] MaxNode={ctx.MaxNode}, RootSize=({ctx.Root.treeSize.width}, {ctx.Root.treeSize.height})");
             this.ctx = ctx;
             DivideTree(ctx.Root, 0);
+            Debug.Log($"[BspSplitter.Run] After Divide: left={(ctx.Root.leftTree == null ? "NULL" : "OK")}, right={(ctx.Root.rightTree == null ? "NULL" : "OK")}");
         }
 
 
         // 재귀 함수
-        private void DivideTree(TreeNode treeNode, int n)
+        private void DivideTree(TreeNode treeNode, int depth)
         {
-            if (n < ctx.MaxNode) // 0부터 노드 최대값에 이를 때 까지 반복
+            Debug.Log($"[DivideTree] depth={depth}, width={treeNode.treeSize.width}, MaxNode={ctx.MaxNode}, MinNode={ctx.MinNode}");
+
+            if (depth < ctx.MaxNode) // 0부터 노드 최대값에 이를 때 까지 반복
             {
                 // 이진 트리의 범위 값 저장, 사각형 범위 담기
                 RectInt size = treeNode.treeSize;
@@ -77,8 +82,8 @@ namespace BSPDuengeonGenrator.Generation
                 treeNode.rightTree.parentTree = treeNode;
                 // 재귀 함수, 자식 트리를 매개변수로 넘기고 노드 값 1 증가시킴
                 // 순회 방식
-                DivideTree(treeNode.leftTree, n + 1);
-                DivideTree(treeNode.rightTree, n + 1);
+                DivideTree(treeNode.leftTree, depth + 1);
+                DivideTree(treeNode.rightTree, depth + 1);
             }
         }
 

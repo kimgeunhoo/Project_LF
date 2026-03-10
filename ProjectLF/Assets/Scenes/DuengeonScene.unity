@@ -207,21 +207,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3753848740367929461, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
   m_PrefabInstance: {fileID: 5919892960486426836}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &322078490 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-  m_PrefabInstance: {fileID: 1477679226}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &447537141 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5100499014108058869, guid: b604e1d17a0997545b554a075a683934, type: 3}
-  m_PrefabInstance: {fileID: 1477679226}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &488737270 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6025366480288127931, guid: b604e1d17a0997545b554a075a683934, type: 3}
-  m_PrefabInstance: {fileID: 1477679226}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,14 +566,15 @@ GameObject:
   m_Component:
   - component: {fileID: 1146640535}
   - component: {fileID: 1146640534}
-  - component: {fileID: 1146640546}
   - component: {fileID: 1146640539}
+  - component: {fileID: 1146640546}
   - component: {fileID: 1146640538}
   - component: {fileID: 1146640545}
   - component: {fileID: 1146640544}
   - component: {fileID: 1146640542}
   - component: {fileID: 1146640543}
   - component: {fileID: 1146640547}
+  - component: {fileID: 1146640548}
   m_Layer: 0
   m_Name: MapGenerater
   m_TagString: Untagged
@@ -609,38 +595,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.DuengeonGeneraterByBSP
   duengeonData: {fileID: 11400000, guid: da3ff97bb9ffd5448b936fe5f27415ac, type: 2}
-  mapSize: {x: 100, y: 100}
-  maxNode: 5
-  minNode: 5
-  minDivideSize: 0.4
-  maxDivideSize: 0.6
-  line: {fileID: 3806480354315292991, guid: 4cdd22b8718bcbd47af6618f0dbb68b1, type: 3}
-  lineHolder: {fileID: 297088378}
-  rectangle: {fileID: 7597152152662077364, guid: fd3131a82801e1a49bb05a8b7f179d7d, type: 3}
-  LineRenderer: {fileID: 297088377}
-  tile: {fileID: 11400000, guid: 2c670dc28da29e54da4c78aac2caebe8, type: 2}
-  tilemap: {fileID: 1459407124}
-  PathTiles:
-  - {fileID: 11400000, guid: ae68d965a4218a94ca2134f0ae2007c4, type: 2}
-  - {fileID: 11400000, guid: 4c8943e2da4e8964bb3eb170c1aaba9f, type: 2}
-  - {fileID: 11400000, guid: cf6b59b7c1dad88438263b3160222715, type: 2}
-  - {fileID: 11400000, guid: 1d9b2716edff8d7418583a4c52cba7b7, type: 2}
-  - {fileID: 11400000, guid: 8743c8559250174429e1d0c2e08b2e77, type: 2}
-  - {fileID: 11400000, guid: 5b0fa72a7621582478a135416a07cddb, type: 2}
   floorTilemap: {fileID: 1459407124}
   wallTilemap: {fileID: 1995121613}
   doorTilemap: {fileID: 1778886087}
-  floorTile: {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
-  wallTile: {fileID: 11400000, guid: 96945c2584c47b44ebe75d015b3cde49, type: 2}
-  doorTile: {fileID: 11400000, guid: 36928b9ff4f11f543833d3dbad299083, type: 2}
-  doorHalfwidth: 0
+  lineHolder: {fileID: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
-  markerHolder: {fileID: 322078490}
-  startMarkerPrefab: {fileID: 1825459091}
-  stairMarkerPrefab: {fileID: 1692577694}
-  shopMarkerPrefab: {fileID: 488737270}
-  encounterMarkerPrefab: {fileID: 1580751872}
-  MonsterMarkerPrefab: {fileID: 447537141}
 --- !u!4 &1146640535
 Transform:
   m_ObjectHideFlags: 0
@@ -683,10 +642,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ecf0d6daf6b31e4aad3e5bb9402b392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Rendering.BspLineDrawer
-  line: {fileID: 3806480354315292991, guid: 4cdd22b8718bcbd47af6618f0dbb68b1, type: 3}
-  lineHolder: {fileID: 297088378}
-  rectangle: {fileID: 7597152152662077364, guid: fd3131a82801e1a49bb05a8b7f179d7d, type: 3}
-  LineRenderer: {fileID: 297088377}
 --- !u!114 &1146640542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -766,6 +721,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d408b4777f414240a163aff203517f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Rendering.TileMapRenderer
+--- !u!114 &1146640548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146640533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aafac63036b9d8f468019ef231c4c6a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.marker.RoomDistribute
+  markerHolder: {fileID: 239377223}
+  startMarkerPrefab: {fileID: 6883092143605729427, guid: 4704ef6bbb29c774d8499a244cb64b2a, type: 3}
+  stairMarkerPrefab: {fileID: 1767822877876710672, guid: 5f8b368070af8bc47bfaff3346fa0625, type: 3}
+  shopMarkerPrefab: {fileID: 5346286869219666318, guid: 610daaa9ffc94e44aa6e3e790df15dc6, type: 3}
+  encounterMarkerPrefab: {fileID: 1301252396038865540, guid: 9536599898eae9b4cb77c730dc0df6c8, type: 3}
+  MonsterMarkerPrefab: {fileID: 556370128392129475, guid: 26a882a787a743e4b86c66045ff47353, type: 3}
 --- !u!1 &1241939979
 GameObject:
   m_ObjectHideFlags: 0
@@ -1120,93 +1093,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1001 &1477679226
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 139488052824983311, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1276034615227966793, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_Name
-      value: MarkerHolder
-      objectReference: {fileID: 0}
-    - target: {fileID: 3451199944255281829, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5100499014108058869, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6025366480288127931, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7838803950323523540, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.17125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.71742
-      objectReference: {fileID: 0}
-    - target: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8840353119055584889, guid: b604e1d17a0997545b554a075a683934, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b604e1d17a0997545b554a075a683934, type: 3}
---- !u!1 &1580751872 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3451199944255281829, guid: b604e1d17a0997545b554a075a683934, type: 3}
-  m_PrefabInstance: {fileID: 1477679226}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1692577694 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 139488052824983311, guid: b604e1d17a0997545b554a075a683934, type: 3}
-  m_PrefabInstance: {fileID: 1477679226}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1778886083
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,11 +1259,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &1825459091 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7838803950323523540, guid: b604e1d17a0997545b554a075a683934, type: 3}
-  m_PrefabInstance: {fileID: 1477679226}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1995121610
 GameObject:
   m_ObjectHideFlags: 0
@@ -1644,4 +1525,3 @@ SceneRoots:
   - {fileID: 1241939984}
   - {fileID: 754881623}
   - {fileID: 2109472014}
-  - {fileID: 1477679226}
