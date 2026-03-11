@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 namespace BSPDuengeonGenrator.Core
 {
 
-    public class TreeNode : MonoBehaviour
+    public class TreeNode
     {
         public TreeNode leftTree;
         public TreeNode rightTree;
@@ -14,8 +14,6 @@ namespace BSPDuengeonGenrator.Core
         public RectInt treeSize;
         public RectInt dungeonSize;
 
-
-        private TileBase[] RoomTiles;
 
         // 맵 데이터 생성, 초기화
         //private int[,] mapData = new int[mapSize.x, mapSize.y];

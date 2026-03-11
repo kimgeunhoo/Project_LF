@@ -8,26 +8,18 @@ using BSPDuengeonGenrator.Core;
 namespace BSPDuengeonGenrator.Generation
 {
 
-    public class RoadGenerator : MonoBehaviour
+    public class PathGenerator
     {
-
-        // 타일맵 배치
-        [Header("Tile")]
-        [SerializeField]
-        private Tile tile;
-        // 타일맵 랜덤변수
-        [SerializeField]
-        private Tilemap tilemap;
 
         private DuengeonContext ctx;
 
         public void Run(DuengeonContext ctx)
-        {
+        {        
             this.ctx = ctx;
-            GenerateRoad(ctx.Root, 0);
+            GeneratePath(ctx.Root, 0);
         }
         // 길 연결 메서드
-        private void GenerateRoad(TreeNode treeNode, int depth)
+        private void GeneratePath(TreeNode treeNode, int depth)
         {
             // 노드가 최하위일 때는 길을 연결하지 않음. 최하위 노드는 자식 트리가 없다.
             if (depth == ctx.MaxNode) return;
@@ -52,15 +44,16 @@ namespace BSPDuengeonGenrator.Generation
             }
 
             // 길 생성
-            GenerateRoad(treeNode.leftTree, depth + 1);
-            GenerateRoad(treeNode.rightTree, depth + 1);
+            GeneratePath(treeNode.leftTree, depth + 1);
+            GeneratePath(treeNode.rightTree, depth + 1);
         }
         // 수평 통로
         private void CreateHorizontalCorridor(int xStart, int xEnd, int y)
         {
             for (int x = Mathf.Min(xStart, xEnd); x <= Mathf.Max(xStart, xEnd); x++)
             {
-                for (int w = -1; w <= 1; w++) // 통로 두께 계산
+                // 통로 두께 계산
+                for (int w = -1; w <= 1; w++) 
                 {
                     int ny = y + w;
                     if (!IsInsideMap(x, ny)) continue;
@@ -72,9 +65,6 @@ namespace BSPDuengeonGenrator.Generation
                     if (ctx.MapData[x, ny] == TileType.Room) continue;
 
                     ctx.MapData[x, ny] = TileType.Path;
-
-                    TileBase selectedTile = ctx.PathTiles[Random.Range(0, ctx.PathTiles.Length)];
-                    tilemap.SetTile(new Vector3Int(x - ctx.MapSize.x / 2, ny - ctx.MapSize.y / 2, 0), selectedTile);
                 }
             }
         }
@@ -84,7 +74,8 @@ namespace BSPDuengeonGenrator.Generation
         {
             for (int y = Mathf.Min(yStart, yEnd); y <= Mathf.Max(yStart, yEnd); y++)
             {
-                for (int w = -1; w <= 1; w++) // 통로 두께 계산
+                // 통로 두께 계산
+                for (int w = -1; w <= 1; w++) 
                 {
                     int nx = x + w;
                     if (!IsInsideMap(nx, y)) continue;
@@ -96,12 +87,11 @@ namespace BSPDuengeonGenrator.Generation
                     if (ctx.MapData[nx, y] == TileType.Room) continue;
 
                     ctx.MapData[nx, y] = TileType.Path;
-
-                    TileBase selectedTile = ctx.PathTiles[Random.Range(0, ctx.PathTiles.Length)];
-                    tilemap.SetTile(new Vector3Int(nx - ctx.MapSize.x / 2, y - ctx.MapSize.y / 2, 0), selectedTile);
                 }
             }
         }
+
+
 
         // 방 중심 계산
         private Vector2Int GetRoomCenter(RectInt room)
@@ -113,6 +103,42 @@ namespace BSPDuengeonGenrator.Generation
         private bool IsInsideMap(int x, int y)
         {
             return x >= 0 && y >= 0 && x < ctx.MapSize.x && y < ctx.MapSize.y;
+        }
+
+        private Vector2Int GetExitPoint(RectInt room, Vector2Int targetCenter)
+        {
+            Vector2Int roomCenter = GetRoomCenter(room);
+
+            int dx = targetCenter.x - roomCenter.x;
+            int dy = targetCenter.y - roomCenter.y;
+
+            if (Mathf.Abs(dx) > Mathf.Abs(dy))
+            {
+                if (dx > 0)
+                {
+                    return new Vector2Int(room.x + room.width - 1, roomCenter.y);
+                }
+                else
+                {
+                    return new Vector2Int(room.x, room.y);
+                }
+            }
+            else
+            {
+                if (dy > 0)
+                {
+                    return new Vector2Int(roomCenter.x, room.y + room.height - 1);
+                }
+                else 
+                {
+                    return new Vector2Int(room.x, room.y);
+                }
+            }
+        }
+
+        private void CreateCorrider()
+        {
+
         }
 
     }

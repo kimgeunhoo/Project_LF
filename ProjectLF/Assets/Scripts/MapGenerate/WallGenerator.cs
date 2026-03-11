@@ -5,7 +5,7 @@ using BSPDuengeonGenrator.Config;
 
 namespace BSPDuengeonGenrator.Generation
 {
-    public class WallGenerator : MonoBehaviour
+    public class WallGenerator
     {
 
         private DuengeonContext ctx;
@@ -28,8 +28,6 @@ namespace BSPDuengeonGenrator.Generation
                         ctx.MapData[x, y] == TileType.Path)
                     {
                         CheckWallFind(x, y);
-                        //CarveCorriderHorizontal(x, y);
-                        //CarveCorriderVertical(x, y);
                     }
 
                 }

@@ -22,23 +22,25 @@ namespace BSPDuengeonGenrator.marker
         [SerializeField]
         private GameObject MonsterMarkerPrefab;
 
+
+
         private DuengeonContext ctx;
-        public void Run(DuengeonContext _ctx)
+        public void Run(DuengeonContext ctx)
         {
-            Debug.Log($"[Generator] Root left = {(_ctx.Root.leftTree == null ? "NULL" : "OK")}");
-            Debug.Log($"[Generator] Root right = {(_ctx.Root.rightTree == null ? "NULL" : "OK")}");
+            Debug.Log($"[Generator] Root left = {(ctx.Root.leftTree == null ? "NULL" : "OK")}");
+            Debug.Log($"[Generator] Root right = {(ctx.Root.rightTree == null ? "NULL" : "OK")}");
 
-            Debug.Log($"[RoomDistribute] Root = {(_ctx.Root == null ? "NULL" : "OK")}");
-            Debug.Log($"[RoomDistribute] MaxNode = {_ctx.MaxNode}");
+            Debug.Log($"[RoomDistribute] Root = {(ctx.Root == null ? "NULL" : "OK")}");
+            Debug.Log($"[RoomDistribute] MaxNode = {ctx.MaxNode}");
 
-            this.ctx = _ctx;
+            this.ctx = ctx;
 
-            ctx.Rooms.Clear();
+            this.ctx.Rooms.Clear();
 
-            CollectLeafRooms(ctx.Root, 0, ctx.Rooms);
-            Debug.Log($"[RoomDistribute] collected rooms = {ctx.Rooms.Count}");
-            AssignRoomTypes(ctx.Rooms);
-            SpawnRoomMarkers(ctx.Rooms);
+            CollectLeafRooms(this.ctx.Root, 0, this.ctx.Rooms);
+            Debug.Log($"[RoomDistribute] collected rooms = {this.ctx.Rooms.Count}");
+            AssignRoomTypes(this.ctx.Rooms);
+            SpawnRoomMarkers(this.ctx.Rooms);
         }
 
         // 리프 방 수집
@@ -186,6 +188,7 @@ namespace BSPDuengeonGenrator.marker
                 Vector3 worldPos = ctx.FloorTilemap.CellToWorld(cellPos) + new Vector3(0.5f, 0.5f, 0.5f);
                 Instantiate(prefab, worldPos, Quaternion.identity, markerHolder);
             }
+
 
         }
 

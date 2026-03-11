@@ -1,12 +1,13 @@
+using BSPDuengeonGenrator.Config;
+using BSPDuengeonGenrator.Core;
+using BSPDuengeonGenrator.Generation;
+using BSPDuengeonGenrator.marker;
+using BSPDuengeonGenrator.Rendering;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using BSPDuengeonGenrator.Core;
-using BSPDuengeonGenrator.Config;
-using BSPDuengeonGenrator.Generation;
-using BSPDuengeonGenrator.Rendering;
-using BSPDuengeonGenrator.marker;
 
 namespace BSPDuengeonGenrator
 {
@@ -17,12 +18,14 @@ namespace BSPDuengeonGenrator
         [SerializeField]
         private DuengeonData duengeonData;
 
-        [Header("Wall, FloorTile, Door")]
+        [Header("Wall, FloorTile, Path, Door")]
         // 바닥과 벽을 정의
         [SerializeField]
         private Tilemap floorTilemap;
         [SerializeField]
         private Tilemap wallTilemap;
+        [SerializeField]
+        private Tilemap pathTilemap;
         [SerializeField]
         private Tilemap doorTilemap;
 
@@ -38,11 +41,11 @@ namespace BSPDuengeonGenrator
         private static DuengeonContext ctx = new DuengeonContext();
 
         // 방 생성에 사용할 생성 클래스 정의
-        private BspSplitter bspSplitter;
-        private RoomGenerater roomGenerater;
-        private WallGenerator wallGenerator;
-        private RoadGenerator roadGenerator;
-        private DoorGenerator doorGenerator;
+        private BspSplitter bspSplitter = new BspSplitter();
+        private RoomGenerater roomGenerater = new RoomGenerater();
+        private WallGenerator wallGenerator = new WallGenerator();
+        private PathGenerator pathGenerator = new PathGenerator();
+        private DoorGenerator doorGenerator = new DoorGenerator();
         private BspDrawer bspDrawer;
         private TileMapRenderer tileMapRenderer;
 
@@ -66,7 +69,8 @@ namespace BSPDuengeonGenrator
             bspDrawer.OnDrawRectangle(ctx, duengeonData, lineHolder);
 
             // 트리 분할 메서드            
-            bspSplitter = GetComponent<BspSplitter>();
+            //bspSplitter = GetComponent<BspSplitter>();
+            //Debug.Log($"[Generator] ctx id = {RuntimeHelpers.GetHashCode(ctx)}");
             bspSplitter.Run(ctx);
 
             bspDrawer = GetComponent<BspDrawer>();
@@ -74,16 +78,12 @@ namespace BSPDuengeonGenrator
             bspDrawer.OnDrawLine(ctx, duengeonData, lineHolder);
 
             // 방 생성
-            roomGenerater = GetComponent<RoomGenerater>();
             roomGenerater.Run(ctx);
             // 길 연결
-            roadGenerator = GetComponent<RoadGenerator>();
-            roadGenerator.Run(ctx);
+            pathGenerator.Run(ctx);
             // 문 생성
-            doorGenerator = GetComponent<DoorGenerator>();
             doorGenerator.Run(ctx);
-            // 벽 생성 범위 체크
-            wallGenerator = GetComponent<WallGenerator>();
+            // 벽 생성 범위 체크 
             wallGenerator.Run(ctx);
             // 최종 타일맵 생성
             tileMapRenderer = GetComponent<TileMapRenderer>();
@@ -106,21 +106,24 @@ namespace BSPDuengeonGenrator
 
             ctx.FloorTilemap = floorTilemap;
             ctx.WallTilemap = wallTilemap;
+            ctx.PathTilemap = pathTilemap;
             ctx.DoorTilemap = doorTilemap;
 
             ctx.FloorTile = duengeonData.FloorTile;
             ctx.WallTile = duengeonData.WallTile;
             ctx.DoorTile = duengeonData.DoorTile;
-            ctx.PathTiles = duengeonData.PathTiles;
+            ctx.PathTile = duengeonData.PathTile;
             ctx.DoorHalfwidth = duengeonData.DoorHalfwidth;
 
             ctx.Rooms = new List<RoomInfo>();
-
+            ctx.SplitLines = new List<LineSegment>();
             // 맵 데이터는 런타임 배열이므로 dungeonData에서 가져오지 않는다.
             ctx.MapData = new TileType[ctx.MapSize.x, ctx.MapSize.y];
             // 루트가 될 트리 생성
             TreeNode rootNode = new TreeNode(0, 0, ctx.MapSize.x, ctx.MapSize.y);
             ctx.Root = rootNode;
+            Debug.Log($"[Build] duengeonData.PathTile = {(duengeonData.PathTile == null ? "NULL" : "OK")}");
+            Debug.Log($"[Build] duengeonData.PathTiles length = {(duengeonData.PathTiles == null ? -1 : duengeonData.PathTiles.Length)}");
 
             return ctx;
         }

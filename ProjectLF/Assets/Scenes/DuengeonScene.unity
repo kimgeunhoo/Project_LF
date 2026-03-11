@@ -163,6 +163,7 @@ Transform:
   m_Children:
   - {fileID: 1459407122}
   - {fileID: 1995121611}
+  - {fileID: 1245205042}
   - {fileID: 1778886084}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -197,11 +198,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1146640535}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &297088377 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2352065182494810184, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
-  m_PrefabInstance: {fileID: 5919892960486426836}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &297088378 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3753848740367929461, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
@@ -567,12 +563,6 @@ GameObject:
   - component: {fileID: 1146640535}
   - component: {fileID: 1146640534}
   - component: {fileID: 1146640539}
-  - component: {fileID: 1146640546}
-  - component: {fileID: 1146640538}
-  - component: {fileID: 1146640545}
-  - component: {fileID: 1146640544}
-  - component: {fileID: 1146640542}
-  - component: {fileID: 1146640543}
   - component: {fileID: 1146640547}
   - component: {fileID: 1146640548}
   m_Layer: 0
@@ -597,8 +587,9 @@ MonoBehaviour:
   duengeonData: {fileID: 11400000, guid: da3ff97bb9ffd5448b936fe5f27415ac, type: 2}
   floorTilemap: {fileID: 1459407124}
   wallTilemap: {fileID: 1995121613}
+  pathTilemap: {fileID: 1245205044}
   doorTilemap: {fileID: 1778886087}
-  lineHolder: {fileID: 0}
+  lineHolder: {fileID: 297088378}
   spawnPoint: {x: 0, y: 0, z: 0}
 --- !u!4 &1146640535
 Transform:
@@ -617,19 +608,6 @@ Transform:
   - {fileID: 239377223}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1146640538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3e8d46440bb7e742b4ee8972350ec87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Generation.RoomGenerater
-  tilemap: {fileID: 1459407124}
 --- !u!114 &1146640539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,73 +620,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ecf0d6daf6b31e4aad3e5bb9402b392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Rendering.BspLineDrawer
---- !u!114 &1146640542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 467b5fa50150cd84694379b255d4afed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Generation.WallGenerator
---- !u!114 &1146640543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e000cd72f06753b46afef0e88b692d22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Generation.DoorGenerator
---- !u!114 &1146640544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3d819eb4b104e24c81c64bf93481451, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Generation.RoadGenerator
-  tile: {fileID: 11400000, guid: cd739c4b4eb31934494017ea1d34324b, type: 2}
-  tilemap: {fileID: 1459407124}
---- !u!114 &1146640545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3e8d46440bb7e742b4ee8972350ec87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Generation.RoomGenerater
-  tilemap: {fileID: 1459407124}
---- !u!114 &1146640546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d49b90968cdc64c498f4288af8a3c0eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Generation.BspSplitter
-  line: {fileID: 3806480354315292991, guid: 4cdd22b8718bcbd47af6618f0dbb68b1, type: 3}
-  lineHolder: {fileID: 297088378}
-  rectangle: {fileID: 7597152152662077364, guid: fd3131a82801e1a49bb05a8b7f179d7d, type: 3}
-  LineRenderer: {fileID: 297088377}
 --- !u!114 &1146640547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -752,6 +663,7 @@ GameObject:
   - component: {fileID: 1241939982}
   - component: {fileID: 1241939981}
   - component: {fileID: 1241939980}
+  - component: {fileID: 1241939985}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -911,6 +823,145 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1241939985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241939979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93af1a9a12aeb664592812c8e8a855f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpwan
+--- !u!1 &1245205041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1245205042}
+  - component: {fileID: 1245205044}
+  - component: {fileID: 1245205043}
+  m_Layer: 0
+  m_Name: Path Tilemap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1245205042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245205041}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 34286407}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!483693784 &1245205043
+TilemapRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245205041}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_ChunkSize: {x: 32, y: 32, z: 32}
+  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_MaxChunkCount: 16
+  m_MaxFrameAge: 16
+  m_SortOrder: 0
+  m_Mode: 0
+  m_DetectChunkCullingBounds: 0
+--- !u!1839735485 &1245205044
+Tilemap:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245205041}
+  m_Enabled: 1
+  m_Tiles: {}
+  m_AnimatedTiles: {}
+  m_TileAssetArray: []
+  m_TileSpriteArray: []
+  m_TileMatrixArray: []
+  m_TileColorArray: []
+  m_TileObjectToInstantiateArray: []
+  m_AnimationFrameRate: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Origin: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0, y: 0, z: 1}
+  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
+  m_TileOrientation: 0
+  m_TileOrientationMatrix:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
 --- !u!1 &1357603397
 GameObject:
   m_ObjectHideFlags: 0

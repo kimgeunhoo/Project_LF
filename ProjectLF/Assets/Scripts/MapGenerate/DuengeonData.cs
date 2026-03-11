@@ -65,6 +65,8 @@ namespace BSPDuengeonGenrator.Config
         private TileBase wallTile;
         [SerializeField]
         private TileBase doorTile;
+        [SerializeField]
+        private TileBase pathTile;
 
         [SerializeField]
         private int doorHalfwidth;
@@ -72,15 +74,23 @@ namespace BSPDuengeonGenrator.Config
         public int DoorHalfwidth { get { return doorHalfwidth; } }
 
         // ≈∏¿œ∏ 
-        [Header("Random TileArray")]
+        [Header("Random TileArray : Path")]
         [SerializeField]
         private TileBase[] pathTiles;
+
+        [Header("Random TileArray : Room")]
+        [SerializeField]
+        private TileBase[] roomTiles;
+
 
         public TileBase FloorTile { get { return floorTile; } }
         public TileBase WallTile { get { return wallTile; } }
         public TileBase DoorTile { get { return doorTile; } }
-
+        public TileBase PathTile { get { return pathTile; } }
         public TileBase[] PathTiles { get { return pathTiles; } }
+
+        public TileBase[] RoomTiles { get { return roomTiles; } }
+
 
         // ∏ µ•¿Ã≈Õ
         [SerializeField]

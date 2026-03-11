@@ -6,11 +6,8 @@ using BSPDuengeonGenrator.Core;
 
 namespace BSPDuengeonGenrator.Generation
 {
-    public class RoomGenerater : MonoBehaviour
+    public class RoomGenerater
     {
-        // Å¸ÀÏ¸Ê ·£´ýº¯¼ö
-        [SerializeField]
-        private Tilemap tilemap;
 
         private DuengeonContext ctx;
         public void Run(DuengeonContext ctx)
@@ -61,9 +58,7 @@ namespace BSPDuengeonGenrator.Generation
                 for (int j = y; j < y + height; j++)
                 {
                     ctx.MapData[i, j] = TileType.Room;
-                    TileBase selectedTile = ctx.PathTiles[Random.Range(0, ctx.PathTiles.Length)];
-                    
-                    tilemap.SetTile(new Vector3Int(i - ctx.MapSize.x / 2, j - ctx.MapSize.y / 2), selectedTile);
+
                 }
             }
         }

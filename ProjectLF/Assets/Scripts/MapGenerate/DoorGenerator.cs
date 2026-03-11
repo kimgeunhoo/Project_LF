@@ -5,7 +5,7 @@ using BSPDuengeonGenrator.Config;
 
 namespace BSPDuengeonGenrator.Generation
 {
-    public class DoorGenerator : MonoBehaviour
+    public class DoorGenerator
     {
         private DuengeonContext ctx;
         public void Run(DuengeonContext ctx)
@@ -22,7 +22,10 @@ namespace BSPDuengeonGenrator.Generation
             {
                 for (int y = 1; y < ctx.MapSize.y - 1; y++)
                 {
-                    if (ctx.MapData[x, y] != TileType.Path) continue;
+                    int roomNeighborCount = 0;
+
+                    if (ctx.MapData[x, y] != TileType.Path)
+                        continue;
 
                     // 통로 타일이 방과 접해 있는지 체크
                     bool hasRoomNeighbor =
@@ -31,7 +34,21 @@ namespace BSPDuengeonGenrator.Generation
                         ctx.MapData[x, y + 1] == TileType.Room ||
                         ctx.MapData[x, y - 1] == TileType.Room;
 
-                    if (!hasRoomNeighbor) continue;
+                    if (!hasRoomNeighbor)
+                        continue;
+
+                    // room 인접한 수를 1개로 제한
+                    if (ctx.MapData[x + 1, y] == TileType.Room)
+                        roomNeighborCount++;
+                    if (ctx.MapData[x - 1, y] == TileType.Room)
+                        roomNeighborCount++;
+                    if (ctx.MapData[x, y + 1] == TileType.Room)
+                        roomNeighborCount++;
+                    if (ctx.MapData[x, y - 1] == TileType.Room)
+                        roomNeighborCount++;
+
+                    if (roomNeighborCount > 3)
+                        continue;
 
                     // 주변 벽 체크
                     bool surrondedByWall =
@@ -46,6 +63,12 @@ namespace BSPDuengeonGenrator.Generation
                     bool hasRight = (ctx.MapData[x + 1, y] == TileType.Path);
                     bool hasDown = (ctx.MapData[x, y - 1] == TileType.Path);
                     bool hasUp = (ctx.MapData[x, y + 1] == TileType.Path);
+
+                    //// 통로 방향 판별하고 직각 방향만 측정
+                    //bool isHorizontalPath = (hasLeft || hasRight) && !hasUp && !hasDown;
+                    //bool isVerticalPath = (hasUp || hasDown) && !hasLeft && !hasRight;
+                    //if (!isHorizontalPath && !isVerticalPath)
+                    //    continue;
 
                     int horizontal = (hasLeft ? 1 : 0) + (hasRight ? 1 : 0);
                     int vertical = (hasDown ? 1 : 0) + (hasUp ? 1 : 0);
@@ -80,7 +103,8 @@ namespace BSPDuengeonGenrator.Generation
             for (int w = -ctx.DoorHalfwidth; w <= ctx.DoorHalfwidth; w++)
             {
                 int ny = y + w;
-                if (!IsInsideMap(x, ny)) continue;
+                if (!IsInsideMap(x, ny)) 
+                    continue;
 
                 // path 칸만 door 변경
                 if (ctx.MapData[x, ny] == TileType.Path)

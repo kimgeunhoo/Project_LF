@@ -28,6 +28,10 @@ namespace BSPDuengeonGenrator.Rendering
                     {
                         ctx.WallTilemap.SetTile(pos, ctx.WallTile);
                     }
+                    else if (ctx.MapData[x,y] == TileType.Path)
+                    {
+                        ctx.PathTilemap.SetTile(pos, ctx.PathTile);
+                    }
                     else if (ctx.MapData[x, y] == TileType.Door)
                     {
                         ctx.DoorTilemap.SetTile(pos, ctx.DoorTile);

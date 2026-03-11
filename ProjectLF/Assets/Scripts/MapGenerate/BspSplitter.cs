@@ -8,19 +8,8 @@ using UnityEngine;
 
 namespace BSPDuengeonGenrator.Generation
 {
-    public class BspSplitter : MonoBehaviour
+    public class BspSplitter
     {
-
-        [Header("Random Liner")]
-        [SerializeField]
-        private GameObject line;
-        [SerializeField]
-        private Transform lineHolder;
-        [SerializeField]
-        private GameObject rectangle;
-        [SerializeField]
-        private GameObject LineRenderer;
-
         private DuengeonContext ctx;
 
         // 라인 렌더링은 따로 호출시킨다.
@@ -33,18 +22,18 @@ namespace BSPDuengeonGenrator.Generation
  
         public void Run(DuengeonContext ctx)
         {
-            Debug.Log($"[BspSplitter.Run] MaxNode={ctx.MaxNode}, RootSize=({ctx.Root.treeSize.width}, {ctx.Root.treeSize.height})");
+            //Debug.Log($"[BspSplitter.Run] MaxNode={ctx.MaxNode}, RootSize=({ctx.Root.treeSize.width}, {ctx.Root.treeSize.height})");
+            //Debug.Log($"[BspSplitter.Run] this={GetHashCode()} ctx={ctx.GetHashCode()}");
             this.ctx = ctx;
             DivideTree(ctx.Root, 0);
-            Debug.Log($"[BspSplitter.Run] After Divide: left={(ctx.Root.leftTree == null ? "NULL" : "OK")}, right={(ctx.Root.rightTree == null ? "NULL" : "OK")}");
+            //Debug.Log($"[BspSplitter.Run] After Divide: left={(ctx.Root.leftTree == null ? "NULL" : "OK")}, right={(ctx.Root.rightTree == null ? "NULL" : "OK")}");
         }
 
 
         // 재귀 함수
         private void DivideTree(TreeNode treeNode, int depth)
         {
-            Debug.Log($"[DivideTree] depth={depth}, width={treeNode.treeSize.width}, MaxNode={ctx.MaxNode}, MinNode={ctx.MinNode}");
-
+            //Debug.Log($"[DivideTree] depth={depth}, width={treeNode.treeSize.width}, height={treeNode.treeSize.height}, MaxNode={ctx.MaxNode}, MinNode={ctx.MinNode}");
             if (depth < ctx.MaxNode) // 0부터 노드 최대값에 이를 때 까지 반복
             {
                 // 이진 트리의 범위 값 저장, 사각형 범위 담기
@@ -55,6 +44,9 @@ namespace BSPDuengeonGenrator.Generation
                 int split = Mathf.RoundToInt(Random.Range(length * ctx.MinDivideSize, length * ctx.MaxDivideSize));
                 // 노드 크기 안정처리
                 split = Mathf.Clamp(split, ctx.MinNode, length - ctx.MinNode);
+
+                //Debug.Log($"[DivideTree] split={split}, length={length}");
+
                 // 가로
                 if (size.width >= size.height)
                 {
@@ -66,6 +58,7 @@ namespace BSPDuengeonGenrator.Generation
                     ctx.SplitLines.Add(new LineSegment(
                         new Vector2(size.x + split, size.y),
                         new Vector2(size.x + split, size.y + size.height)));
+                    //Debug.Log($"[DivideTree] horizontal split → left=({treeNode.leftTree.treeSize.width},{treeNode.leftTree.treeSize.height}), right=({treeNode.rightTree.treeSize.width},{treeNode.rightTree.treeSize.height})");
                 }
                 // 세로
                 else
@@ -76,6 +69,7 @@ namespace BSPDuengeonGenrator.Generation
                     ctx.SplitLines.Add(new LineSegment(
                         new Vector2(size.x, size.y + split),
                         new Vector2(size.x + size.width, size.y + split)));
+                    //Debug.Log($"[DivideTree] vertical split → left=({treeNode.leftTree.treeSize.width},{treeNode.leftTree.treeSize.height}), right=({treeNode.rightTree.treeSize.width},{treeNode.rightTree.treeSize.height})");
                 }
                 // 분할한 트리의 부모 트리를 매개 변수로 받은 트리로 할당
                 treeNode.leftTree.parentTree = treeNode;
@@ -84,6 +78,10 @@ namespace BSPDuengeonGenrator.Generation
                 // 순회 방식
                 DivideTree(treeNode.leftTree, depth + 1);
                 DivideTree(treeNode.rightTree, depth + 1);
+            }
+            else
+            {
+                //Debug.Log($"[DivideTree] stop: depth={depth} >= MaxNode={ctx.MaxNode}");
             }
         }
 

@@ -5,7 +5,7 @@ using BSPDuengeonGenrator.Config;
 
 namespace BSPDuengeonGenrator.Core
 {
-    public sealed class DuengeonContext : MonoBehaviour
+    public sealed class DuengeonContext
     {
         public Vector2Int MapSize;
         public TileType[,] MapData;
@@ -23,11 +23,14 @@ namespace BSPDuengeonGenrator.Core
         public Tilemap FloorTilemap;
         public Tilemap WallTilemap;
         public Tilemap DoorTilemap;
+        public Tilemap PathTilemap;
 
         public TileBase FloorTile;
         public TileBase WallTile;
         public TileBase DoorTile;
+        public TileBase PathTile;
         public TileBase[] PathTiles;
+        public TileBase[] RoomTiles;
 
         // Drawer가 읽는 값
         public List<LineSegment> SplitLines = new List<LineSegment>();
