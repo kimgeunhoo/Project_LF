@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b90b3ac20d3ab04db6459c36b22a453, type: 3}
   m_Name: DungeonData_Ch1
   m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Config.DuengeonData
-  mapSize: {x: 100, y: 100}
-  maxNode: 5
+  mapSize: {x: 150, y: 150}
+  maxNode: 4
   minNode: 3
-  minDivideSize: 0.3
-  maxDivideSize: 0.6
+  minDivideSize: 0.4
+  maxDivideSize: 0.5
   floorTile: {fileID: 11400000, guid: cd739c4b4eb31934494017ea1d34324b, type: 2}
   wallTile: {fileID: 11400000, guid: 96945c2584c47b44ebe75d015b3cde49, type: 2}
   doorTile: {fileID: 11400000, guid: 5fe40d7b004adde4293bdf59101e1f97, type: 2}

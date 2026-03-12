@@ -584,7 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c5436e2953bf6d4c9aaca24a623f442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.DuengeonGeneraterByBSP
-  duengeonData: {fileID: 11400000, guid: da3ff97bb9ffd5448b936fe5f27415ac, type: 2}
+  dungeonData: {fileID: 11400000, guid: da3ff97bb9ffd5448b936fe5f27415ac, type: 2}
   floorTilemap: {fileID: 1459407124}
   wallTilemap: {fileID: 1995121613}
   pathTilemap: {fileID: 1245205044}
