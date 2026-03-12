@@ -1,16 +1,16 @@
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using BSPDuengeonGenrator.Config;
-using BSPDuengeonGenrator.Core;
+using BSPDungeonGenrator.Config;
+using BSPDungeonGenrator.Core;
 
-namespace BSPDuengeonGenrator.Generation
+namespace BSPDungeonGenrator.Generation
 {
     public class RoomGenerater
     {
 
-        private DuengeonContext ctx;
-        public void Run(DuengeonContext ctx)
+        private DungeonContext ctx;
+        public void Run(DungeonContext ctx)
         {
             this.ctx = ctx;
             GenerateDeungeuon(ctx.Root, 0);
@@ -22,16 +22,35 @@ namespace BSPDuengeonGenrator.Generation
             if (node == ctx.MaxNode)
             {
                 RectInt size = treeNode.treeSize;
-                // 트리 범위 내에서 무작위 크기 선택, 최소 크기 : width / 2
-                //int width = Mathf.Max(Random.Range(size.width / 2, size.width - 1));
-                //int height = Mathf.Max(Random.Range(size.height / 2, size.height - 1));
 
-                int width = Random.Range(size.width / 2, size.width - 1);
-                int height = Random.Range(size.height / 2, size.height - 1);
+                int padding = ctx.RoomPadding;
+
+                int availableWidth = size.width - padding * 2;
+                int availableHeight = size.height - padding * 2;
+
+                if (availableWidth < ctx.MinRoomWidth || availableHeight < ctx.MinRoomHeight)
+                {
+                    int fallbackWidth = Mathf.Max(3, availableWidth);
+                    int fallbackHeight = Mathf.Max(3, availableHeight);
+
+                    int fallbackX = size.x + Mathf.Max(1, (size.width - fallbackWidth) / 2);
+                    int fallbackY = size.y + Mathf.Max(1, (size.height - fallbackHeight) / 2);
+
+                    OnDrawDungeon(fallbackX, fallbackY, fallbackWidth, fallbackHeight);
+                    return new RectInt(fallbackX, fallbackY, fallbackWidth, fallbackHeight);
+                }
+
+                int width = Random.Range(ctx.MinRoomWidth, availableWidth + 1);
+                int height = Random.Range(ctx.MinRoomHeight, availableHeight + 1);
+
+                int minX = size.x + padding;
+                int maxX = size.x + size.width - padding - width;
+                int minY = size.y + padding;
+                int maxY = size.y + size.height - padding - height;
 
                 // 최대 크기 : width / 2
-                int x = treeNode.treeSize.x + Random.Range(1, size.width - width);
-                int y = treeNode.treeSize.y + Random.Range(1, size.height - height);
+                int x = Random.Range(minX, maxX + 1);
+                int y = Random.Range(minY, maxY + 1);
                 // 던전 렌더링
                 OnDrawDungeon(x, y, width, height);
                 // 리턴 값은 던전의 크기로 길을 생성할 때 크기 정보로 활용
@@ -41,7 +60,7 @@ namespace BSPDuengeonGenrator.Generation
             treeNode.leftTree.dungeonSize = GenerateDeungeuon(treeNode.leftTree, node + 1);
             treeNode.rightTree.dungeonSize = GenerateDeungeuon(treeNode.rightTree, node + 1);
             // 부모 트리의 던전 크기는 자식 트리의 던전 크기 그대로 사용
-            return treeNode.leftTree.dungeonSize;
+            return Random.value < 0.5f ? treeNode.leftTree.dungeonSize: treeNode.rightTree.dungeonSize;
         }
 
         // 크기에 맞춰 타일을 생성하는 메소드

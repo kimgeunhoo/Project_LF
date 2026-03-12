@@ -1,18 +1,18 @@
-using BSPDuengeonGenrator.Config;
-using BSPDuengeonGenrator.Core;
+using BSPDungeonGenrator.Config;
+using BSPDungeonGenrator.Core;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace BSPDuengeonGenrator.Rendering
+namespace BSPDungeonGenrator.Rendering
 {
     public class TileMapRenderer : MonoBehaviour
     {
-        public void Run(DuengeonContext ctx)
+        public void Run(DungeonContext ctx)
         {
             CreateWallAroundByRoom(ctx);
         }
 
-        private void CreateWallAroundByRoom(DuengeonContext ctx)
+        private void CreateWallAroundByRoom(DungeonContext ctx)
         {
             for (int x = 0; x < ctx.MapSize.x; x++)
             {

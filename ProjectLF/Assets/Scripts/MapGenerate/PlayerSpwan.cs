@@ -1,6 +1,6 @@
-using BSPDuengeonGenrator;
-using BSPDuengeonGenrator.Config;
-using BSPDuengeonGenrator.marker;
+using BSPDungeonGenrator;
+using BSPDungeonGenrator.Config;
+using BSPDungeonGenrator.marker;
 using UnityEngine;
 
 public class PlayerSpwan : MonoBehaviour

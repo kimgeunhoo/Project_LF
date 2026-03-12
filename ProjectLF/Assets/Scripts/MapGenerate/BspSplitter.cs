@@ -1,16 +1,16 @@
-using BSPDuengeonGenrator.Config;
-using BSPDuengeonGenrator.Core;
-using BSPDuengeonGenrator.Generation;
-using BSPDuengeonGenrator.Rendering;
+using BSPDungeonGenrator.Config;
+using BSPDungeonGenrator.Core;
+using BSPDungeonGenrator.Generation;
+using BSPDungeonGenrator.Rendering;
 using System.Xml.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-namespace BSPDuengeonGenrator.Generation
+namespace BSPDungeonGenrator.Generation
 {
     public class BspSplitter
     {
-        private DuengeonContext ctx;
+        private DungeonContext ctx;
 
         // 라인 렌더링은 따로 호출시킨다.
         private LineRenderInterface lineRender;
@@ -20,7 +20,7 @@ namespace BSPDuengeonGenrator.Generation
         }
 
  
-        public void Run(DuengeonContext ctx)
+        public void Run(DungeonContext ctx)
         {
             //Debug.Log($"[BspSplitter.Run] MaxNode={ctx.MaxNode}, RootSize=({ctx.Root.treeSize.width}, {ctx.Root.treeSize.height})");
             //Debug.Log($"[BspSplitter.Run] this={GetHashCode()} ctx={ctx.GetHashCode()}");

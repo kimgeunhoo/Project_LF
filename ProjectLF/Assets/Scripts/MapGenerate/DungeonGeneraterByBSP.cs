@@ -1,22 +1,22 @@
-using BSPDuengeonGenrator.Config;
-using BSPDuengeonGenrator.Core;
-using BSPDuengeonGenrator.Generation;
-using BSPDuengeonGenrator.marker;
-using BSPDuengeonGenrator.Rendering;
+using BSPDungeonGenrator.Config;
+using BSPDungeonGenrator.Core;
+using BSPDungeonGenrator.Generation;
+using BSPDungeonGenrator.marker;
+using BSPDungeonGenrator.Rendering;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace BSPDuengeonGenrator
+namespace BSPDungeonGenrator
 {
 
-    public class DuengeonGeneraterByBSP : MonoBehaviour
+    public class DungeonGeneraterByBSP : MonoBehaviour
     {
         [Header("Duengeon Data")]
         [SerializeField]
-        private DuengeonData duengeonData;
+        private DungeonData dungeonData;
 
         [Header("Wall, FloorTile, Path, Door")]
         // 바닥과 벽을 정의
@@ -38,7 +38,7 @@ namespace BSPDuengeonGenrator
         private Vector3 spawnPoint;
 
         // 컨텍스트 정의
-        private static DuengeonContext ctx = new DuengeonContext();
+        private static DungeonContext ctx = new DungeonContext();
 
         // 방 생성에 사용할 생성 클래스 정의
         private BspSplitter bspSplitter = new BspSplitter();
@@ -55,9 +55,9 @@ namespace BSPDuengeonGenrator
         private void Awake()
         {
             // 데이터 무결성 체크
-            if(duengeonData == null)
+            if(dungeonData == null)
             {
-                Debug.LogError("[Generator] duengeonData가 할당되지 않았습니다.");
+                Debug.LogError("[Generator] dungeonData가 할당되지 않았습니다.");
             }
             
             // ctx 정의
@@ -66,7 +66,7 @@ namespace BSPDuengeonGenrator
             InitializeMap();
             // 던전 사이즈에 맞게 벽을 그림
             bspDrawer = GetComponent<BspDrawer>();
-            bspDrawer.OnDrawRectangle(ctx, duengeonData, lineHolder);
+            bspDrawer.OnDrawRectangle(ctx, dungeonData, lineHolder);
 
             // 트리 분할 메서드            
             //bspSplitter = GetComponent<BspSplitter>();
@@ -75,7 +75,7 @@ namespace BSPDuengeonGenrator
 
             bspDrawer = GetComponent<BspDrawer>();
             //Splitter로 값 가져오고 라인 그리기
-            bspDrawer.OnDrawLine(ctx, duengeonData, lineHolder);
+            bspDrawer.OnDrawLine(ctx, dungeonData, lineHolder);
 
             // 방 생성
             roomGenerater.Run(ctx);
@@ -93,27 +93,27 @@ namespace BSPDuengeonGenrator
             roomDistribute.Run(ctx);
         }
 
-        private DuengeonContext Build()
+        private DungeonContext Build()
         {
-            var ctx = new DuengeonContext();
+            var ctx = new DungeonContext();
 
             // 컨텍스트에 값 대입
-            ctx.MapSize = duengeonData.MapSize;
-            ctx.MaxNode = duengeonData.MaxNode;
-            ctx.MinNode = duengeonData.MinNode;
-            ctx.MaxDivideSize = duengeonData.MaxDivideSize;
-            ctx.MinDivideSize = duengeonData.MinDivideSize;
+            ctx.MapSize = dungeonData.MapSize;
+            ctx.MaxNode = dungeonData.MaxNode;
+            ctx.MinNode = dungeonData.MinNode;
+            ctx.MaxDivideSize = dungeonData.MaxDivideSize;
+            ctx.MinDivideSize = dungeonData.MinDivideSize;
 
             ctx.FloorTilemap = floorTilemap;
             ctx.WallTilemap = wallTilemap;
             ctx.PathTilemap = pathTilemap;
             ctx.DoorTilemap = doorTilemap;
 
-            ctx.FloorTile = duengeonData.FloorTile;
-            ctx.WallTile = duengeonData.WallTile;
-            ctx.DoorTile = duengeonData.DoorTile;
-            ctx.PathTile = duengeonData.PathTile;
-            ctx.DoorHalfwidth = duengeonData.DoorHalfwidth;
+            ctx.FloorTile = dungeonData.FloorTile;
+            ctx.WallTile = dungeonData.WallTile;
+            ctx.DoorTile = dungeonData.DoorTile;
+            ctx.PathTile = dungeonData.PathTile;
+            ctx.DoorHalfwidth = dungeonData.DoorHalfwidth;
 
             ctx.Rooms = new List<RoomInfo>();
             ctx.SplitLines = new List<LineSegment>();
@@ -122,8 +122,8 @@ namespace BSPDuengeonGenrator
             // 루트가 될 트리 생성
             TreeNode rootNode = new TreeNode(0, 0, ctx.MapSize.x, ctx.MapSize.y);
             ctx.Root = rootNode;
-            Debug.Log($"[Build] duengeonData.PathTile = {(duengeonData.PathTile == null ? "NULL" : "OK")}");
-            Debug.Log($"[Build] duengeonData.PathTiles length = {(duengeonData.PathTiles == null ? -1 : duengeonData.PathTiles.Length)}");
+            Debug.Log($"[Build] duengeonData.PathTile = {(dungeonData.PathTile == null ? "NULL" : "OK")}");
+            Debug.Log($"[Build] duengeonData.PathTiles length = {(dungeonData.PathTiles == null ? -1 : dungeonData.PathTiles.Length)}");
 
             return ctx;
         }

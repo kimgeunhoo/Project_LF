@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using UnityEngine;
-using BSPDuengeonGenrator.Core;
-using BSPDuengeonGenrator.Config;
+using BSPDungeonGenrator.Core;
+using BSPDungeonGenrator.Config;
 
-namespace BSPDuengeonGenrator.marker
+namespace BSPDungeonGenrator.marker
 {
     public class RoomDistribute : MonoBehaviour
     {
@@ -24,8 +24,8 @@ namespace BSPDuengeonGenrator.marker
 
 
 
-        private DuengeonContext ctx;
-        public void Run(DuengeonContext ctx)
+        private DungeonContext ctx;
+        public void Run(DungeonContext ctx)
         {
             Debug.Log($"[Generator] Root left = {(ctx.Root.leftTree == null ? "NULL" : "OK")}");
             Debug.Log($"[Generator] Root right = {(ctx.Root.rightTree == null ? "NULL" : "OK")}");

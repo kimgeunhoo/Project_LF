@@ -1,61 +1,65 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using BSPDuengeonGenrator.Core;
-using BSPDuengeonGenrator.Config;
+using BSPDungeonGenrator.Core;
+using BSPDungeonGenrator.Config;
+using NUnit.Framework;
+using System.Collections.Generic;
 
-namespace BSPDuengeonGenrator.Generation
+namespace BSPDungeonGenrator.Generation
 {
+    public struct DoorCandidate
+    {
+        public Vector2Int Pos;
+        public bool VerticalBoundary;
+
+        public DoorCandidate(Vector2Int pos, bool verticalBoundary)
+        {
+            Pos = pos;
+            VerticalBoundary = verticalBoundary;
+        }
+    }
+
     public class DoorGenerator
     {
-        private DuengeonContext ctx;
-        public void Run(DuengeonContext ctx)
+        private DungeonContext ctx;
+        public void Run(DungeonContext ctx)
         {
             this.ctx = ctx;
             GenerateDoors(ctx);
         }
 
         // 문 생성 함수
-        private void GenerateDoors(DuengeonContext ctx)
+        private void GenerateDoors(DungeonContext ctx)
         {
-
+            var candidates = new List<DoorCandidate>();
             for (int x = 1; x < ctx.MapSize.x - 1; x++)
             {
                 for (int y = 1; y < ctx.MapSize.y - 1; y++)
                 {
-                    int roomNeighborCount = 0;
-
                     if (ctx.MapData[x, y] != TileType.Path)
                         continue;
 
-                    // 통로 타일이 방과 접해 있는지 체크
-                    bool hasRoomNeighbor =
-                        ctx.MapData[x + 1, y] == TileType.Room ||
-                        ctx.MapData[x - 1, y] == TileType.Room ||
-                        ctx.MapData[x, y + 1] == TileType.Room ||
-                        ctx.MapData[x, y - 1] == TileType.Room;
+                    // 각 통로 타일이 방과 접해 있는지
+                    bool rightRoom = ctx.MapData[x + 1, y] == TileType.Room;
+                    bool leftRoom = ctx.MapData[x - 1, y] == TileType.Room;
+                    bool upRoom = ctx.MapData[x, y + 1] == TileType.Room;
+                    bool downRoom = ctx.MapData[x, y - 1] == TileType.Room;
 
-                    if (!hasRoomNeighbor)
+                    bool verticalBoundary = leftRoom || rightRoom;
+                    bool horizontalBoundary = upRoom || downRoom;
+
+                    int roomNeighborCount = 0;
+                    
+                    if(rightRoom) roomNeighborCount++;
+                    if(leftRoom) roomNeighborCount++;
+                    if(upRoom) roomNeighborCount++;
+                    if(downRoom) roomNeighborCount++;
+
+                    if (roomNeighborCount != 1)
                         continue;
 
-                    // room 인접한 수를 1개로 제한
-                    if (ctx.MapData[x + 1, y] == TileType.Room)
-                        roomNeighborCount++;
-                    if (ctx.MapData[x - 1, y] == TileType.Room)
-                        roomNeighborCount++;
-                    if (ctx.MapData[x, y + 1] == TileType.Room)
-                        roomNeighborCount++;
-                    if (ctx.MapData[x, y - 1] == TileType.Room)
-                        roomNeighborCount++;
-
-                    if (roomNeighborCount > 3)
+                    if (verticalBoundary == horizontalBoundary)
                         continue;
-
-                    // 주변 벽 체크
-                    bool surrondedByWall =
-                        ctx.MapData[x + 1, y] == TileType.Wall ||
-                        ctx.MapData[x - 1, y] == TileType.Wall ||
-                        ctx.MapData[x, y + 1] == TileType.Wall ||
-                        ctx.MapData[x, y - 1] == TileType.Wall;
 
                     // 통로 방향 판별
                     // 수평 통로는 좌/우, 수직은 상하 Path
@@ -64,32 +68,42 @@ namespace BSPDuengeonGenrator.Generation
                     bool hasDown = (ctx.MapData[x, y - 1] == TileType.Path);
                     bool hasUp = (ctx.MapData[x, y + 1] == TileType.Path);
 
-                    //// 통로 방향 판별하고 직각 방향만 측정
-                    //bool isHorizontalPath = (hasLeft || hasRight) && !hasUp && !hasDown;
-                    //bool isVerticalPath = (hasUp || hasDown) && !hasLeft && !hasRight;
-                    //if (!isHorizontalPath && !isVerticalPath)
-                    //    continue;
+                    // 통로 방향 판별하고 직각 방향만 측정
+                    bool isHorizontalPath = (hasLeft || hasRight) && !hasUp && !hasDown;
+                    bool isVerticalPath = (hasUp || hasDown) && !hasLeft && !hasRight;
+                    if (!isHorizontalPath && !isVerticalPath)
+                        continue;
 
-                    int horizontal = (hasLeft ? 1 : 0) + (hasRight ? 1 : 0);
-                    int vertical = (hasDown ? 1 : 0) + (hasUp ? 1 : 0);
-
-                    // 통로가 수평으로 더 이어져 있다면 문은 세로 3칸
-                    // 통로가 수직으로 이어져 있다면 가로 3칸
-                    if (horizontal >= vertical)
-                    {
-                        PlaceDoorVertical(x, y);
-                    }
-                    else
-                    {
-                        PlaceDoorHoriaontal(x, y);
-                    }
-
-                    if (surrondedByWall)
-                    {
-                        ctx.MapData[x, y] = TileType.Door;
-                    }
+                    candidates.Add(new DoorCandidate(new Vector2Int(x,y), verticalBoundary));
                 }
             }
+            foreach (var path in candidates)
+            {
+                if (ctx.MapData[path.Pos.x, path.Pos.y] == TileType.Path && !HasAdjacentDoor(path.Pos.x, path.Pos.y))
+                {
+                    ctx.MapData[path.Pos.x, path.Pos.y] = TileType.Door;
+                }
+            }
+        }
+
+        private bool HasAdjacentDoor(int x, int y)
+        {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    if (dx == 0 && dy == 0)
+                        continue;
+                    int nx = x + dx;
+                    int ny = y + dy;
+
+                    if (!IsInsideMap(nx, ny))
+                        continue;
+                    if (ctx.MapData[nx, ny] == TileType.Door)
+                        return true;
+                }
+            }
+            return false;
         }
 
         // 맵 범위 체크 (예외방지)
@@ -103,7 +117,7 @@ namespace BSPDuengeonGenrator.Generation
             for (int w = -ctx.DoorHalfwidth; w <= ctx.DoorHalfwidth; w++)
             {
                 int ny = y + w;
-                if (!IsInsideMap(x, ny)) 
+                if (!IsInsideMap(x, ny))
                     continue;
 
                 // path 칸만 door 변경
@@ -116,7 +130,7 @@ namespace BSPDuengeonGenrator.Generation
             }
         }
 
-        private void PlaceDoorHoriaontal(int x, int y)
+        private void PlaceDoorHorizontal(int x, int y)
         {
             for (int w = -ctx.DoorHalfwidth; w <= ctx.DoorHalfwidth; w++)
             {

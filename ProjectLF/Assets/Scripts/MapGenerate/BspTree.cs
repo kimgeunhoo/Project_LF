@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace BSPDuengeonGenrator.Core
+namespace BSPDungeonGenrator.Core
 {
 
     public class TreeNode
@@ -14,6 +14,8 @@ namespace BSPDuengeonGenrator.Core
         public RectInt treeSize;
         public RectInt dungeonSize;
 
+        public bool isVerticalSplit;
+        public int splitCoord;
 
         // 맵 데이터 생성, 초기화
         //private int[,] mapData = new int[mapSize.x, mapSize.y];

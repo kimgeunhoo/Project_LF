@@ -1,8 +1,8 @@
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
-using BSPDuengeonGenrator.Config;
+using BSPDungeonGenrator.Config;
 
-namespace BSPDuengeonGenrator.Generation
+namespace BSPDungeonGenrator.Generation
 {
     public class CheckInsideMap : MonoBehaviour
     {

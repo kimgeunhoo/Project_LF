@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using BSPDuengeonGenrator.Config;
+using BSPDungeonGenrator.Config;
 
-namespace BSPDuengeonGenrator.Core
+namespace BSPDungeonGenrator.Core
 {
-    public sealed class DuengeonContext
+    public sealed class DungeonContext
     {
         public Vector2Int MapSize;
         public TileType[,] MapData;
-
+ 
         // 노드 사이즈
         public int MaxNode;
         public int MinNode;
@@ -31,6 +31,11 @@ namespace BSPDuengeonGenrator.Core
         public TileBase PathTile;
         public TileBase[] PathTiles;
         public TileBase[] RoomTiles;
+
+        // Leaf 경계, 방 사이와의 최소 거리
+        public int RoomPadding = 3;
+        public int MinRoomWidth = 6;
+        public int MinRoomHeight = 6;
 
         // Drawer가 읽는 값
         public List<LineSegment> SplitLines = new List<LineSegment>();

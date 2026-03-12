@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using BSPDuengeonGenrator.Core;
+using BSPDungeonGenrator.Core;
 
-namespace BSPDuengeonGenrator.Config
+namespace BSPDungeonGenrator.Config
 {
     // 타일 타입 정의
     public enum TileType
@@ -26,7 +26,7 @@ namespace BSPDuengeonGenrator.Config
 
 
     [CreateAssetMenu(menuName ="Duengeon/Data")]
-    public class DuengeonData : ScriptableObject
+    public class DungeonData : ScriptableObject
     {
         
         // 맵 사이즈

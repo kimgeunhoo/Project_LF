@@ -1,22 +1,22 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using BSPDuengeonGenrator.Core;
-using BSPDuengeonGenrator.Config;
+using BSPDungeonGenrator.Core;
+using BSPDungeonGenrator.Config;
 
-namespace BSPDuengeonGenrator.Generation
+namespace BSPDungeonGenrator.Generation
 {
     public class WallGenerator
     {
 
-        private DuengeonContext ctx;
-        public void Run(DuengeonContext ctx)
+        private DungeonContext ctx;
+        public void Run(DungeonContext ctx)
         {
             this.ctx = ctx;
             GeneratedCheckWalls(ctx);
         }
 
         // 벽 체크 메서드
-        private void GeneratedCheckWalls(DuengeonContext ctx)
+        private void GeneratedCheckWalls(DungeonContext ctx)
         {
             for (int x = 0; x < ctx.MapSize.x; x++)
             {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BSPDuengeonGenrator.Core
+namespace BSPDungeonGenrator.Core
 {
     [System.Serializable]
     public class LineSegment
