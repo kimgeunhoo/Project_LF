@@ -23,11 +23,13 @@ namespace BSPDungeonGenrator.Generation
             {
                 RectInt size = treeNode.treeSize;
 
+                // ctx padding값
                 int padding = ctx.RoomPadding;
 
                 int availableWidth = size.width - padding * 2;
                 int availableHeight = size.height - padding * 2;
 
+                // 방 크기 최소치 선정
                 if (availableWidth < ctx.MinRoomWidth || availableHeight < ctx.MinRoomHeight)
                 {
                     int fallbackWidth = Mathf.Max(3, availableWidth);

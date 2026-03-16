@@ -33,7 +33,7 @@ namespace BSPDungeonGenrator.Core
         public TileBase[] RoomTiles;
 
         // Leaf 경계, 방 사이와의 최소 거리
-        public int RoomPadding = 3;
+        public int RoomPadding = 1;
         public int MinRoomWidth = 6;
         public int MinRoomHeight = 6;
 

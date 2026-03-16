@@ -84,7 +84,9 @@ namespace BSPDungeonGenrator.marker
 
             // 계단, 시작지점 제외한 중간 지점(랜덤)
             var excluded = new HashSet<int> { startIndex, stairIndex };
+
             int shopIndex = GetMidDistanceRoomIndex(rooms, startIndex, stairIndex, excluded);
+
             rooms[shopIndex].Type = RoomType.Shop;
 
             // 남은 부분: 인카운터 몬스터 약 2:8 비율로
@@ -92,7 +94,7 @@ namespace BSPDungeonGenrator.marker
             {
                 if (i == startIndex || i == stairIndex || i == shopIndex)
                     continue;
-                rooms[i].Type = (Random.value < 0.2f) ? RoomType.Encounter : RoomType.Monster;
+                rooms[i].Type = (Random.value < 0.3f) ? RoomType.Encounter : RoomType.Monster;
             }
 
         }
