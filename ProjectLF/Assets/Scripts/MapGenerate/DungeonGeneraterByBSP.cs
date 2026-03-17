@@ -38,6 +38,8 @@ namespace BSPDungeonGenrator
         [SerializeField]
         private Vector3 spawnPoint;
 
+        public Vector3 SpawnPoint { get { return spawnPoint; } }
+
         // 컨텍스트 정의
         private static DungeonContext ctx = new DungeonContext();
 
@@ -115,6 +117,9 @@ namespace BSPDungeonGenrator
             ctx.DoorTile = dungeonData.DoorTile;
             ctx.PathTile = dungeonData.PathTile;
             ctx.DoorHalfwidth = dungeonData.DoorHalfwidth;
+
+            ctx.PathTiles = dungeonData.PathTiles;
+            ctx.RoomTiles = dungeonData.RoomTiles;
 
             ctx.Rooms = new List<RoomInfo>();
             ctx.SplitLines = new List<LineSegment>();

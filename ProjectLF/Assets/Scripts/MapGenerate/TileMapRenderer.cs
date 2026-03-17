@@ -14,6 +14,7 @@ namespace BSPDungeonGenrator.Rendering
 
         private void CreateWallAroundByRoom(DungeonContext ctx)
         {
+            Debug.Log($"TileMapRender : RoomTiles.Length{ctx.RoomTiles.Length}, PathTiles.Length{ctx.PathTiles.Length}");
             for (int x = 0; x < ctx.MapSize.x; x++)
             {
                 for (int y = 0; y < ctx.MapSize.y; y++)
@@ -22,7 +23,7 @@ namespace BSPDungeonGenrator.Rendering
 
                     if (ctx.MapData[x, y] == TileType.Room)
                     {
-                        ctx.FloorTilemap.SetTile(pos, ctx.FloorTile);
+                        ctx.FloorTilemap.SetTile(pos, ctx.RoomTiles[Random.Range(0, ctx.RoomTiles.Length)]);
                     }
                     else if (ctx.MapData[x, y] == TileType.Wall)
                     {
@@ -30,7 +31,7 @@ namespace BSPDungeonGenrator.Rendering
                     }
                     else if (ctx.MapData[x,y] == TileType.Path)
                     {
-                        ctx.PathTilemap.SetTile(pos, ctx.PathTile);
+                        ctx.PathTilemap.SetTile(pos, ctx.PathTiles[Random.Range(0, ctx.PathTiles.Length)]);
                     }
                     else if (ctx.MapData[x, y] == TileType.Door)
                     {
