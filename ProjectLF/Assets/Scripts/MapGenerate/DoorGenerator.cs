@@ -19,6 +19,7 @@ namespace BSPDungeonGenrator.Generation
         // 문 생성 함수
         private void GenerateDoors(DungeonContext ctx)
         {
+            List<Vector2Int> doorCandidate = new List<Vector2Int>();
             for (int x = 1; x < ctx.MapSize.x - 1; x++)
             {
                 for (int y = 1; y < ctx.MapSize.y - 1; y++)
@@ -32,6 +33,7 @@ namespace BSPDungeonGenrator.Generation
                         ctx.MapData[x - 1, y] == TileType.Room ||
                         ctx.MapData[x, y + 1] == TileType.Room ||
                         ctx.MapData[x, y - 1] == TileType.Room;
+
                     if (!hasRoomNeighbor) 
                         continue;
 
@@ -90,6 +92,7 @@ namespace BSPDungeonGenrator.Generation
 
         private void PlaceDoorVertical(int x, int y)
         {
+ 
             for (int w = -ctx.DoorHalfwidth; w <= ctx.DoorHalfwidth; w++)
             {
                 int ny = y + w; if (!IsInsideMap(x, ny)) 
@@ -115,7 +118,7 @@ namespace BSPDungeonGenrator.Generation
                 if (ctx.MapData[nx, y] == TileType.Path) 
                 { 
                     ctx.MapData[nx, y] = TileType.Door;
-                    NullByDoor(nx, y);
+                   NullByDoor(nx, y);
                 }
             }
         }

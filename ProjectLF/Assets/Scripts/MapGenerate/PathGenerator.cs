@@ -84,7 +84,7 @@ namespace BSPDuengeonGenrator.Generation
 
                     // 이미 같은 경로에 통로, 방이 생성되어 있다면 스킵한다
                     if (ctx.MapData[nx, y] == TileType.Room) continue;
-                    if (ctx.MapData[nx, y] == TileType.Path) continue;
+                    //if (ctx.MapData[nx, y] == TileType.Path) continue;
 
 
                     ctx.MapData[nx, y] = TileType.Path;

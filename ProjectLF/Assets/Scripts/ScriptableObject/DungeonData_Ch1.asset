@@ -15,7 +15,7 @@ MonoBehaviour:
   mapSize: {x: 100, y: 100}
   maxNode: 4
   minNode: 4
-  minDivideSize: 0.4
+  minDivideSize: 0.5
   maxDivideSize: 0.5
   floorTile: {fileID: 11400000, guid: cd739c4b4eb31934494017ea1d34324b, type: 2}
   wallTile: {fileID: 11400000, guid: 96945c2584c47b44ebe75d015b3cde49, type: 2}
