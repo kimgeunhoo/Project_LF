@@ -114,7 +114,7 @@ namespace BSPDungeonGenrator.marker
                     continue;
 
                 Vector2Int center = rooms[i].Center;
-                // 맨해튼 식
+    
                 int distance = Mathf.Abs(center.x - from.x) + Mathf.Abs(center.y - from.y);
                 if (distance > bestDistance)
                 {
@@ -143,7 +143,7 @@ namespace BSPDungeonGenrator.marker
                     continue;
 
                 Vector2Int c = rooms[i].Center;
-                // 맨해튼 식
+               
                 int distance = Mathf.Abs(c.x - start.x) + Mathf.Abs(c.y - start.y);
 
                 float score = Mathf.Abs(distance - target);

@@ -36,8 +36,8 @@ namespace BSPDungeonGenrator.Core
 
         // Leaf 경계, 방 사이와의 최소 거리
         public int RoomPadding = 1;
-        public int MinRoomWidth = 6;
-        public int MinRoomHeight = 6;
+        public int MinRoomWidth = 10;
+        public int MinRoomHeight = 10;
 
         // Drawer가 읽는 값
         public List<LineSegment> SplitLines = new List<LineSegment>();

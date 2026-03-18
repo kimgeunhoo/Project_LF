@@ -22,7 +22,8 @@ namespace BSPDuengeonGenrator.Generation
         private void GeneratePath(TreeNode treeNode, int depth)
         {
             // 노드가 최하위일 때는 길을 연결하지 않음. 최하위 노드는 자식 트리가 없다.
-            if (depth == ctx.MaxNode) return;
+            if (treeNode == null || treeNode.leftTree == null || treeNode.rightTree == null) 
+                return;
             // 자식 트리의 던전 중앙 위치를 가져옴
             RectInt leftRoom = treeNode.leftTree.dungeonSize;
             RectInt rightRoom = treeNode.rightTree.dungeonSize;
@@ -30,6 +31,9 @@ namespace BSPDuengeonGenrator.Generation
             // 중심 계산
             Vector2Int leftCenter = GetRoomCenter(leftRoom);
             Vector2Int rightCenter = GetRoomCenter(rightRoom);
+
+            Vector2Int leftExit = GetExitPoint(leftRoom, rightCenter);
+            Vector2Int rightExit = GetExitPoint(rightRoom, leftCenter);
 
             // 연결 방향은 랜덤
             if (Random.value < 0.5f)
@@ -50,7 +54,6 @@ namespace BSPDuengeonGenrator.Generation
         // 수평 통로
         private void CreateHorizontalCorridor(int xStart, int xEnd, int y)
         {
-            int padding = ctx.RoomPadding;
 
             for (int x = Mathf.Min(xStart, xEnd); x <= Mathf.Max(xStart, xEnd); x++)
             {
@@ -58,12 +61,11 @@ namespace BSPDuengeonGenrator.Generation
                 for (int w = -1; w <= 1; w++)
                 {
                     int ny = y + w;
-                    if (!IsInsideMap(x, ny)) continue;
+                    if (!IsInsideMap(x, ny)) 
+                        continue;
 
-                    if (ctx.MapData[x, ny] == TileType.Room) continue;
-                    // 이미 같은 경로에 통로가 생성되어 있다면 스킵한다
-                    if (ctx.MapData[x, ny] == TileType.Path) continue;
-
+                    if (ctx.MapData[x, ny] == TileType.Room)
+                        continue;
 
                     ctx.MapData[x, ny] = TileType.Path;
                 }
@@ -72,20 +74,18 @@ namespace BSPDuengeonGenrator.Generation
 
         // 수직 통로
         private void CreateVerticalCorridor(int yStart, int yEnd, int x)
-        {
-            int padding = ctx.RoomPadding;
+        { 
             for (int y = Mathf.Min(yStart, yEnd); y <= Mathf.Max(yStart, yEnd); y++)
             {
                 // 통로 두께 계산
                 for (int w = -1; w <= 1; w++)
                 {
                     int nx = x + w;
-                    if (!IsInsideMap(nx, y)) continue;
+                    if (!IsInsideMap(nx, y))
+                        continue;
 
-                    // 이미 같은 경로에 통로, 방이 생성되어 있다면 스킵한다
-                    if (ctx.MapData[nx, y] == TileType.Room) continue;
-                    //if (ctx.MapData[nx, y] == TileType.Path) continue;
-
+                    if (ctx.MapData[nx, y] == TileType.Room)
+                        continue;
 
                     ctx.MapData[nx, y] = TileType.Path;
                 }
@@ -116,22 +116,22 @@ namespace BSPDuengeonGenrator.Generation
             {
                 if (dx > 0)
                 {
-                    return new Vector2Int(room.x + room.width - 1, roomCenter.y);
+                    return new Vector2Int(room.xMax -1, roomCenter.y);
                 }
                 else
                 {
-                    return new Vector2Int(room.x, room.y);
+                    return new Vector2Int(room.xMin, roomCenter.y);
                 }
             }
             else
             {
                 if (dy > 0)
                 {
-                    return new Vector2Int(roomCenter.x, room.y + room.height - 1);
+                    return new Vector2Int(roomCenter.x, room.yMax - 1);
                 }
                 else
                 {
-                    return new Vector2Int(room.x, room.y);
+                    return new Vector2Int(roomCenter.x, room.yMin);
                 }
             }
         }

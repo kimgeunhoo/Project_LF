@@ -16,6 +16,8 @@ namespace BSPDungeonGenrator.Generation
             GenerateDoors(ctx);
         }
 
+
+
         // 문 생성 함수
         private void GenerateDoors(DungeonContext ctx)
         {
@@ -95,13 +97,16 @@ namespace BSPDungeonGenrator.Generation
  
             for (int w = -ctx.DoorHalfwidth; w <= ctx.DoorHalfwidth; w++)
             {
-                int ny = y + w; if (!IsInsideMap(x, ny)) 
+                int ny = y + w; 
+                if (!IsInsideMap(x, ny)) 
                     continue;
+                
+
                 if (ctx.MapData[x, ny] == TileType.Path)
                 {
                     //Debug.Log($"[GenerateDoors] Door created at ({x}, {y})");
                     ctx.MapData[x, ny] = TileType.Door;
-                    NullByDoor(x, ny);
+                   //NullByDoor(x, ny);
                 }
            
             }
@@ -111,14 +116,15 @@ namespace BSPDungeonGenrator.Generation
         {
             for (int w = -ctx.DoorHalfwidth; w <= ctx.DoorHalfwidth; w++)
             {
-                int nx = x + w; if (!IsInsideMap(nx, y)) 
+                int nx = x + w; 
+                if (!IsInsideMap(nx, y)) 
                     continue;
 
                 // Path 칸만 Door로
                 if (ctx.MapData[nx, y] == TileType.Path) 
                 { 
                     ctx.MapData[nx, y] = TileType.Door;
-                   NullByDoor(nx, y);
+                    //NullByDoor(nx, y);
                 }
             }
         }

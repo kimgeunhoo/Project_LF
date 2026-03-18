@@ -84,10 +84,10 @@ namespace BSPDungeonGenrator
             roomGenerater.Run(ctx);
             // 길 연결
             pathGenerator.Run(ctx);
-            // 문 생성
-            doorGenerator.Run(ctx);
             // 벽 생성 범위 체크 
             wallGenerator.Run(ctx);
+            // 문 생성
+            doorGenerator.Run(ctx);
             // 최종 타일맵 생성
             tileMapRenderer = GetComponent<TileMapRenderer>();
             tileMapRenderer.Run(ctx);
