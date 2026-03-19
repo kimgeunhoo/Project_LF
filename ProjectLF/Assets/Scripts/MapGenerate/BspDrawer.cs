@@ -15,11 +15,11 @@ namespace BSPDungeonGenrator.Rendering
         {
             if (dungeonData == null)
             {
-                Debug.Log($"던전 데이터가 없습니다.");
+                //Debug.Log($"던전 데이터가 없습니다.");
             }
             if (ctx == null)
             {
-                Debug.Log($"ctx 데이터가 없습니다.");
+               // Debug.Log($"ctx 데이터가 없습니다.");
             }
             this.ctx = ctx;
             this.dungeonData = dungeonData;
@@ -30,11 +30,11 @@ namespace BSPDungeonGenrator.Rendering
         {
             if (duengeonData == null)
             {
-                Debug.Log($"던전 데이터가 없습니다.");
+               // Debug.Log($"던전 데이터가 없습니다.");
             }
             if (ctx == null)
             {
-                Debug.Log($"ctx 데이터가 없습니다.");
+                //Debug.Log($"ctx 데이터가 없습니다.");
             }
             this.ctx = ctx;
             this.dungeonData = duengeonData;

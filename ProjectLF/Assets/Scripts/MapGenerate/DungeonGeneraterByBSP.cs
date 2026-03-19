@@ -1,12 +1,13 @@
-using BSPDuengeonGenrator.Generation;
+using BSPDungeonGenrator.Generation;
 using BSPDungeonGenrator.Config;
 using BSPDungeonGenrator.Core;
-using BSPDungeonGenrator.Generation;
 using BSPDungeonGenrator.marker;
 using BSPDungeonGenrator.Rendering;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -34,11 +35,6 @@ namespace BSPDungeonGenrator
         [SerializeField]
         private Transform lineHolder;
 
-        [Header("SpawnPoint")]
-        [SerializeField]
-        private Vector3 spawnPoint;
-
-        public Vector3 SpawnPoint { get { return spawnPoint; } }
 
         // 컨텍스트 정의
         private static DungeonContext ctx = new DungeonContext();
@@ -49,18 +45,26 @@ namespace BSPDungeonGenrator
         private WallGenerator wallGenerator = new WallGenerator();
         private PathGenerator pathGenerator = new PathGenerator();
         private DoorGenerator doorGenerator = new DoorGenerator();
+        private SpawnPoint spawnPoint = new SpawnPoint();
         private BspDrawer bspDrawer;
         private TileMapRenderer tileMapRenderer;
 
+
         // 방 배분에 사용할 생성 클래스 정의
         private RoomDistribute roomDistribute;
+
+
+
+        // 스폰포인트 넘겨주기
+        public DungeonContext Ctx { get { return ctx; } }
+
 
         private void Awake()
         {
             // 데이터 무결성 체크
             if(dungeonData == null)
             {
-                Debug.LogError("[Generator] dungeonData가 할당되지 않았습니다.");
+                //Debug.LogError("[Generator] dungeonData가 할당되지 않았습니다.");
             }
             
             // ctx 정의
@@ -72,12 +76,12 @@ namespace BSPDungeonGenrator
             bspDrawer.OnDrawRectangle(ctx, dungeonData, lineHolder);
 
             // 트리 분할 메서드            
-            //bspSplitter = GetComponent<BspSplitter>();
-            //Debug.Log($"[Generator] ctx id = {RuntimeHelpers.GetHashCode(ctx)}");
+            // bspSplitter = GetComponent<BspSplitter>();
+            // Debug.Log($"[Generator] ctx id = {RuntimeHelpers.GetHashCode(ctx)}");
             bspSplitter.Run(ctx);
 
             bspDrawer = GetComponent<BspDrawer>();
-            //Splitter로 값 가져오고 라인 그리기
+            // Splitter로 값 가져오고 라인 그리기
             bspDrawer.OnDrawLine(ctx, dungeonData, lineHolder);
 
             // 방 생성
@@ -92,8 +96,17 @@ namespace BSPDungeonGenrator
             tileMapRenderer = GetComponent<TileMapRenderer>();
             tileMapRenderer.Run(ctx);
 
+            // 방 정의, 마커 생성
             roomDistribute = GetComponent<RoomDistribute>();
             roomDistribute.Run(ctx);
+
+            //Debug.Log($"[Awake] spawnPoint null 여부: {spawnPoint == null}");
+            //Debug.Log($"[Awake] ctx.Rooms null 여부: {ctx.Rooms == null}");
+            //Debug.Log($"[Awake] ctx.EncounterPoints null 여부: {ctx.EncounterPoints == null}");
+            //Debug.Log($"[Awake] ctx.MonsterPoints null 여부: {ctx.MonsterPoints == null}");
+
+            // 정의한 방 ctx에 집어넣기
+            spawnPoint.Run(ctx);
         }
 
         private DungeonContext Build()
@@ -128,8 +141,8 @@ namespace BSPDungeonGenrator
             // 루트가 될 트리 생성
             TreeNode rootNode = new TreeNode(0, 0, ctx.MapSize.x, ctx.MapSize.y);
             ctx.Root = rootNode;
-            Debug.Log($"[Build] duengeonData.PathTile = {(dungeonData.PathTile == null ? "NULL" : "OK")}");
-            Debug.Log($"[Build] duengeonData.PathTiles length = {(dungeonData.PathTiles == null ? -1 : dungeonData.PathTiles.Length)}");
+            //Debug.Log($"[Build] duengeonData.PathTile = {(dungeonData.PathTile == null ? "NULL" : "OK")}");
+            //Debug.Log($"[Build] duengeonData.PathTiles length = {(dungeonData.PathTiles == null ? -1 : dungeonData.PathTiles.Length)}");
 
             return ctx;
         }
@@ -139,6 +152,9 @@ namespace BSPDungeonGenrator
         {
             ctx.MapData = new TileType[ctx.MapSize.x, ctx.MapSize.y];
         }
+
+        
+        
 
 
     }

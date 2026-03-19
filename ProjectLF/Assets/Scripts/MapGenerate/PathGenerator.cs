@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-namespace BSPDuengeonGenrator.Generation
+namespace BSPDungeonGenrator.Generation
 {
 
     public class PathGenerator
@@ -58,7 +58,7 @@ namespace BSPDuengeonGenrator.Generation
             for (int x = Mathf.Min(xStart, xEnd); x <= Mathf.Max(xStart, xEnd); x++)
             {
                 // 통로 두께 계산
-                for (int w = -1; w <= 1; w++)
+                for (int w = 0; w <= 0; w++)
                 {
                     int ny = y + w;
                     if (!IsInsideMap(x, ny)) 
@@ -78,7 +78,7 @@ namespace BSPDuengeonGenrator.Generation
             for (int y = Mathf.Min(yStart, yEnd); y <= Mathf.Max(yStart, yEnd); y++)
             {
                 // 통로 두께 계산
-                for (int w = -1; w <= 1; w++)
+                for (int w = 0; w <= 0; w++)
                 {
                     int nx = x + w;
                     if (!IsInsideMap(nx, y))

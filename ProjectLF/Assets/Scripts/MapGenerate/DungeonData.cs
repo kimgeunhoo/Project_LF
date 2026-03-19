@@ -117,7 +117,7 @@ namespace BSPDungeonGenrator.Config
     public class RoomInfo
     {
         private RectInt m_rect;
-        private RoomType m_type;
+        //private RoomType m_type;
         public RoomType Type { get; set; }
 
         private TreeNode m_tree;
@@ -129,6 +129,7 @@ namespace BSPDungeonGenrator.Config
         }
 
         public Vector2Int Center =>
-            new Vector2Int(m_rect.x + m_rect.width / 2, m_rect.y + m_rect.height / 2);
+            new Vector2Int(m_rect.xMin + m_rect.width / 2, m_rect.yMin + m_rect.height / 2);
+        //Vector3Int cellPos = new Vector3Int(c.x - ctx.MapSize.x / 2, c.y - ctx.MapSize.y / 2, 0);
     }
 }

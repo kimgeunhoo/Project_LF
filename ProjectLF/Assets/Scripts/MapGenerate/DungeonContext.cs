@@ -39,11 +39,18 @@ namespace BSPDungeonGenrator.Core
         public int MinRoomWidth = 10;
         public int MinRoomHeight = 10;
 
+
         // Drawer가 읽는 값
         public List<LineSegment> SplitLines = new List<LineSegment>();
 
         // 결과물
         public List<RoomInfo> Rooms = new List<RoomInfo>();
+
+        public Vector2Int StartPoint;
+        public Vector2Int StairPoint;
+        public Vector2Int ShopPoint;
+        public List<Vector2Int> EncounterPoints = new List<Vector2Int>();
+        public List<Vector2Int> MonsterPoints = new List<Vector2Int>();
     }
 
 }

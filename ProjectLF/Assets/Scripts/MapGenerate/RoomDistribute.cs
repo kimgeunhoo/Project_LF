@@ -27,18 +27,18 @@ namespace BSPDungeonGenrator.marker
         private DungeonContext ctx;
         public void Run(DungeonContext ctx)
         {
-            Debug.Log($"[Generator] Root left = {(ctx.Root.leftTree == null ? "NULL" : "OK")}");
-            Debug.Log($"[Generator] Root right = {(ctx.Root.rightTree == null ? "NULL" : "OK")}");
+            //Debug.Log($"[Generator] Root left = {(ctx.Root.leftTree == null ? "NULL" : "OK")}");
+            //Debug.Log($"[Generator] Root right = {(ctx.Root.rightTree == null ? "NULL" : "OK")}");
 
-            Debug.Log($"[RoomDistribute] Root = {(ctx.Root == null ? "NULL" : "OK")}");
-            Debug.Log($"[RoomDistribute] MaxNode = {ctx.MaxNode}");
+            //Debug.Log($"[RoomDistribute] Root = {(ctx.Root == null ? "NULL" : "OK")}");
+            //Debug.Log($"[RoomDistribute] MaxNode = {ctx.MaxNode}");
 
             this.ctx = ctx;
 
             this.ctx.Rooms.Clear();
 
             CollectLeafRooms(this.ctx.Root, 0, this.ctx.Rooms);
-            Debug.Log($"[RoomDistribute] collected rooms = {this.ctx.Rooms.Count}");
+            //Debug.Log($"[RoomDistribute] collected rooms = {this.ctx.Rooms.Count}");
             AssignRoomTypes(this.ctx.Rooms);
             SpawnRoomMarkers(this.ctx.Rooms);
         }
@@ -46,19 +46,20 @@ namespace BSPDungeonGenrator.marker
         // 리프 방 수집
         private void CollectLeafRooms(TreeNode node, int depth, List<RoomInfo> rooms)
         {
-            Debug.Log($"[CollectLeafRooms] depth={depth} left={(node.leftTree != null)} right={(node.rightTree != null)}");
+           // Debug.Log($"[CollectLeafRooms] depth={depth} left={(node.leftTree != null)} right={(node.rightTree != null)}");
             if (node == null)
                 return;
 
             bool isLeaf = node.leftTree == null && node.rightTree == null;
-            Debug.Log($"[CollectLeafRooms] isLeaf={isLeaf}");
+           // Debug.Log($"[CollectLeafRooms] isLeaf={isLeaf}");
             if (isLeaf)
             {
-                Debug.Log($"[CollectLeafRooms] leaf dungeonSize = {node.dungeonSize}");
-                Debug.Log($"[RoomDistribute] collected rooms = {ctx.Rooms.Count}");
+               // Debug.Log($"[CollectLeafRooms] leaf dungeonSize = {node.dungeonSize}");
+               // Debug.Log($"[RoomDistribute] collected rooms = {ctx.Rooms.Count}");
                 rooms.Add(new RoomInfo(node.dungeonSize));
                 return;
             }
+
 
             CollectLeafRooms(node.leftTree, depth + 1, rooms);
             CollectLeafRooms(node.rightTree, depth + 1, rooms);
@@ -69,8 +70,8 @@ namespace BSPDungeonGenrator.marker
         {
             if (rooms.Count < 3)
             {
-                Debug.Log($"방 개수: {rooms.Count}");
-                Debug.Log("방이 3개 미만이라 배치 불가");
+               // Debug.Log($"방 개수: {rooms.Count}");
+               // Debug.Log("방이 3개 미만이라 배치 불가");
                 return;
             }
 
@@ -86,8 +87,8 @@ namespace BSPDungeonGenrator.marker
             var excluded = new HashSet<int> { startIndex, stairIndex };
 
             int shopIndex = GetMidDistanceRoomIndex(rooms, startIndex, stairIndex, excluded);
-
             rooms[shopIndex].Type = RoomType.Shop;
+
 
             // 남은 부분: 인카운터 몬스터 약 2:8 비율로
             for (int i = 0; i < rooms.Count; i++)

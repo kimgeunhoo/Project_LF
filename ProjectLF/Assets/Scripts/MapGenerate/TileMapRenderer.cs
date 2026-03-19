@@ -14,7 +14,7 @@ namespace BSPDungeonGenrator.Rendering
 
         private void CreateWallAroundByRoom(DungeonContext ctx)
         {
-            Debug.Log($"TileMapRender : RoomTiles.Length{ctx.RoomTiles.Length}, PathTiles.Length{ctx.PathTiles.Length}");
+           // Debug.Log($"TileMapRender : RoomTiles.Length{ctx.RoomTiles.Length}, PathTiles.Length{ctx.PathTiles.Length}");
             for (int x = 0; x < ctx.MapSize.x; x++)
             {
                 for (int y = 0; y < ctx.MapSize.y; y++)
