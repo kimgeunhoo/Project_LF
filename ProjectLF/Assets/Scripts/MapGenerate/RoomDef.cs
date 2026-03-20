@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace BSPDungeonGenrator.marker
 {
-    public class SpawnPoint
+    public class RoomDef
     {
         private DungeonContext ctx;
 

@@ -22,7 +22,11 @@ namespace BSPDungeonGenrator.marker
         [SerializeField]
         private GameObject MonsterMarkerPrefab;
 
+        private Vector2Int startSpawnPoint;
+        public Vector2Int StartSpawnPoint { get { return startSpawnPoint; } }
 
+        private List<Vector2Int> monsterSpawnPoint = new List<Vector2Int>();
+        public List<Vector2Int> MonsterSpawnPoint { get { return monsterSpawnPoint; } }
 
         private DungeonContext ctx;
         public void Run(DungeonContext ctx)
@@ -183,11 +187,21 @@ namespace BSPDungeonGenrator.marker
                     _ => null
                 };
 
-                if (prefab == null) continue;
+                if (prefab == null) 
+                    continue;
+                Vector2Int center = room.Center;
+                if (prefab == startMarkerPrefab)
+                {
+                    startSpawnPoint = center;
+                }
 
-                Vector2Int c = room.Center;
-                Vector3Int cellPos = new Vector3Int(c.x - ctx.MapSize.x / 2, c.y - ctx.MapSize.y / 2, 0);
+                if (prefab == MonsterMarkerPrefab)
+                {
+                    monsterSpawnPoint.Add(center);
+                }
 
+                Vector3Int cellPos = new Vector3Int(center.x - ctx.MapSize.x / 2, center.y - ctx.MapSize.y / 2, 0);
+                
                 Vector3 worldPos = ctx.FloorTilemap.CellToWorld(cellPos) + new Vector3(0.5f, 0.5f, 0.5f);
                 Instantiate(prefab, worldPos, Quaternion.identity, markerHolder);
             }

@@ -45,7 +45,7 @@ namespace BSPDungeonGenrator
         private WallGenerator wallGenerator = new WallGenerator();
         private PathGenerator pathGenerator = new PathGenerator();
         private DoorGenerator doorGenerator = new DoorGenerator();
-        private SpawnPoint spawnPoint = new SpawnPoint();
+        private RoomDef roomDef = new RoomDef();
         private BspDrawer bspDrawer;
         private TileMapRenderer tileMapRenderer;
 
@@ -57,7 +57,6 @@ namespace BSPDungeonGenrator
 
         // 스폰포인트 넘겨주기
         public DungeonContext Ctx { get { return ctx; } }
-
 
         private void Awake()
         {
@@ -106,7 +105,7 @@ namespace BSPDungeonGenrator
             //Debug.Log($"[Awake] ctx.MonsterPoints null 여부: {ctx.MonsterPoints == null}");
 
             // 정의한 방 ctx에 집어넣기
-            spawnPoint.Run(ctx);
+            roomDef.Run(ctx);
         }
 
         private DungeonContext Build()
