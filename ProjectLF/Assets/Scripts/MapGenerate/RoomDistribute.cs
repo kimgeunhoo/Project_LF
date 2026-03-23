@@ -90,17 +90,41 @@ namespace BSPDungeonGenrator.marker
             // 계단, 시작지점 제외한 중간 지점(랜덤)
             var excluded = new HashSet<int> { startIndex, stairIndex };
 
+            // shop 상점 
             int shopIndex = GetMidDistanceRoomIndex(rooms, startIndex, stairIndex, excluded);
             rooms[shopIndex].Type = RoomType.Shop;
 
-
-            // 남은 부분: 인카운터 몬스터 약 2:8 비율로
-            for (int i = 0; i < rooms.Count; i++)
+            List<int> remainInDices = new List<int>();
+            for(int i = 0; i < rooms.Count; i++)
             {
-                if (i == startIndex || i == stairIndex || i == shopIndex)
+                if (excluded.Contains(i))
                     continue;
-                rooms[i].Type = (Random.value < 0.3f) ? RoomType.Encounter : RoomType.Monster;
+                remainInDices.Add(i);
             }
+
+            int encounterCount = Mathf.RoundToInt(remainInDices.Count * 0.3f);
+
+            // 최소값 보정
+            encounterCount = Mathf.Clamp(encounterCount, 2, remainInDices.Count);
+
+            // 남은 부분: 인카운터 3개 고정 나머지 몬스터로.
+            foreach (int idx in remainInDices)
+            {
+                rooms[idx].Type = RoomType.Monster;
+            }
+
+            for (int i = 0; i < remainInDices.Count; i++)
+            {
+                int rand = Random.Range(i, remainInDices.Count);
+                (remainInDices[i], remainInDices[rand]) = (remainInDices[rand], remainInDices[i]);
+            }
+
+            for(int i = 0; i < encounterCount; i++)
+            {
+                rooms[remainInDices[i]].Type = RoomType.Encounter;
+            }
+
+
 
         }
         // 계단 위치 지정
