@@ -7,20 +7,32 @@ using System.Collections.Generic;
 
 namespace BSPDungeonGenrator.Generation
 {
+    public class DoorInfo
+    {
+        // 문 위치
+        public Vector2Int GridPos;
+        // 어느 방인지
+        public int RoomId;
+        // 열렷는지
+        public bool IsOpen;
+    }
+
+
     public class DoorGenerator
     {
         private DungeonContext ctx;
+        DoorInfo doorInfo = new DoorInfo();
         public void Run(DungeonContext ctx)
         {
             this.ctx = ctx;
             GenerateDoors(ctx);
         }
 
-
-
         // 문 생성 함수
         private void GenerateDoors(DungeonContext ctx)
         {
+            
+
             List<Vector2Int> doorCandidate = new List<Vector2Int>();
             for (int x = 1; x < ctx.MapSize.x - 1; x++)
             {
@@ -78,7 +90,9 @@ namespace BSPDungeonGenrator.Generation
                     }
                     if (surrondedByWall) 
                     {
-                        ctx.MapData[x, y] = TileType.Door; 
+                        ctx.MapData[x, y] = TileType.DoorOpen;
+                        doorInfo.GridPos = new Vector2Int(x, y);
+                        doorInfo.RoomId = (int)RoomType.Monster;
                         
                     }
 
@@ -105,7 +119,7 @@ namespace BSPDungeonGenrator.Generation
                 if (ctx.MapData[x, ny] == TileType.Path)
                 {
                     //Debug.Log($"[GenerateDoors] Door created at ({x}, {y})");
-                    ctx.MapData[x, ny] = TileType.Door;
+                    ctx.MapData[x, ny] = TileType.DoorClosed;
                    //NullByDoor(x, ny);
                 }
            
@@ -123,38 +137,12 @@ namespace BSPDungeonGenrator.Generation
                 // Path 칸만 Door로
                 if (ctx.MapData[nx, y] == TileType.Path) 
                 { 
-                    ctx.MapData[nx, y] = TileType.Door;
+                    ctx.MapData[nx, y] = TileType.DoorClosed;
                     //NullByDoor(nx, y);
                 }
             }
         }
-
-        private void NullByDoor(int x, int y)
-        {
-            if (ctx.MapData[x - 1, y] == TileType.Empty)
-            {
-                ctx.MapData[x - 1, y] = TileType.Wall;
-            }
-            if (ctx.MapData[x, y - 1] == TileType.Empty)
-            {
-                ctx.MapData[x, y - 1] = TileType.Wall;
-            }
-            if (ctx.MapData[x + 1, y] == TileType.Empty)
-            {
-                ctx.MapData[x + 1, y] = TileType.Wall;
-            }
-            if (ctx.MapData[x, y + 1] == TileType.Empty)
-            {
-                ctx.MapData[x , y + 1] = TileType.Wall;
-            }
-            //if (ctx.MapData[x - 1, y] == TileType.Empty ||
-            //    ctx.MapData[x, y - 1] == TileType.Empty ||
-            //    ctx.MapData[x + 1, y] == TileType.Empty ||
-            //    ctx.MapData[x, y + 1] == TileType.Empty)
-            //{
-            //    ctx.MapData[x, y] = TileType.Wall;
-            //}
-        }
+      
     }
 
 }

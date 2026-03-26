@@ -1,11 +1,22 @@
 using UnityEngine;
 
-public class Character
+
+[CreateAssetMenu(menuName = "Character/Data")]
+public class Character : ScriptableObject
 {
-    protected int hp;
-    protected int mana;
-    protected int atk;
-    protected int def;
-    protected int dashGage;
+    [SerializeField]
+    private int hp;
+    [SerializeField]
+    private int mana;
+    [SerializeField]
+    private int atk;
+    [SerializeField]
+    private int def;
+    [SerializeField]
+    private int speed;
+    [SerializeField]
+    private int dashGage;
+
+    public int Speed {  get { return speed; } }
 
 }

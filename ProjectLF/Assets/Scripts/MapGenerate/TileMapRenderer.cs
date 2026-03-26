@@ -1,5 +1,6 @@
 using BSPDungeonGenrator.Config;
 using BSPDungeonGenrator.Core;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -7,6 +8,7 @@ namespace BSPDungeonGenrator.Rendering
 {
     public class TileMapRenderer : MonoBehaviour
     {
+
         public void Run(DungeonContext ctx)
         {
             CreateWallAroundByRoom(ctx);
@@ -33,9 +35,14 @@ namespace BSPDungeonGenrator.Rendering
                     {
                         ctx.PathTilemap.SetTile(pos, ctx.PathTiles[Random.Range(0, ctx.PathTiles.Length)]);
                     }
-                    else if (ctx.MapData[x, y] == TileType.Door)
+                    else if (ctx.MapData[x, y] == TileType.DoorClosed)
                     {
                         ctx.DoorTilemap.SetTile(pos, ctx.DoorTile);
+
+                    }
+                    else if (ctx.MapData[x,y] == TileType.DoorOpen)
+                    {
+                        ctx.DoorTilemap.SetTile(pos, ctx.OpenDoorTile);
                     }
 
                 }

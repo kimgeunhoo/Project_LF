@@ -82,7 +82,7 @@ namespace BSPDungeonGenrator.marker
             // start 시작 지점
             int startIndex = Random.Range(0, rooms.Count);
             rooms[startIndex].Type = RoomType.Start;
-
+          
             // stair 계단
             int stairIndex = GetFarthestRoomIndex(rooms, startIndex, excludeIndices: null);
             rooms[stairIndex].Type = RoomType.Stairs;

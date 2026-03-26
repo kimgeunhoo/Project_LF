@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4569957937453380851}
   - component: {fileID: 8618812090273024081}
   - component: {fileID: 7178235380657996455}
-  - component: {fileID: 7788770335167470281}
+  - component: {fileID: -22818248035681685}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -29,9 +29,9 @@ Transform:
   m_GameObject: {fileID: 6199281365791584735}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.14, y: 0.29, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 35.5, y: -9.5, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -158,7 +158,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &7788770335167470281
+--- !u!114 &-22818248035681685
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,8 +167,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 6199281365791584735}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28dc76b0761eff449a6ed6ea32156558, type: 3}
+  m_Script: {fileID: 11500000, guid: c074f2ae988ba6c49a8124ad470e9f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  moveSpeed: 3
+  p_character: {fileID: 11400000, guid: a5bf530a273421b469592f74b96122c1, type: 2}
   movePosition: {x: 0, y: 0, z: 0}

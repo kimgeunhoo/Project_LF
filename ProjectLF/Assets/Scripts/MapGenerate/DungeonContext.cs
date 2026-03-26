@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using BSPDungeonGenrator.Config;
+using BSPDungeonGenrator.Generation;
 
 namespace BSPDungeonGenrator.Core
 {
@@ -9,7 +10,8 @@ namespace BSPDungeonGenrator.Core
     {
         public Vector2Int MapSize;
         public TileType[,] MapData;
- 
+        public Dictionary<Vector2Int, DoorInfo> DoorDict = new Dictionary<Vector2Int, DoorInfo>();
+
         // 노드 사이즈
         public int MaxNode;
         public int MinNode;
@@ -23,12 +25,14 @@ namespace BSPDungeonGenrator.Core
         public Tilemap FloorTilemap;
         public Tilemap WallTilemap;
         public Tilemap DoorTilemap;
+        public Tilemap OpenDoorTileMap;
         public Tilemap PathTilemap;
 
 
         public TileBase FloorTile;
         public TileBase WallTile;
         public TileBase DoorTile;
+        public TileBase OpenDoorTile;
         public TileBase PathTile;
 
         public TileBase[] PathTiles;

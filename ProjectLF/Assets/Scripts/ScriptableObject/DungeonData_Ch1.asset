@@ -21,16 +21,10 @@ MonoBehaviour:
   wallTile: {fileID: 11400000, guid: 96945c2584c47b44ebe75d015b3cde49, type: 2}
   doorTile: {fileID: 11400000, guid: 5fe40d7b004adde4293bdf59101e1f97, type: 2}
   pathTile: {fileID: 11400000, guid: b52eb31537a3c0f4d9b909925745af72, type: 2}
+  openDoorTile: {fileID: 11400000, guid: b52eb31537a3c0f4d9b909925745af72, type: 2}
   doorHalfwidth: 0
   pathTiles:
-  - {fileID: 11400000, guid: b52eb31537a3c0f4d9b909925745af72, type: 2}
-  - {fileID: 11400000, guid: d85a59ea5ef7b6d488d8434610470f09, type: 2}
-  - {fileID: 11400000, guid: 6d62ee5bebfab4543a4d42e4d00e4921, type: 2}
-  - {fileID: 11400000, guid: 32a9ac03c75f1f34991a1ef854a8eb4a, type: 2}
-  - {fileID: 11400000, guid: d3860dc7511661042a0e40d8d53db3a3, type: 2}
-  - {fileID: 11400000, guid: 9d261fa57a186304eb7c71bcd3920f52, type: 2}
-  - {fileID: 11400000, guid: 1eb88b0997574584f9e6103018404c4c, type: 2}
-  - {fileID: 11400000, guid: bcf612aaeb488bf48b64a976b440426d, type: 2}
+  - {fileID: 11400000, guid: f5945c4f4a016ae419bd0fb1152e2d1a, type: 2}
   roomTiles:
   - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
   - {fileID: 11400000, guid: ae68d965a4218a94ca2134f0ae2007c4, type: 2}

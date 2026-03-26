@@ -30,6 +30,8 @@ namespace BSPDungeonGenrator
         private Tilemap pathTilemap;
         [SerializeField]
         private Tilemap doorTilemap;
+        [SerializeField]
+        private Tilemap openDoorTilemap;
 
         [Header("Line Holder")]
         [SerializeField]
@@ -123,11 +125,13 @@ namespace BSPDungeonGenrator
             ctx.WallTilemap = wallTilemap;
             ctx.PathTilemap = pathTilemap;
             ctx.DoorTilemap = doorTilemap;
+            ctx.OpenDoorTileMap = openDoorTilemap;
 
             ctx.FloorTile = dungeonData.FloorTile;
             ctx.WallTile = dungeonData.WallTile;
             ctx.DoorTile = dungeonData.DoorTile;
             ctx.PathTile = dungeonData.PathTile;
+            ctx.OpenDoorTile = dungeonData.OpenDoorTile;
             ctx.DoorHalfwidth = dungeonData.DoorHalfwidth;
 
             ctx.PathTiles = dungeonData.PathTiles;

@@ -41,14 +41,6 @@ namespace BSPDungeonGenrator.Generation
             // 부모 트리의 던전 크기는 자식 트리의 던전 크기 그대로 사용
             return treeNode.leftTree.dungeonSize;
         }
-        
-        private RectInt GetCenterRect(RectInt rect)
-        {
-            int centerx = rect.x + rect.width / 2;
-            int centerY = rect.y + rect.height / 2;
-
-            return new RectInt(centerx, centerY, 1, 1);
-        }
 
         // 크기에 맞춰 타일을 생성하는 메소드
         private void OnDrawDungeon(int x, int y, int width, int height)

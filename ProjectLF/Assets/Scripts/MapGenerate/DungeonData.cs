@@ -11,7 +11,8 @@ namespace BSPDungeonGenrator.Config
         Room, // 바닥
         Path, // 통로
         Wall, // 벽
-        Door, // 문
+        DoorClosed, // 문
+        DoorOpen
     }
 
     // 방 타입 정의
@@ -67,6 +68,8 @@ namespace BSPDungeonGenrator.Config
         private TileBase doorTile;
         [SerializeField]
         private TileBase pathTile;
+        [SerializeField]
+        private TileBase openDoorTile;
 
         [SerializeField]
         private int doorHalfwidth;
@@ -86,6 +89,7 @@ namespace BSPDungeonGenrator.Config
         public TileBase FloorTile { get { return floorTile; } }
         public TileBase WallTile { get { return wallTile; } }
         public TileBase DoorTile { get { return doorTile; } }
+        public TileBase OpenDoorTile { get { return openDoorTile; } }
         public TileBase PathTile { get { return pathTile; } }
         public TileBase[] PathTiles { get { return pathTiles; } }
 
@@ -122,10 +126,10 @@ namespace BSPDungeonGenrator.Config
 
         private TreeNode m_tree;
 
+
         public RoomInfo(RectInt rect)
         {
             this.m_rect = rect;
-
         }
 
         public Vector2Int Center =>
