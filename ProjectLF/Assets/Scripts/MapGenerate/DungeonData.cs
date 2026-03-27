@@ -11,8 +11,7 @@ namespace BSPDungeonGenrator.Config
         Room, // 바닥
         Path, // 통로
         Wall, // 벽
-        DoorClosed, // 문
-        DoorOpen
+        Door // 문
     }
 
     // 방 타입 정의
@@ -126,14 +125,15 @@ namespace BSPDungeonGenrator.Config
 
         private TreeNode m_tree;
 
-
         public RoomInfo(RectInt rect)
         {
             this.m_rect = rect;
         }
+        public RectInt Rect { get { return m_rect; } }
 
         public Vector2Int Center =>
             new Vector2Int(m_rect.xMin + m_rect.width / 2, m_rect.yMin + m_rect.height / 2);
         //Vector3Int cellPos = new Vector3Int(c.x - ctx.MapSize.x / 2, c.y - ctx.MapSize.y / 2, 0);
     }
+
 }

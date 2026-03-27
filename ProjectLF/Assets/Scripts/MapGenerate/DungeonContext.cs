@@ -10,7 +10,9 @@ namespace BSPDungeonGenrator.Core
     {
         public Vector2Int MapSize;
         public TileType[,] MapData;
-        public Dictionary<Vector2Int, DoorInfo> DoorDict = new Dictionary<Vector2Int, DoorInfo>();
+        // 방 상태
+        public List<RoomRuntimeData> RoomStates = new List<RoomRuntimeData>();
+
 
         // 노드 사이즈
         public int MaxNode;

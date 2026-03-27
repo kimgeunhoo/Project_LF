@@ -138,6 +138,10 @@ namespace BSPDungeonGenrator
             ctx.RoomTiles = dungeonData.RoomTiles;
 
             ctx.Rooms = new List<RoomInfo>();
+
+            
+
+
             ctx.SplitLines = new List<LineSegment>();
             // 맵 데이터는 런타임 배열이므로 dungeonData에서 가져오지 않는다.
             ctx.MapData = new TileType[ctx.MapSize.x, ctx.MapSize.y];
@@ -146,6 +150,7 @@ namespace BSPDungeonGenrator
             ctx.Root = rootNode;
             //Debug.Log($"[Build] duengeonData.PathTile = {(dungeonData.PathTile == null ? "NULL" : "OK")}");
             //Debug.Log($"[Build] duengeonData.PathTiles length = {(dungeonData.PathTiles == null ? -1 : dungeonData.PathTiles.Length)}");
+            InitializedMapNum(ctx);
 
             return ctx;
         }
@@ -156,6 +161,21 @@ namespace BSPDungeonGenrator
             ctx.MapData = new TileType[ctx.MapSize.x, ctx.MapSize.y];
         }
 
+        // 방 번호 배정
+        private void InitializedMapNum(DungeonContext ctx)
+        {
+            for (int i = 0; i < ctx.Rooms.Count; i++)
+            {
+                RoomRuntimeData roomstate = new RoomRuntimeData();
+                roomstate.RoomId = i;
+                roomstate.RoomInfo = ctx.Rooms[i];
+                roomstate.AliveMonsterCount = 0;
+
+                ctx.RoomStates.Add(roomstate);
+            }
+
+        }
+       
         
         
 
