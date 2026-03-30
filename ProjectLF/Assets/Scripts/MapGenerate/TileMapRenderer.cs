@@ -35,14 +35,10 @@ namespace BSPDungeonGenrator.Rendering
                     {
                         ctx.PathTilemap.SetTile(pos, ctx.PathTiles[Random.Range(0, ctx.PathTiles.Length)]);
                     }
-                    else if (ctx.MapData[x, y] == TileType.DoorClosed)
+                    else if (ctx.MapData[x, y] == TileType.Door)
                     {
                         ctx.DoorTilemap.SetTile(pos, ctx.DoorTile);
 
-                    }
-                    else if (ctx.MapData[x,y] == TileType.DoorOpen)
-                    {
-                        ctx.DoorTilemap.SetTile(pos, ctx.OpenDoorTile);
                     }
 
                 }

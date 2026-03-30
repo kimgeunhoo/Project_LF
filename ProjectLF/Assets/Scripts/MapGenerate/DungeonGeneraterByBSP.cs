@@ -46,7 +46,7 @@ namespace BSPDungeonGenrator
         private RoomGenerater roomGenerater = new RoomGenerater();
         private WallGenerator wallGenerator = new WallGenerator();
         private PathGenerator pathGenerator = new PathGenerator();
-        private DoorGenerator doorGenerator = new DoorGenerator();
+        private DoorGenerator doorGenerator;
         private RoomDef roomDef = new RoomDef();
         private BspDrawer bspDrawer;
         private TileMapRenderer tileMapRenderer;
@@ -91,8 +91,6 @@ namespace BSPDungeonGenrator
             pathGenerator.Run(ctx);
             // 寒 积己 裹困 眉农 
             wallGenerator.Run(ctx);
-            // 巩 积己
-            doorGenerator.Run(ctx);
             // 弥辆 鸥老甘 积己
             tileMapRenderer = GetComponent<TileMapRenderer>();
             tileMapRenderer.Run(ctx);
@@ -101,7 +99,11 @@ namespace BSPDungeonGenrator
             roomDistribute = GetComponent<RoomDistribute>();
             roomDistribute.Run(ctx);
 
-            //Debug.Log($"[Awake] spawnPoint null 咯何: {spawnPoint == null}");
+            InitRoomStates(ctx);
+
+            // 巩 积己
+            doorGenerator = GetComponent<DoorGenerator>();
+            doorGenerator.Run(ctx);
             //Debug.Log($"[Awake] ctx.Rooms null 咯何: {ctx.Rooms == null}");
             //Debug.Log($"[Awake] ctx.EncounterPoints null 咯何: {ctx.EncounterPoints == null}");
             //Debug.Log($"[Awake] ctx.MonsterPoints null 咯何: {ctx.MonsterPoints == null}");
@@ -139,7 +141,6 @@ namespace BSPDungeonGenrator
 
             ctx.Rooms = new List<RoomInfo>();
 
-            
 
 
             ctx.SplitLines = new List<LineSegment>();
@@ -175,7 +176,26 @@ namespace BSPDungeonGenrator
             }
 
         }
-       
+
+        private void InitRoomStates(DungeonContext ctx)
+        {
+            ctx.RoomStates = new List<RoomRuntimeData>();
+
+            for(int i = 0; i < ctx.Rooms.Count; i++)
+            {
+                RoomRuntimeData data = new RoomRuntimeData();
+
+                data.RoomId = i;
+                data.RoomInfo = ctx.Rooms[i];
+                data.Doors = new List<DoorController>();
+                data.AliveMonsterCount = 0;
+
+                ctx.RoomStates.Add(data);
+
+
+            }
+
+        }       
         
         
 

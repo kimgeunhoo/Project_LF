@@ -11,7 +11,7 @@ namespace BSPDungeonGenrator.Core
         public Vector2Int MapSize;
         public TileType[,] MapData;
         // 방 상태
-        public List<RoomRuntimeData> RoomStates = new List<RoomRuntimeData>();
+        public List<RoomRuntimeData> RoomStates;
 
 
         // 노드 사이즈
@@ -57,6 +57,7 @@ namespace BSPDungeonGenrator.Core
         public Vector2Int ShopPoint;
         public List<Vector2Int> EncounterPoints = new List<Vector2Int>();
         public List<Vector2Int> MonsterPoints = new List<Vector2Int>();
+
     }
 
 }

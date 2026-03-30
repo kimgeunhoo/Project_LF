@@ -197,7 +197,7 @@ namespace BSPDungeonGenrator.marker
         // 방 마커 출력
         private void SpawnRoomMarkers(List<RoomInfo> rooms)
         {
-            Debug.Log($"rooms={rooms.Count}");
+            //Debug.Log($"rooms={rooms.Count}");
             foreach (var room in rooms)
             {
                 GameObject prefab = room.Type switch

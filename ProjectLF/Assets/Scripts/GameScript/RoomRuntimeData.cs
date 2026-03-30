@@ -8,6 +8,9 @@ public class RoomRuntimeData : MonoBehaviour
 {
     public int RoomId;
     public RoomInfo RoomInfo;
+
     public List<DoorController> Doors = new List<DoorController>();
-    public int AliveMonsterCount;
+    public int AliveMonsterCount = 0;
+
+    public bool IsCleared => AliveMonsterCount <= 0;
 }

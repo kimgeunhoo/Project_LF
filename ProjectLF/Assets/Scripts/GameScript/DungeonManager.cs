@@ -25,7 +25,6 @@ namespace BSPDungeonGenrator.Generation
         [SerializeField]
         private Transform monsterHolder;
 
-
         [Header("Map Generator")]
         [SerializeField]
         private DungeonGeneraterByBSP dungeonGenerator;
@@ -34,8 +33,6 @@ namespace BSPDungeonGenrator.Generation
 
         [SerializeField]
         private RoomDistribute roomDistribute;
-
-
 
         private void Start()
         {

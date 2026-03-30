@@ -24,7 +24,7 @@ namespace BSPDungeonGenrator.marker
                 {
                     case RoomType.Start:
                         ctx.StartPoint = center;
-                        Debug.Log($"[SpawnPoint] ctx.StartPoint {ctx.StartPoint}");
+                        //Debug.Log($"[SpawnPoint] ctx.StartPoint {ctx.StartPoint}");
                         break;
                     case RoomType.Stairs:
                         ctx.StairPoint = center;

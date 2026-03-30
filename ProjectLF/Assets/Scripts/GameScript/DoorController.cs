@@ -27,11 +27,11 @@ public class DoorController : MonoBehaviour
 
     private void Awake()
     {
-        if (doorCollider != null)
+        if (doorCollider == null)
         {
             doorCollider = GetComponent<Collider2D>();
         }
-        if (doorSpriteRenderer != null)
+        if (doorSpriteRenderer == null)
         {
             doorSpriteRenderer = GetComponent<SpriteRenderer>();
         }
