@@ -248,6 +248,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 738749fdca7feab418feace65b6c2204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterSpawn
+--- !u!1 &359409981 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2352065182494810184, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
+  m_PrefabInstance: {fileID: 5919892960486426836}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,7 +600,6 @@ Transform:
   m_Children:
   - {fileID: 801000622}
   - {fileID: 324594481}
-  - {fileID: 1773561375}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &801000621
@@ -643,11 +647,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7022eafe2bd21e74a8d22abc2a96742a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BSPDungeonGenrator.Generation.DungeonManager
-  user: {fileID: 6199281365791584735, guid: 89592f305b13db94aa6c33710af39574, type: 3}
-  monster:
-  - {fileID: 8093317626143208978, guid: 87afa5922d5f42d468b2263e28266e02, type: 3}
-  - {fileID: 8093317626143208978, guid: 6cfb3d5210ed78947aca79a57d5c8cd4, type: 3}
-  - {fileID: 8093317626143208978, guid: 02d3008817a1859408ed1f757974e904, type: 3}
+  playerPF: {fileID: 6199281365791584735, guid: 89592f305b13db94aa6c33710af39574, type: 3}
+  monsterPF: []
   monsterCount: 7
   monsterHolder: {fileID: 324594481}
   dungeonGenerator: {fileID: 1146640534}
@@ -835,6 +836,7 @@ MonoBehaviour:
   doorTilemap: {fileID: 1778886087}
   openDoorTilemap: {fileID: 1778886087}
   lineHolder: {fileID: 297088378}
+  lineHolderPF: {fileID: 359409981}
 --- !u!4 &1146640535
 Transform:
   m_ObjectHideFlags: 0
@@ -1313,54 +1315,6 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 0, z: -10}
---- !u!1 &1773561374
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1773561375}
-  - component: {fileID: 1773561376}
-  m_Layer: 0
-  m_Name: DoorController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1773561375
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773561374}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 778787288}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1773561376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773561374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78c8a4f19bb31ad488b15968f5aa0b1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  doorCollider: {fileID: 6668300392086524852, guid: 35482a6d153397940a9e54d0a8dce855, type: 3}
-  doorSpriteRenderer: {fileID: 7694094384443656033, guid: 35482a6d153397940a9e54d0a8dce855, type: 3}
-  closedSprtie: {fileID: 21300112, guid: 9f8f114589864b6489859a58fbb6baf9, type: 3}
-  openSprite: {fileID: 21300064, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
 --- !u!1 &1778886083
 GameObject:
   m_ObjectHideFlags: 0

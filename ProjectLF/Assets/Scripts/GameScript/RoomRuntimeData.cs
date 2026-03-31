@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class RoomRuntimeData : MonoBehaviour
+public class RoomRuntimeData
 {
     public int RoomId;
     public RoomInfo RoomInfo;
@@ -12,5 +12,10 @@ public class RoomRuntimeData : MonoBehaviour
     public List<DoorController> Doors = new List<DoorController>();
     public int AliveMonsterCount = 0;
 
-    public bool IsCleared => AliveMonsterCount <= 0;
+    public bool IsCleared = false;
+    public bool IsBattleStarted = false;
+    public bool HasSpawnedMonsters = false;
+
+    public Vector2Int SpawnPoint;
+    public List<GameObject> SpawnedMonsters = new List<GameObject>();
 }

@@ -1,21 +1,24 @@
+using BSPDungeonGenrator.Generation;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
-    public int RoomId { get; private set; }
-
+    private int roomId;
+    private DungeonManager dungeonManager;
     private RoomBattleSystem roomBattleSystem;
 
-    public void SetRoom(int roomId, RoomBattleSystem battleSys)
+    public void Init(int _roomId, DungeonManager _dungeonManager)
     {
-        RoomId = roomId;
-        roomBattleSystem = battleSys;
+        this.roomId = _roomId;
+        this.dungeonManager = _dungeonManager;
     }
-
+    
     public void Die()
     {
-        if (roomBattleSystem != null)
-            roomBattleSystem.MonsterDeadMethod(RoomId);
+        if(dungeonManager != null)
+        {
+            dungeonManager.OnMonsterDead(roomId, this.gameObject);
+        }
 
         Destroy(gameObject);
     }

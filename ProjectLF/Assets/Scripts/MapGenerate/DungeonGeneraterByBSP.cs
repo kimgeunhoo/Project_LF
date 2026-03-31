@@ -36,7 +36,8 @@ namespace BSPDungeonGenrator
         [Header("Line Holder")]
         [SerializeField]
         private Transform lineHolder;
-
+        [SerializeField]
+        private GameObject lineHolderPF;
 
         // 컨텍스트 정의
         private static DungeonContext ctx = new DungeonContext();
@@ -100,7 +101,7 @@ namespace BSPDungeonGenrator
             roomDistribute.Run(ctx);
 
             InitRoomStates(ctx);
-
+            SetupMonsterSpawnPoint(ctx);
             // 문 생성
             doorGenerator = GetComponent<DoorGenerator>();
             doorGenerator.Run(ctx);
@@ -110,6 +111,8 @@ namespace BSPDungeonGenrator
 
             // 정의한 방 ctx에 집어넣기
             roomDef.Run(ctx);
+
+            lineHolderPF.SetActive(false);
         }
 
         private DungeonContext Build()
@@ -177,6 +180,7 @@ namespace BSPDungeonGenrator
 
         }
 
+        // 방 상태 저장
         private void InitRoomStates(DungeonContext ctx)
         {
             ctx.RoomStates = new List<RoomRuntimeData>();
@@ -194,10 +198,37 @@ namespace BSPDungeonGenrator
 
 
             }
+        }
 
-        }       
-        
-        
+        // 스폰 포인트 저장
+        private void AssignSpawnPointsToRooms(DungeonContext ctx)
+        {
+            foreach (var spawnPos in roomDistribute.MonsterSpawnPoint)
+            {
+                for (int i = 0; i < ctx.RoomStates.Count; i++)
+                {
+                    RectInt rect = ctx.RoomStates[i].RoomInfo.Rect;
+
+                    if(rect.Contains(spawnPos))
+                    {
+                        ctx.RoomStates[i].SpawnPoint = spawnPos;
+                        Debug.Log($"[AssignSpawn] RoomId = {ctx.RoomStates[i].RoomId}, Spawn = {spawnPos}");
+                        break;
+                    }
+
+
+                }
+            }
+        }
+
+        // 스폰 포인트 지정
+        public void SetupMonsterSpawnPoint(DungeonContext _ctx)
+        {
+            AssignSpawnPointsToRooms(_ctx);
+        }
+
+
+
 
 
     }

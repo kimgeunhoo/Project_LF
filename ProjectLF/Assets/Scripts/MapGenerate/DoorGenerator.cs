@@ -185,44 +185,44 @@ namespace BSPDungeonGenrator.Generation
    
         private void SpawnDoors(Vector2Int doorGridPos, int roomId)
         {
-            Debug.Log($"[SpawnDoors] 1. Start / pos={doorGridPos}, roomId={roomId}");
+         //   Debug.Log($"[SpawnDoors] 1. Start / pos={doorGridPos}, roomId={roomId}");
             Vector3Int cellPos = 
                 new Vector3Int(doorGridPos.x - ctx.MapSize.x / 2, doorGridPos.y - ctx.MapSize.y / 2, 0);
-            Debug.Log($"[SpawnDoors] 2. cellPos={cellPos}");
-            Debug.Log($"[SpawnDoors] 3. floorTilemap null? {floorTilemap == null}");
-            Debug.Log($"[SpawnDoors] 4. doorPrefab null? {doorPrefab == null}");
+         //   Debug.Log($"[SpawnDoors] 2. cellPos={cellPos}");
+         //   Debug.Log($"[SpawnDoors] 3. floorTilemap null? {floorTilemap == null}");
+         //   Debug.Log($"[SpawnDoors] 4. doorPrefab null? {doorPrefab == null}");
 
-            Vector3 worldPos = floorTilemap.GetCellCenterWorld(cellPos); 
+            Vector3 worldPos = floorTilemap.GetCellCenterWorld(cellPos);
             worldPos.z = 0f;
 
-            Debug.Log($"[SpawnDoors]5 doorPrefab = {(doorPrefab == null ? "NULL" : doorPrefab.name)}");
+        //    Debug.Log($"[SpawnDoors]5 doorPrefab = {(doorPrefab == null ? "NULL" : doorPrefab.name)}");
             GameObject obj = Instantiate(doorPrefab, worldPos, Quaternion.identity, doorParent);
-            Debug.Log($"[SpawnDoors]6 spawned obj = {(obj == null ? "NULL" : obj.name)}");
+        //    Debug.Log($"[SpawnDoors]6 spawned obj = {(obj == null ? "NULL" : obj.name)}");
             DoorController door = obj.GetComponent<DoorController>();
-            Debug.Log($"[SpawnDoors]7 DoorController = {(door == null ? "NULL" : "FOUND")}");
+          //  Debug.Log($"[SpawnDoors]7 DoorController = {(door == null ? "NULL" : "FOUND")}");
             if (door == null) 
             { 
                 Debug.LogError("Door prefab에 DoorController가 없습니다.");
                 return; 
             }
-            Debug.Log($"[SpawnDoors] 8. Before Init");
+          //  Debug.Log($"[SpawnDoors] 8. Before Init");
             door.Init(doorGridPos, roomId, false);
-            Debug.Log($"[SpawnDoors] 8. Before Init");
+           // Debug.Log($"[SpawnDoors] 8. Before Init");
 
             RoomRuntimeData roomState = ctx.RoomStates.Find(r => r.RoomId == roomId);
-            Debug.Log($"[SpawnDoors] 10. roomState null? {roomState == null}");
-            Debug.Log($"[SpawnDoors] 11. roomState.Doors null? {roomState?.Doors == null}");
+           // Debug.Log($"[SpawnDoors] 10. roomState null? {roomState == null}");
+           // Debug.Log($"[SpawnDoors] 11. roomState.Doors null? {roomState?.Doors == null}");
             if (roomState != null)
             {
-                Debug.LogWarning("Door 상태 생성");
+          //      Debug.LogWarning("Door 상태 생성");
                 roomState.Doors.Add(door);
             }
-            Debug.Log($"[Door] Spawned - GridPos: {doorGridPos}, RoomId: {roomId}, WorldPos: {worldPos}");
+            //Debug.Log($"[Door] Spawned - GridPos: {doorGridPos}, RoomId: {roomId}, WorldPos: {worldPos}");
         }
 
         private int FindRoomIdFromDoorPos(Vector2Int doorPos)
         {
-            Debug.Log($"[FindRoomId] Start doorPos={doorPos}, RoomStates.Count={ctx.RoomStates.Count}");
+            //Debug.Log($"[FindRoomId] Start doorPos={doorPos}, RoomStates.Count={ctx.RoomStates.Count}");
 
             for (int i = 0; i< ctx.RoomStates.Count; i++)
             {
@@ -235,18 +235,18 @@ namespace BSPDungeonGenrator.Generation
                     rect.height + 2
                 );
 
-                Debug.Log(
-                $"[FindRoomId] Check i={i}, RoomId={ctx.RoomStates[i].RoomId}, " +
-                $"Rect={rect}, Expanded={expanded}, Contains={expanded.Contains(doorPos)}");
+                //Debug.Log(
+                //$"[FindRoomId] Check i={i}, RoomId={ctx.RoomStates[i].RoomId}, " +
+                //$"Rect={rect}, Expanded={expanded}, Contains={expanded.Contains(doorPos)}");
 
                 if (expanded.Contains(doorPos))
                 {
-                    Debug.Log($"[FindRoomId] MATCH doorPos={doorPos} -> RoomId={ctx.RoomStates[i].RoomId}");
+             ///       Debug.Log($"[FindRoomId] MATCH doorPos={doorPos} -> RoomId={ctx.RoomStates[i].RoomId}");
                     return ctx.RoomStates[i].RoomId;
                 }
                    
             }
-            Debug.LogWarning($"[FindRoomId] FAIL doorPos={doorPos}");
+            //Debug.LogWarning($"[FindRoomId] FAIL doorPos={doorPos}");
             return -1;
         }
         private bool IsDoorPosition(int x, int y)
