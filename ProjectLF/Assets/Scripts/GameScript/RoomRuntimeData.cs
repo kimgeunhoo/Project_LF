@@ -10,11 +10,16 @@ public class RoomRuntimeData
     public RoomInfo RoomInfo;
 
     public List<DoorController> Doors = new List<DoorController>();
-    public int AliveMonsterCount = 0;
+    public BoxCollider2D RoomCollider;
 
     public bool IsCleared = false;
     public bool IsBattleStarted = false;
+
+
+    public int AliveMonsterCount = 0;
     public bool HasSpawnedMonsters = false;
+
+
 
     public Vector2Int SpawnPoint;
     public List<GameObject> SpawnedMonsters = new List<GameObject>();

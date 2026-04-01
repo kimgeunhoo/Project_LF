@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using UnityEngine;
 using BSPDungeonGenrator.Core;
 using BSPDungeonGenrator.Config;
+using BSPDungeonGenrator.Generation;
 
 namespace BSPDungeonGenrator.marker
 {
@@ -29,6 +30,10 @@ namespace BSPDungeonGenrator.marker
         public List<Vector2Int> MonsterSpawnPoint { get { return monsterSpawnPoint; } }
 
         private DungeonContext ctx;
+
+        [SerializeField]
+        private DungeonManager dungeonManager;
+
         public void Run(DungeonContext ctx)
         {
             //Debug.Log($"[Generator] Root left = {(ctx.Root.leftTree == null ? "NULL" : "OK")}");
@@ -45,6 +50,7 @@ namespace BSPDungeonGenrator.marker
             //Debug.Log($"[RoomDistribute] collected rooms = {this.ctx.Rooms.Count}");
             AssignRoomTypes(this.ctx.Rooms);
             SpawnRoomMarkers(this.ctx.Rooms);
+
         }
 
         // 리프 방 수집
@@ -198,8 +204,11 @@ namespace BSPDungeonGenrator.marker
         private void SpawnRoomMarkers(List<RoomInfo> rooms)
         {
             //Debug.Log($"rooms={rooms.Count}");
-            foreach (var room in rooms)
+            for (int i = 0; i < rooms.Count; i++)
             {
+                RoomInfo room = rooms[i];
+                int roomId = i;
+
                 GameObject prefab = room.Type switch
                 {
                     RoomType.Start => startMarkerPrefab,
@@ -227,7 +236,18 @@ namespace BSPDungeonGenrator.marker
                 Vector3Int cellPos = new Vector3Int(center.x - ctx.MapSize.x / 2, center.y - ctx.MapSize.y / 2, 0);
                 
                 Vector3 worldPos = ctx.FloorTilemap.CellToWorld(cellPos) + new Vector3(0.5f, 0.5f, 0.5f);
-                Instantiate(prefab, worldPos, Quaternion.identity, markerHolder);
+                GameObject obj = Instantiate(prefab, worldPos, Quaternion.identity, markerHolder);
+
+                if (room.Type == RoomType.Monster)
+                {
+                    EnemyRoomTrigger trigger = obj.GetComponent<EnemyRoomTrigger>();
+                    if (trigger != null)
+                    {
+                        trigger.Init(roomId, dungeonManager);
+                        Debug.Log($"[SpawnRoomMarkers] EnemyPoint roomId={roomId}, center={center}");
+                    }
+                }
+
             }
 
 

@@ -47,13 +47,11 @@ namespace BSPDungeonGenrator.Generation
             cam.LookAt = playerObj.transform;
 
             InitAllDoorsOpen();
-
             dungeonGenerator.SetupMonsterSpawnPoint(ctx);
-
             ResetRoomStates();
-
             CheckStartRoom();
 
+            AssignSpawnPointsToRooms(ctx);
         }
 
         private void InitAllDoorsOpen()
@@ -88,6 +86,55 @@ namespace BSPDungeonGenrator.Generation
 
             }
             Debug.Log("[DungeonManager] RoomStates reset complete");
+
+        }
+
+        private void CreateRoomColliders()
+        {
+            foreach (var room in ctx.RoomStates)
+            {
+                RectInt rect = room.RoomInfo.Rect;
+
+                GameObject colObj = new GameObject($"RoomCollider_{room.RoomId}");
+                colObj.transform.parent = transform;
+
+                BoxCollider2D col = colObj.AddComponent<BoxCollider2D>();
+
+                Vector3Int cellCenter = new Vector3Int(
+                    rect.x + rect.width / 2 - ctx.MapSize.x / 2,
+                    rect.y + rect.height / 2 - ctx.MapSize.y / 2,
+                    0
+                    );
+                Vector3 worldCenter = floorTilemap.GetCellCenterWorld(cellCenter);
+
+                col.offset = worldCenter - colObj.transform.position;
+            }
+
+       
+        }
+
+        private void AssignSpawnPointsToRooms(DungeonContext _ctx)
+        {
+            if(roomDistribute == null)
+            {
+                Debug.LogError("[AssignSpawnPointsToRooms] roomDistribute is null");
+                return;
+            }
+
+            foreach(var spawnPos in roomDistribute.MonsterSpawnPoint)
+            {
+                for (int i = 0; i < ctx.RoomStates.Count; i++)
+                {
+                    RectInt rect = ctx.RoomStates[i].RoomInfo.Rect;
+
+                    if (rect.Contains(spawnPos))
+                    {
+                        ctx.RoomStates[i].SpawnPoint = spawnPos;
+                        Debug.Log($"[AssignSpawn] RoomId={ctx.RoomStates[i].RoomId}, Spawn={spawnPos}");
+                        break;
+                    }
+                }
+            }
 
         }
 
@@ -138,67 +185,68 @@ namespace BSPDungeonGenrator.Generation
 
         }
 
-        // 몬스터 스폰
-        private void SpawnMonstersInRoom(DungeonContext _ctx, RoomRuntimeData room)
+        // 몬스터 스폰 roomID reFectorying 버전
+        private void SpawnMonstersInRoom(int roomId)
         {
-            // null, 클리어, 이미 스폰됨
-            if (room == null)
-                return;
-            if (room.IsCleared)
-                return;
+            RoomRuntimeData room = ctx.RoomStates[roomId];
+
             if (room.HasSpawnedMonsters)
                 return;
 
-            Vector3Int cellPos = 
-                new Vector3Int(room.SpawnPoint.x - _ctx.MapSize.x / 2, room.SpawnPoint.y - _ctx.MapSize.y / 2, 0);
+            room.HasSpawnedMonsters = true;
 
-            Vector3 worldPos = floorTilemap.GetCellCenterWorld(cellPos);
-            worldPos.z = 0f;
+            List<Vector2Int> spawnPoints = roomDistribute.MonsterSpawnPoint;
 
-            room.AliveMonsterCount = 0;
-            room.SpawnedMonsters.Clear();
-
-            for(int j = 0; j < monsterCount; j++)
+            foreach (var spawnPoint in spawnPoints)
             {
-                Vector3 offset = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
+                if(!room.RoomInfo.Rect.Contains(spawnPoint))
+                    continue;
 
-                GameObject obj = Instantiate(monsterPF[0], worldPos + offset, Quaternion.identity, monsterHolder);
-                Monster monsterComp = obj.GetComponent<Monster>();
+                Vector3Int cellPos = new Vector3Int(
+                    spawnPoint.x - ctx.MapSize.x / 2,
+                    spawnPoint.y - ctx.MapSize.y / 2,
+                    0);
 
-                if (monsterComp != null)
+                Vector3 worldPos = floorTilemap.GetCellCenterLocal(cellPos);
+
+                for(int i = 0; i < monsterCount; i++)
                 {
-                    monsterComp.Init(room.RoomId, this);
+                    Vector3 offset = new Vector3
+                    (
+                        Random.Range(-1.5f, 1.5f),
+                        Random.Range(-1.5f, 1.5f),
+                        0);
+
+                    GameObject monster = Instantiate(monsterPF[0], worldPos + offset, Quaternion.identity, monsterHolder);
+
+                    room.SpawnedMonsters.Add(monster);
+                    room.AliveMonsterCount++;
                 }
 
-                room.SpawnedMonsters.Add(obj);
-                room.AliveMonsterCount++;
-
             }
-            room.HasSpawnedMonsters = true;
-            room.AliveMonsterCount++;
 
-            Debug.Log($"[SpawnMonstersInRoom] RoomId = {room.RoomId}, Count= {room.AliveMonsterCount}");
         }
 
-        // 문 열기
-        private void OpenRoomDoors(RoomRuntimeData room)
+       
+
+        // 문 열기 roomId
+        private void OpenRoomDoors(int roomId)
         {
-            if (room == null)
-                return;
+            var room = ctx.RoomStates[roomId];
             foreach (var door in room.Doors)
             {
-                if(door != null)
+                if (door != null)
                 {
                     door.SetOpen(true);
                 }
             }
         }
+       
 
-        // 문 닫기
-        private void CloseRoomDoors(RoomRuntimeData room)
+        // 문 닫기 roomId
+        private void CloseRoomDoors(int roomId)
         {
-            if (room == null)
-                return;
+            var room = ctx.RoomStates[roomId];
             foreach (var door in room.Doors)
             {
                 if (door != null)
@@ -208,6 +256,8 @@ namespace BSPDungeonGenrator.Generation
             }
         }
 
+        
+        // enemyPoint 들어갔을 시
         public void EnterEnemyRoom(int roomId)
         {
             RoomRuntimeData room = ctx.RoomStates.Find(r => r.RoomId == roomId);
@@ -217,7 +267,7 @@ namespace BSPDungeonGenrator.Generation
             if (room.IsCleared)
             {
                 Debug.Log($"[EnterEnemyRoom] Room {roomId} already cleared.");
-                OpenRoomDoors(room);
+                OpenRoomDoors(roomId);
                 return;
             }
 
@@ -227,38 +277,44 @@ namespace BSPDungeonGenrator.Generation
                 return;
             }
 
-            CloseRoomDoors(room);
-            SpawnMonstersInRoom(ctx, room);
+            CloseRoomDoors(roomId);
+            SpawnMonstersInRoom(roomId);
         }
 
-        public void OnMonsterDead(int roomId, GameObject monsterObj)
+
+        // refactorying 방식
+        public void OnMonsterDead(int roomId)
         {
-            RoomRuntimeData room = ctx.RoomStates.Find(r => r.RoomId == roomId);
-            if (room == null)
-                return;
-            if(monsterObj != null)
-            {
-                room.SpawnedMonsters.Remove(monsterObj);
-            }
+            var room = ctx.RoomStates[roomId];
 
             room.AliveMonsterCount--;
-            if(room.AliveMonsterCount < 0)
+
+            Debug.Log($"[Room {roomId}] Remaining: {room.AliveMonsterCount}");
+
+            if (room.AliveMonsterCount <= 0)
             {
-                room.AliveMonsterCount = 0;
+                OnRoomClear(roomId);
             }
 
-            Debug.Log($"[OnMonsterDead] RoomId = {roomId}, Alive = {room.AliveMonsterCount}");
+        }
 
-            if (room.AliveMonsterCount == 0)
+        
+
+        private void OnRoomClear(int roomId)
+        {
+            var room = ctx.RoomStates[roomId];
+
+            room.IsCleared = true;
+
+            Debug.Log($"[Room {roomId}] clear");
+
+            foreach (var door in room.Doors)
             {
-                room.IsCleared = true;
-                room.IsBattleStarted = false;
-
-                OpenRoomDoors(room);
-
-                Debug.Log($"[OnMonsterDead] Room {roomId} Cleared");
+                if (door != null)
+                    door.SetOpen(true);
             }
         }
+
 
 
         private void ShopSpawn()
@@ -271,3 +327,125 @@ namespace BSPDungeonGenrator.Generation
         }
     }
 }
+
+//------------------------ 레거시 코드 ----------------------------
+// 문 열기
+//private void OpenRoomDoors(RoomRuntimeData room)
+//{
+//    if (room == null)
+//        return;
+//    foreach (var door in room.Doors)
+//    {
+//        if(door != null)
+//        {
+//            door.SetOpen(true);
+//        }
+//    }
+//}
+// 문 닫기
+//private void CloseRoomDoors(RoomRuntimeData room)
+//{
+//    if (room == null)
+//        return;
+//    foreach (var door in room.Doors)
+//    {
+//        if (door != null)
+//        {
+//            door.SetOpen(false);
+//        }
+//    }
+//}
+
+// enemyPoint 들어갔을 시
+//public void EnterEnemyRoom(int roomId)
+//{
+//    RoomRuntimeData room = ctx.RoomStates.Find(r => r.RoomId == roomId);
+//    if (room == null)
+//        return;
+
+//    if (room.IsCleared)
+//    {
+//        Debug.Log($"[EnterEnemyRoom] Room {roomId} already cleared.");
+//        OpenRoomDoors(room);
+//        return;
+//    }
+
+//    if (room.IsBattleStarted)
+//    {
+//        Debug.Log($"[EnterEnemyRoom] Room{roomId} Battle started.");
+//        return;
+//    }
+
+//    CloseRoomDoors(room);
+//    SpawnMonstersInRoom(ctx, room);
+//}
+// 몬스터 전부 사망시
+//public void OnMonsterDead(int roomId, GameObject monsterObj)
+//{
+//    RoomRuntimeData room = ctx.RoomStates.Find(r => r.RoomId == roomId);
+//    if (room == null)
+//        return;
+//    if(monsterObj != null)
+//    {
+//        room.SpawnedMonsters.Remove(monsterObj);
+//    }
+
+//    room.AliveMonsterCount--;
+//    if(room.AliveMonsterCount < 0)
+//    {
+//        room.AliveMonsterCount = 0;
+//    }
+
+//    Debug.Log($"[OnMonsterDead] RoomId = {roomId}, Alive = {room.AliveMonsterCount}");
+
+//    if (room.AliveMonsterCount == 0)
+//    {
+//        room.IsCleared = true;
+//        room.IsBattleStarted = false;
+
+//        OpenRoomDoors(room);
+
+//        Debug.Log($"[OnMonsterDead] Room {roomId} Cleared");
+//    }
+//}
+// 몬스터 스폰
+//private void SpawnMonstersInRoom(DungeonContext _ctx, RoomRuntimeData room)
+//{
+//    // null, 클리어, 이미 스폰됨
+//    if (room == null)
+//        return;
+//    if (room.IsCleared)
+//        return;
+//    if (room.HasSpawnedMonsters)
+//        return;
+
+//    Vector3Int cellPos = 
+//        new Vector3Int(room.SpawnPoint.x - _ctx.MapSize.x / 2, room.SpawnPoint.y - _ctx.MapSize.y / 2, 0);
+
+//    Vector3 worldPos = floorTilemap.GetCellCenterWorld(cellPos);
+//    worldPos.z = 0f;
+
+//    room.AliveMonsterCount = 0;
+//    room.SpawnedMonsters.Clear();
+
+//    for(int j = 0; j < monsterCount; j++)
+//    {
+//        Vector3 offset = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
+
+//        GameObject obj = Instantiate(monsterPF[0], worldPos + offset, Quaternion.identity, monsterHolder);
+//        Monster monsterComp = obj.GetComponent<Monster>();
+
+//        if (monsterComp != null)
+//        {
+//            monsterComp.Init(room.RoomId, this);
+//        }
+
+//        room.SpawnedMonsters.Add(obj);
+//        room.AliveMonsterCount++;
+
+//    }
+//    room.HasSpawnedMonsters = true;
+//    room.AliveMonsterCount++;
+
+//    Debug.Log($"[SpawnMonstersInRoom] RoomId = {room.RoomId}, Count= {room.AliveMonsterCount}");
+//}

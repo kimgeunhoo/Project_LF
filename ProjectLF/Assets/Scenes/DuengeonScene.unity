@@ -612,7 +612,6 @@ GameObject:
   m_Component:
   - component: {fileID: 801000622}
   - component: {fileID: 801000623}
-  - component: {fileID: 801000624}
   m_Layer: 0
   m_Name: DungeonManager
   m_TagString: Untagged
@@ -648,27 +647,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BSPDungeonGenrator.Generation.DungeonManager
   playerPF: {fileID: 6199281365791584735, guid: 89592f305b13db94aa6c33710af39574, type: 3}
-  monsterPF: []
+  monsterPF:
+  - {fileID: 8093317626143208978, guid: 87afa5922d5f42d468b2263e28266e02, type: 3}
   monsterCount: 7
   monsterHolder: {fileID: 324594481}
   dungeonGenerator: {fileID: 1146640534}
   floorTilemap: {fileID: 1459407124}
   roomDistribute: {fileID: 1146640548}
---- !u!114 &801000624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 801000621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e000cd72f06753b46afef0e88b692d22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDungeonGenrator.Generation.DoorGenerator
-  doorPrefab: {fileID: 8688306345450108604, guid: 35482a6d153397940a9e54d0a8dce855, type: 3}
-  floorTilemap: {fileID: 1459407124}
-  doorParent: {fileID: 744444004}
 --- !u!1 &1029894457
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,6 +881,7 @@ MonoBehaviour:
   shopMarkerPrefab: {fileID: 5346286869219666318, guid: 610daaa9ffc94e44aa6e3e790df15dc6, type: 3}
   encounterMarkerPrefab: {fileID: 1301252396038865540, guid: 9536599898eae9b4cb77c730dc0df6c8, type: 3}
   MonsterMarkerPrefab: {fileID: 556370128392129475, guid: 26a882a787a743e4b86c66045ff47353, type: 3}
+  dungeonManager: {fileID: 801000623}
 --- !u!114 &1146640549
 MonoBehaviour:
   m_ObjectHideFlags: 0

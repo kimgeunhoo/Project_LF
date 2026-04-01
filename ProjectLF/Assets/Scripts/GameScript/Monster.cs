@@ -15,11 +15,7 @@ public class Monster : MonoBehaviour
     
     public void Die()
     {
-        if(dungeonManager != null)
-        {
-            dungeonManager.OnMonsterDead(roomId, this.gameObject);
-        }
-
+        dungeonManager.OnMonsterDead(roomId);
         Destroy(gameObject);
     }
 
