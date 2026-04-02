@@ -114,8 +114,6 @@ namespace BSPDungeonGenrator.Config
         public GameObject Rectangle { get { return rectangle; } }
         public GameObject LineRenderer { get { return lineRenderer; } }
 
-      
-
     }
     public class RoomInfo
     {

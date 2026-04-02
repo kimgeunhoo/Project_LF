@@ -235,7 +235,7 @@ namespace BSPDungeonGenrator.marker
 
                 Vector3Int cellPos = new Vector3Int(center.x - ctx.MapSize.x / 2, center.y - ctx.MapSize.y / 2, 0);
                 
-                Vector3 worldPos = ctx.FloorTilemap.CellToWorld(cellPos) + new Vector3(0.5f, 0.5f, 0.5f);
+                Vector3 worldPos = ctx.FloorTilemap.CellToWorld(cellPos) + new Vector3(0f, 0f, 0f);
                 GameObject obj = Instantiate(prefab, worldPos, Quaternion.identity, markerHolder);
 
                 if (room.Type == RoomType.Monster)
@@ -243,16 +243,44 @@ namespace BSPDungeonGenrator.marker
                     EnemyRoomTrigger trigger = obj.GetComponent<EnemyRoomTrigger>();
                     if (trigger != null)
                     {
-                        trigger.Init(roomId, dungeonManager);
-                        Debug.Log($"[SpawnRoomMarkers] EnemyPoint roomId={roomId}, center={center}");
+                        trigger.Init(roomId, dungeonManager);      
                     }
+
+                    SetupEnemyRoomCollider(obj, room);
                 }
-
             }
-
-
         }
 
+        private void SetupEnemyRoomCollider(GameObject obj, RoomInfo room)
+        {
+            BoxCollider2D col = obj.GetComponent<BoxCollider2D>();
+
+            if (col == null)
+            {
+                Debug.LogWarning("BoxCollider가 없습니다.");
+                return;
+            }
+
+            col.isTrigger = true;
+
+            RectInt rect = room.Rect;
+            // 방 크기만큼 확장
+            col.size = new Vector2(rect.width, rect.height);
+
+            // offset 계산
+            Vector2 rectCenter = new Vector2(
+                rect.xMin + rect.width * 0.5f,
+                rect.yMin + rect.height * 0.5f
+                );
+
+            Vector2 roomCenter = new Vector2(room.Center.x, room.Center.y);
+            Vector2 baseOffset = rectCenter - roomCenter;
+
+            col.offset = baseOffset;
+            //col.offset = baseOffset - new Vector2(offsetX, offsetY);
+
+            Debug.Log($"[RoomDistribute] Enemy collider set / size={col.size}, offset={col.offset}, roomCenter={room.Center}, rect={rect}");
+        }
     }
 
 

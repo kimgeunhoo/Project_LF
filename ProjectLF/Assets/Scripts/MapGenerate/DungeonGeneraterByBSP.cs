@@ -212,7 +212,7 @@ namespace BSPDungeonGenrator
                     if(rect.Contains(spawnPos))
                     {
                         ctx.RoomStates[i].SpawnPoint = spawnPos;
-                        Debug.Log($"[AssignSpawn] RoomId = {ctx.RoomStates[i].RoomId}, Spawn = {spawnPos}");
+                        //Debug.Log($"[AssignSpawn] RoomId = {ctx.RoomStates[i].RoomId}, Spawn = {spawnPos}");
                         break;
                     }
 

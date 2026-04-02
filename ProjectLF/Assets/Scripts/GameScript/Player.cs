@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,16 +11,23 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Character p_character;
 
-    Rigidbody2D rigid;
+    private Rigidbody2D rigid;
 
     [SerializeField]
     private Vector3 movePosition = new Vector3();
 
+
     private Player player;
 
-    private void Start()
+    private GameObject atkCol;
+
+    private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {      
         movePosition = transform.position;
     }
 
@@ -31,6 +39,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         OnMove();
+
     }
 
     private void OnMove()
@@ -39,6 +48,5 @@ public class Player : MonoBehaviour
         float moveY = Input.GetAxisRaw("Vertical");
         movePosition = new Vector3(moveX, moveY, 0);
     }
-
 
 }

@@ -67,7 +67,7 @@ namespace BSPDungeonGenrator.Generation
                 }
             }
 
-            Debug.Log("[DungeonManager] all Door Open(default)");
+            //Debug.Log("[DungeonManager] all Door Open(default)");
         }
 
         private void ResetRoomStates()
@@ -85,7 +85,7 @@ namespace BSPDungeonGenrator.Generation
                 }
 
             }
-            Debug.Log("[DungeonManager] RoomStates reset complete");
+            //Debug.Log("[DungeonManager] RoomStates reset complete");
 
         }
 
@@ -130,7 +130,7 @@ namespace BSPDungeonGenrator.Generation
                     if (rect.Contains(spawnPos))
                     {
                         ctx.RoomStates[i].SpawnPoint = spawnPos;
-                        Debug.Log($"[AssignSpawn] RoomId={ctx.RoomStates[i].RoomId}, Spawn={spawnPos}");
+                        //Debug.Log($"[AssignSpawn] RoomId={ctx.RoomStates[i].RoomId}, Spawn={spawnPos}");
                         break;
                     }
                 }
@@ -154,7 +154,7 @@ namespace BSPDungeonGenrator.Generation
 
                 if (rect.Contains(gridPos))
                 {
-                    Debug.Log($"[StartRoom] Player starts in Room {room.RoomId}");
+                    //Debug.Log($"[StartRoom] Player starts in Room {room.RoomId}");
                     break;
                 }
 
@@ -218,6 +218,12 @@ namespace BSPDungeonGenrator.Generation
                         0);
 
                     GameObject monster = Instantiate(monsterPF[0], worldPos + offset, Quaternion.identity, monsterHolder);
+                    Monster m = monster.GetComponent<Monster>();
+                    if (m != null)
+                    {
+                        m.Init(roomId, this);
+                        Debug.Log($"[MonsterSpawn] Init monster / roomId={roomId}");
+                    }
 
                     room.SpawnedMonsters.Add(monster);
                     room.AliveMonsterCount++;
@@ -283,6 +289,7 @@ namespace BSPDungeonGenrator.Generation
 
 
         // refactorying ¹æ½Ä
+
         public void OnMonsterDead(int roomId)
         {
             var room = ctx.RoomStates[roomId];
@@ -295,6 +302,7 @@ namespace BSPDungeonGenrator.Generation
             {
                 OnRoomClear(roomId);
             }
+
 
         }
 
