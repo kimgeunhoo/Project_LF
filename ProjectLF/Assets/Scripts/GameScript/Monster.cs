@@ -22,7 +22,7 @@ public class Monster : MonoBehaviour
 
     public void Init(int _roomId, DungeonManager _dungeonManager)
     {
-        Debug.Log($"[Monster] Init called / roomId={roomId}");
+        //Debug.Log($"[Monster] Init called / roomId={roomId}");
         this.roomId = _roomId;
         this.dungeonManager = _dungeonManager;
     }

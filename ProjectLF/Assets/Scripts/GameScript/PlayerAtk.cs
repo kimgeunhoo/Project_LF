@@ -7,9 +7,9 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField]
     private Collider2D attackCollider;
     [SerializeField]
-    private float attackDuration = 1f;
+    private float attackDuration = 0.2f;
     [SerializeField]
-    private float attackCooldown = 1f;
+    private float attackCooldown = 0.2f;
 
     [SerializeField]
     private SpriteRenderer attackSprite;
@@ -32,6 +32,7 @@ public class PlayerAttack : MonoBehaviour
 
         
         attackCollider.enabled = false;
+        attackSprite.enabled = false;
         //Debug.Log("[PlayerAttack] attackCollider disabled at start");
         
     }
@@ -60,22 +61,23 @@ public class PlayerAttack : MonoBehaviour
 
     public IEnumerator AttackCouroutine()
     {
-        Debug.Log("[PlayerAttack] AttackRoutine START");
+       // Debug.Log("[PlayerAttack] AttackRoutine START");
         isAttacking = true;
-
+        attackSprite.enabled = true;
 
         if (attackCollider == null) 
         {
-            Debug.LogError("[PlayerAttack] AttackRoutine failed - attackCollider is NULL");
+            //Debug.LogError("[PlayerAttack] AttackRoutine failed - attackCollider is NULL");
             yield break;
         }
 
         attackCollider.enabled = true;
-        Debug.Log($"[PlayerAttack] attackCollider ON / enabled = {attackCollider.enabled}");
+       // Debug.Log($"[PlayerAttack] attackCollider ON / enabled = {attackCollider.enabled}");
         yield return new WaitForSeconds(attackDuration);
 
         attackCollider.enabled = false;
-        Debug.Log($"[PlayerAttack] attackCollider OFF / enabled = {attackCollider.enabled}");
+        attackSprite.enabled = false;
+        // Debug.Log($"[PlayerAttack] attackCollider OFF / enabled = {attackCollider.enabled}");
         yield return new WaitForSeconds(attackCooldown);
 
         isAttacking = false;

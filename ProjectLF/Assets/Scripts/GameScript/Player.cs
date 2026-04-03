@@ -39,7 +39,6 @@ public class Player : MonoBehaviour
     private void Update()
     {
         OnMove();
-
     }
 
     private void OnMove()
@@ -48,5 +47,7 @@ public class Player : MonoBehaviour
         float moveY = Input.GetAxisRaw("Vertical");
         movePosition = new Vector3(moveX, moveY, 0);
     }
+
+
 
 }

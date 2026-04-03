@@ -89,6 +89,7 @@ namespace BSPDungeonGenrator.Generation
 
         }
 
+        // 방에 콜라이더 없다면 생성
         private void CreateRoomColliders()
         {
             foreach (var room in ctx.RoomStates)
@@ -117,7 +118,7 @@ namespace BSPDungeonGenrator.Generation
         {
             if(roomDistribute == null)
             {
-                Debug.LogError("[AssignSpawnPointsToRooms] roomDistribute is null");
+                //Debug.LogError("[AssignSpawnPointsToRooms] roomDistribute is null");
                 return;
             }
 
@@ -213,8 +214,8 @@ namespace BSPDungeonGenrator.Generation
                 {
                     Vector3 offset = new Vector3
                     (
-                        Random.Range(-1.5f, 1.5f),
-                        Random.Range(-1.5f, 1.5f),
+                        Random.Range(-5f, 5f),
+                        Random.Range(-5f, 5f),
                         0);
 
                     GameObject monster = Instantiate(monsterPF[0], worldPos + offset, Quaternion.identity, monsterHolder);
@@ -222,7 +223,7 @@ namespace BSPDungeonGenrator.Generation
                     if (m != null)
                     {
                         m.Init(roomId, this);
-                        Debug.Log($"[MonsterSpawn] Init monster / roomId={roomId}");
+                        //Debug.Log($"[MonsterSpawn] Init monster / roomId={roomId}");
                     }
 
                     room.SpawnedMonsters.Add(monster);
@@ -232,8 +233,6 @@ namespace BSPDungeonGenrator.Generation
             }
 
         }
-
-       
 
         // 문 열기 roomId
         private void OpenRoomDoors(int roomId)
@@ -261,8 +260,7 @@ namespace BSPDungeonGenrator.Generation
                 }
             }
         }
-
-        
+     
         // enemyPoint 들어갔을 시
         public void EnterEnemyRoom(int roomId)
         {
@@ -272,14 +270,14 @@ namespace BSPDungeonGenrator.Generation
 
             if (room.IsCleared)
             {
-                Debug.Log($"[EnterEnemyRoom] Room {roomId} already cleared.");
+                //Debug.Log($"[EnterEnemyRoom] Room {roomId} already cleared.");
                 OpenRoomDoors(roomId);
                 return;
             }
 
             if (room.IsBattleStarted)
             {
-                Debug.Log($"[EnterEnemyRoom] Room{roomId} Battle started.");
+                //Debug.Log($"[EnterEnemyRoom] Room{roomId} Battle started.");
                 return;
             }
 
@@ -296,17 +294,13 @@ namespace BSPDungeonGenrator.Generation
 
             room.AliveMonsterCount--;
 
-            Debug.Log($"[Room {roomId}] Remaining: {room.AliveMonsterCount}");
+           // Debug.Log($"[Room {roomId}] Remaining: {room.AliveMonsterCount}");
 
             if (room.AliveMonsterCount <= 0)
             {
                 OnRoomClear(roomId);
             }
-
-
         }
-
-        
 
         private void OnRoomClear(int roomId)
         {
@@ -314,7 +308,7 @@ namespace BSPDungeonGenrator.Generation
 
             room.IsCleared = true;
 
-            Debug.Log($"[Room {roomId}] clear");
+            //Debug.Log($"[Room {roomId}] clear");
 
             foreach (var door in room.Doors)
             {

@@ -330,5 +330,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
   attackCollider: {fileID: 1455592773683309416}
-  attackDuration: 1
-  attackCooldown: 1
+  attackDuration: 0.2
+  attackCooldown: 0.2
+  attackSprite: {fileID: 565651915757541515}

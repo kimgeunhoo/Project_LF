@@ -257,7 +257,7 @@ namespace BSPDungeonGenrator.marker
 
             if (col == null)
             {
-                Debug.LogWarning("BoxCollider가 없습니다.");
+               // Debug.LogWarning("BoxCollider가 없습니다.");
                 return;
             }
 
@@ -279,7 +279,7 @@ namespace BSPDungeonGenrator.marker
             col.offset = baseOffset;
             //col.offset = baseOffset - new Vector2(offsetX, offsetY);
 
-            Debug.Log($"[RoomDistribute] Enemy collider set / size={col.size}, offset={col.offset}, roomCenter={room.Center}, rect={rect}");
+            //Debug.Log($"[RoomDistribute] Enemy collider set / size={col.size}, offset={col.offset}, roomCenter={room.Center}, rect={rect}");
         }
     }
 

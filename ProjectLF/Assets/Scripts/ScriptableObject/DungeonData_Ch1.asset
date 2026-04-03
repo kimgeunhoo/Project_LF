@@ -37,14 +37,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5451d01092d6a0947a1059da45c09ebe, type: 2}
   - {fileID: 11400000, guid: 1d9b2716edff8d7418583a4c52cba7b7, type: 2}
   - {fileID: 11400000, guid: 76a0eb89921157e448ea699f93e95564, type: 2}
-  - {fileID: 11400000, guid: 4c8943e2da4e8964bb3eb170c1aaba9f, type: 2}
-  - {fileID: 11400000, guid: abe9370c58435f244a894542a9d0f78d, type: 2}
-  - {fileID: 11400000, guid: 0cb9748ff72f7c74ab513387ceba11ad, type: 2}
-  - {fileID: 11400000, guid: 78357bde4dab3464886f927c077dc765, type: 2}
+  - {fileID: 11400000, guid: 34303d25145ab104f8fabf97fe65552d, type: 2}
   - {fileID: 11400000, guid: 57824cd7e1612d14090d617a256eca53, type: 2}
-  - {fileID: 11400000, guid: 162b2c3c7ed3c8240995ad1799a0339a, type: 2}
-  - {fileID: 11400000, guid: 2c670dc28da29e54da4c78aac2caebe8, type: 2}
-  - {fileID: 11400000, guid: 57b6fab8e8adf24478f260a85ba4fa71, type: 2}
   line: {fileID: 3806480354315292991, guid: 4cdd22b8718bcbd47af6618f0dbb68b1, type: 3}
   rectangle: {fileID: 7597152152662077364, guid: fd3131a82801e1a49bb05a8b7f179d7d, type: 3}
   lineRenderer: {fileID: 2352065182494810184, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
