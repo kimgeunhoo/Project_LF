@@ -40,7 +40,7 @@ namespace BSPDungeonGenrator
         private GameObject lineHolderPF;
 
         // 컨텍스트 정의
-        private static DungeonContext ctx = new DungeonContext();
+        private DungeonContext ctx = new DungeonContext();
 
         // 방 생성에 사용할 생성 클래스 정의
         private BspSplitter bspSplitter = new BspSplitter();
@@ -71,8 +71,8 @@ namespace BSPDungeonGenrator
             
             // ctx 정의
             ctx = Build();
-            // 벽과 관련된 데이터 배열 생성
-            InitializeMap();
+            //// 벽과 관련된 데이터 배열 생성
+            //InitializeMap();
             // 던전 사이즈에 맞게 벽을 그림
             bspDrawer = GetComponent<BspDrawer>();
             bspDrawer.OnDrawRectangle(ctx, dungeonData, lineHolder);
@@ -142,19 +142,21 @@ namespace BSPDungeonGenrator
             ctx.PathTiles = dungeonData.PathTiles;
             ctx.RoomTiles = dungeonData.RoomTiles;
 
-            ctx.Rooms = new List<RoomInfo>();
-
-
-
-            ctx.SplitLines = new List<LineSegment>();
             // 맵 데이터는 런타임 배열이므로 dungeonData에서 가져오지 않는다.
             ctx.MapData = new TileType[ctx.MapSize.x, ctx.MapSize.y];
+            ctx.Rooms = new List<RoomInfo>();
+            ctx.RoomStates = new List<RoomRuntimeData>();
+            ctx.SplitLines = new List<LineSegment>();
+
+            ctx.EncounterPoints = new List<Vector2Int>();
+            ctx.MonsterPoints = new List<Vector2Int>();
+
             // 루트가 될 트리 생성
             TreeNode rootNode = new TreeNode(0, 0, ctx.MapSize.x, ctx.MapSize.y);
             ctx.Root = rootNode;
             //Debug.Log($"[Build] duengeonData.PathTile = {(dungeonData.PathTile == null ? "NULL" : "OK")}");
             //Debug.Log($"[Build] duengeonData.PathTiles length = {(dungeonData.PathTiles == null ? -1 : dungeonData.PathTiles.Length)}");
-            InitializedMapNum(ctx);
+            //InitializedMapNum(ctx);
 
             return ctx;
         }

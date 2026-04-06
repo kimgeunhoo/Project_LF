@@ -35,16 +35,16 @@ namespace BSPDungeonGenrator.Generation
             Vector2Int leftExit = GetExitPoint(leftRoom, rightCenter);
             Vector2Int rightExit = GetExitPoint(rightRoom, leftCenter);
 
-            // 연결 방향은 랜덤
+            // 연결 방향은 랜덤, L자 방식
             if (Random.value < 0.5f)
             {
-                CreateHorizontalCorridor(leftCenter.x, rightCenter.x, leftCenter.y);
-                CreateVerticalCorridor(leftCenter.y, rightCenter.y, rightCenter.x);
+                CreateHorizontalCorridor(leftExit.x, rightExit.x, leftExit.y);
+                CreateVerticalCorridor(leftExit.y, rightExit.y, rightExit.x);
             }
             else
             {
-                CreateVerticalCorridor(leftCenter.y, rightCenter.y, leftCenter.x);
-                CreateHorizontalCorridor(leftCenter.x, rightCenter.x, leftCenter.y);
+                CreateVerticalCorridor(leftExit.y, rightExit.y, leftExit.x);
+                CreateHorizontalCorridor(leftExit.x, rightExit.x, rightExit.y);
             }
 
             // 길 생성
@@ -112,33 +112,28 @@ namespace BSPDungeonGenrator.Generation
             int dx = targetCenter.x - roomCenter.x;
             int dy = targetCenter.y - roomCenter.y;
 
-            if (Mathf.Abs(dx) > Mathf.Abs(dy))
+            if (Mathf.Abs(dx) >= Mathf.Abs(dy))
             {
                 if (dx > 0)
                 {
-                    return new Vector2Int(room.xMax -1, roomCenter.y);
+                    return new Vector2Int(room.xMax, roomCenter.y);
                 }
                 else
                 {
-                    return new Vector2Int(room.xMin, roomCenter.y);
+                    return new Vector2Int(room.xMin - 1, roomCenter.y);
                 }
             }
             else
             {
                 if (dy > 0)
                 {
-                    return new Vector2Int(roomCenter.x, room.yMax - 1);
+                    return new Vector2Int(roomCenter.x, room.yMax);
                 }
                 else
                 {
-                    return new Vector2Int(roomCenter.x, room.yMin);
+                    return new Vector2Int(roomCenter.x, room.yMin - 1);
                 }
             }
-        }
-
-        private void CreateCorrider()
-        {
-
         }
 
     }

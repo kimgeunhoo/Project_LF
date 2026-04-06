@@ -44,7 +44,7 @@ namespace BSPDungeonGenrator.Config
         private int minNode;
 
         public int MaxNode { get { return maxNode; } }
-        public int MinNode { get { return maxNode; } }
+        public int MinNode { get { return minNode; } }
 
         // 사각형 분리
         [Header("Room Magnification")]

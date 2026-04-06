@@ -38,8 +38,12 @@ namespace BSPDungeonGenrator.Generation
             // 리턴 값 = 던전 크기
             treeNode.leftTree.dungeonSize = GenerateDeungeuon(treeNode.leftTree, node + 1);
             treeNode.rightTree.dungeonSize = GenerateDeungeuon(treeNode.rightTree, node + 1);
+
+            treeNode.dungeonSize = Random.value < 0.5f
+                ? treeNode.leftTree.dungeonSize : treeNode.rightTree.dungeonSize;
+
             // 부모 트리의 던전 크기는 자식 트리의 던전 크기 그대로 사용
-            return treeNode.leftTree.dungeonSize;
+            return treeNode.dungeonSize;
         }
 
         // 크기에 맞춰 타일을 생성하는 메소드
