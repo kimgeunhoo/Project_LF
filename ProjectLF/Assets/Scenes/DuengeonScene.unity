@@ -245,9 +245,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 324594480}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 738749fdca7feab418feace65b6c2204, type: 3}
+  m_Script: {fileID: 11500000, guid: 98ab5f239035fb245b8923cd14ce62a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MonsterSpawn
+  m_EditorClassIdentifier: Assembly-CSharp::Monster
+  m_Monster: {fileID: 11400000, guid: 01eca7489d726184eb5068add5d9c29b, type: 2}
+  Hp: 0
 --- !u!1 &359409981 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2352065182494810184, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
