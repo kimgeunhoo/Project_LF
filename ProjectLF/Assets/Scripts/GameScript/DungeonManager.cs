@@ -47,7 +47,7 @@ namespace BSPDungeonGenrator.Generation
             cam.LookAt = playerObj.transform;
 
             InitAllDoorsOpen();
-            dungeonGenerator.SetupMonsterSpawnPoint(ctx);
+            //dungeonGenerator.SetupMonsterSpawnPoint(ctx);
             ResetRoomStates();
             CheckStartRoom();
 

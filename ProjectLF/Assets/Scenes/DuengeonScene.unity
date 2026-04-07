@@ -199,11 +199,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1146640535}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &297088378 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3753848740367929461, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
-  m_PrefabInstance: {fileID: 5919892960486426836}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &324594480
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,11 +245,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Monster
   m_Monster: {fileID: 11400000, guid: 01eca7489d726184eb5068add5d9c29b, type: 2}
   Hp: 0
---- !u!1 &359409981 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2352065182494810184, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
-  m_PrefabInstance: {fileID: 5919892960486426836}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,9 +643,9 @@ MonoBehaviour:
   - {fileID: 8093317626143208978, guid: 87afa5922d5f42d468b2263e28266e02, type: 3}
   monsterCount: 7
   monsterHolder: {fileID: 324594481}
-  dungeonGenerator: {fileID: 1146640534}
+  dungeonGenerator: {fileID: 0}
   floorTilemap: {fileID: 1459407124}
-  roomDistribute: {fileID: 1146640548}
+  roomDistribute: {fileID: 0}
 --- !u!1 &1029894457
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,11 +782,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1146640535}
-  - component: {fileID: 1146640534}
-  - component: {fileID: 1146640539}
-  - component: {fileID: 1146640547}
-  - component: {fileID: 1146640548}
-  - component: {fileID: 1146640549}
   m_Layer: 0
   m_Name: MapGenerater
   m_TagString: Untagged
@@ -804,26 +789,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1146640534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5436e2953bf6d4c9aaca24a623f442, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.DuengeonGeneraterByBSP
-  dungeonData: {fileID: 11400000, guid: da3ff97bb9ffd5448b936fe5f27415ac, type: 2}
-  floorTilemap: {fileID: 1459407124}
-  wallTilemap: {fileID: 1995121613}
-  pathTilemap: {fileID: 1245205044}
-  doorTilemap: {fileID: 1778886087}
-  openDoorTilemap: {fileID: 1778886087}
-  lineHolder: {fileID: 297088378}
-  lineHolderPF: {fileID: 359409981}
 --- !u!4 &1146640535
 Transform:
   m_ObjectHideFlags: 0
@@ -841,64 +806,6 @@ Transform:
   - {fileID: 239377223}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1146640539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ecf0d6daf6b31e4aad3e5bb9402b392, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Rendering.BspLineDrawer
---- !u!114 &1146640547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d408b4777f414240a163aff203517f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.Rendering.TileMapRenderer
---- !u!114 &1146640548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aafac63036b9d8f468019ef231c4c6a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDuengeonGenrator.marker.RoomDistribute
-  markerHolder: {fileID: 239377223}
-  startMarkerPrefab: {fileID: 6883092143605729427, guid: 4704ef6bbb29c774d8499a244cb64b2a, type: 3}
-  stairMarkerPrefab: {fileID: 1767822877876710672, guid: 5f8b368070af8bc47bfaff3346fa0625, type: 3}
-  shopMarkerPrefab: {fileID: 5346286869219666318, guid: 610daaa9ffc94e44aa6e3e790df15dc6, type: 3}
-  encounterMarkerPrefab: {fileID: 1301252396038865540, guid: 9536599898eae9b4cb77c730dc0df6c8, type: 3}
-  MonsterMarkerPrefab: {fileID: 556370128392129475, guid: 26a882a787a743e4b86c66045ff47353, type: 3}
-  dungeonManager: {fileID: 801000623}
---- !u!114 &1146640549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146640533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e000cd72f06753b46afef0e88b692d22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BSPDungeonGenrator.Generation.DoorGenerator
-  doorPrefab: {fileID: 8688306345450108604, guid: 35482a6d153397940a9e54d0a8dce855, type: 3}
-  floorTilemap: {fileID: 1459407124}
-  doorParent: {fileID: 744444004}
 --- !u!1 &1245205041
 GameObject:
   m_ObjectHideFlags: 0

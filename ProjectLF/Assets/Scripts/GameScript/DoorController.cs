@@ -7,56 +7,23 @@ using UnityEngine.Tilemaps;
 
 public class DoorController : MonoBehaviour
 {
-    [SerializeField] 
-    private Collider2D doorCollider;
-    [SerializeField]
-    private SpriteRenderer doorSpriteRenderer;
-    [SerializeField]
-    private Sprite closedSprtie;
-    [SerializeField]
-    private Sprite openSprite;
+    private int roomId = -1;
 
-    public Vector2Int GridPos
-    { get; private set; }
+    public int RoomId { get { return roomId; } }
 
-    public int RoomId
-    { get; private set; }
-
-    public bool IsOpen
-    { get; private set; }
-
-    private void Awake()
+    public void SetRoomId(int id)
     {
-        if (doorCollider == null)
-        {
-            doorCollider = GetComponent<Collider2D>();
-        }
-        if (doorSpriteRenderer == null)
-        {
-            doorSpriteRenderer = GetComponent<SpriteRenderer>();
-        }
+        roomId = id;
     }
 
-    public void Init(Vector2Int gridPos, int roomId, bool startOpen = false)
+    public void OpenDoor()
     {
-        GridPos = gridPos;
-        RoomId = roomId;
-        SetOpen(startOpen);
+        gameObject.SetActive(false);
     }
 
-    public void SetOpen(bool open)
+    public void CloseDoor()
     {
-        IsOpen = open;
-
-        if (doorCollider != null)
-        {
-            doorCollider.enabled = !open;
-        }
-
-        if (doorSpriteRenderer != null)
-        {
-            doorSpriteRenderer.sprite = open ? openSprite : closedSprtie;
-        }
+        gameObject.SetActive(true); 
     }
 
 }
