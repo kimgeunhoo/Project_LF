@@ -117,20 +117,20 @@ namespace BSPDungeonGenrator.Config
     }
     public class RoomInfo
     {
-        private RectInt m_rect;
-        //private RoomType m_type;
+        public RectInt Rect { get; private set; }
         public RoomType Type { get; set; }
+        public int RoomId { get; set; }
 
         private TreeNode m_tree;
-
-        public RoomInfo(RectInt rect)
-        {
-            this.m_rect = rect;
-        }
-        public RectInt Rect { get { return m_rect; } }
-
         public Vector2Int Center =>
-            new Vector2Int(m_rect.xMin + m_rect.width / 2, m_rect.yMin + m_rect.height / 2);
+            new Vector2Int(Rect.xMin + Rect.width / 2, Rect.yMin + Rect.height / 2);
+
+        public RoomInfo(int roomId, RectInt rect)
+        {
+            RoomId = roomId;
+            Rect = rect;
+        }
+
         //Vector3Int cellPos = new Vector3Int(c.x - ctx.MapSize.x / 2, c.y - ctx.MapSize.y / 2, 0);
     }
 

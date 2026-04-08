@@ -10,6 +10,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System;
 
 namespace BSPDungeonGenrator
 {
@@ -69,14 +70,19 @@ namespace BSPDungeonGenrator
 
             ctx = contextBuilder.Build(dungeonData, floorTilemap, wallTilemap, pathTilemap, doorTilemap, openDoorTilemap);
 
+            // split, debug draw, room generator
             RunGenerationPipeline();
-            RunRoomLayoutPipeLine();
+            // roomdistribute, roomstate init
+            RunRoomLayoutPipeline();
+            // path, wall, optional point
+            RunPathAndWallPipeline();
+            // door, render, marker, spawn
             RunDoorPipeline();
 
-            if(lineHolderPF != null)
-            {
-                lineHolderPF.SetActive(true);
-            }
+            //if(lineHolderPF != null)
+            //{
+            //    lineHolderPF.SetActive(true);
+            //}
 
         }
 
@@ -97,25 +103,48 @@ namespace BSPDungeonGenrator
                 Debug.LogError("dungeonData가 할당되지 않았습니다.");
             }
         }
-
         private void RunGenerationPipeline()
         {
-            bspDrawer.DrawRectangle(ctx.MapSize, lineHolder);
-
             bspSplitter.Run(ctx);
-            bspDrawer.DrawLine(ctx.SplitLines, ctx.MapSize, lineHolder);
+            if (bspDrawer != null)
+            {
+                bspDrawer.OnDrawRectangle(ctx, dungeonData, lineHolder);
+                bspDrawer.OnDrawLine(ctx, dungeonData, lineHolder);
+            }
 
             roomGenerater.Run(ctx);
-            pathGenerator.Run(ctx);
-            wallGenerator.Run(ctx);
-            mapDataPainter.Run(ctx);
         }
 
-        private void RunRoomLayoutPipeLine()
+        private void RunPathAndWallPipeline()
+        {
+
+            pathGenerator.Run(ctx);
+           
+            if (mapDataPainter != null)
+            {
+                mapDataPainter.Run(ctx);
+            }
+            wallGenerator.Run(ctx);
+
+            int wallCount = 0;
+            for (int x = 0; x < ctx.MapSize.x; x++)
+            {
+                for (int y = 0; y < ctx.MapSize.y; y++)
+                {
+                    if (ctx.MapData[x, y] == TileType.Wall)
+                        wallCount++;
+                }
+            }
+            Debug.Log($"[WallGenerator] wallCount = {wallCount}");
+        }
+
+        private void RunRoomLayoutPipeline()
         {
             roomDistribute.Run(ctx);
             roomStateInitializer.Initialize(ctx, roomDistribute);
         }
+
+
 
         // 생성 메서드
         private void RunDoorPipeline()

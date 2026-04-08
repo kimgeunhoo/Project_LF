@@ -100,8 +100,8 @@ public class RoomController : MonoBehaviour
     {
         foreach (var door in doors)
         {
-            if (door != null)
-                door.SetOpen(true);
+            //if (door != null)
+            //    door.SetOpen(true);
         }
     }
 
@@ -109,8 +109,8 @@ public class RoomController : MonoBehaviour
     {
         foreach (var door in doors)
         {
-            if (door != null)
-                door.SetOpen(false);
+            //if (door != null)
+            //    door.SetOpen(false);
         }
     }
 

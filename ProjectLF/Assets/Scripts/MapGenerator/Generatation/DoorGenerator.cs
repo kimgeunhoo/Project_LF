@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace BSPDungeonGenrator.Generation
 {
-    public class DoorGenerator
+    public class DoorGenerator : MonoBehaviour
     {
         private struct DoorCandidate
         {

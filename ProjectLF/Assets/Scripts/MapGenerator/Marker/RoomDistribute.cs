@@ -84,7 +84,7 @@ namespace BSPDungeonGenrator.marker
             bool isLeaf = node.leftTree == null && node.rightTree == null;
             if (isLeaf)
             {
-                rooms.Add(new RoomInfo(node.dungeonSize));
+                rooms.Add(new RoomInfo(rooms.Count, node.dungeonSize));
                 return;
             }
 

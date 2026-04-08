@@ -35,7 +35,7 @@ public class RoomBattleSystem : MonoBehaviour
             {
                 if (door != null)
                 {
-                    door.SetOpen(true);
+                   // door.SetOpen(true);
                 }
             }
         }
@@ -51,8 +51,8 @@ public class RoomBattleSystem : MonoBehaviour
 
         foreach (var door in room.Doors)
         {
-            if (door != null)
-                door.SetOpen(false);
+            //if (door != null)
+               // door.SetOpen(false);
         }
     }
 

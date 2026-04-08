@@ -62,7 +62,7 @@ namespace BSPDungeonGenrator.Generation
                 {
                     if(door != null)
                     {
-                        door.SetOpen(true);
+                        //door.SetOpen(true);
                     }
                 }
             }
@@ -242,7 +242,7 @@ namespace BSPDungeonGenrator.Generation
             {
                 if (door != null)
                 {
-                    door.SetOpen(true);
+                   // door.SetOpen(true);
                 }
             }
         }
@@ -256,7 +256,7 @@ namespace BSPDungeonGenrator.Generation
             {
                 if (door != null)
                 {
-                    door.SetOpen(false);
+                   // door.SetOpen(false);
                 }
             }
         }
@@ -312,8 +312,8 @@ namespace BSPDungeonGenrator.Generation
 
             foreach (var door in room.Doors)
             {
-                if (door != null)
-                    door.SetOpen(true);
+               // if (door != null)
+                  //  door.SetOpen(true);
             }
         }
 

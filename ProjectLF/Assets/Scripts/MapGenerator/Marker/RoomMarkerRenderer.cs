@@ -42,7 +42,7 @@ namespace BSPDungeonGenrator.marker
 
                 Vector3 worldPos = _ctx.FloorTilemap.CellToWorld(cellPos);
 
-                GameObject obj = Instantiate(prefab, worldPos, Quaternion.identity);
+                GameObject obj = Instantiate(prefab, worldPos, Quaternion.identity, markerHolder);
             }
 
         }

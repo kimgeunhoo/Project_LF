@@ -8,6 +8,18 @@ namespace BSPDungeonGenrator.Core
 {
     public sealed class DungeonContext
     {
+        public struct RoomConnection
+        {
+            public int FromRoomId;
+            public int ToRoomId;
+
+            public RoomConnection(int _fromRoomId, int _toRoomId)
+            {
+                FromRoomId = _fromRoomId;
+                ToRoomId = _toRoomId;
+            }
+        }
+
         /// <summary>
         /// Settings
         /// </summary>
@@ -24,7 +36,7 @@ namespace BSPDungeonGenrator.Core
         public int RoomPadding = 1;
         public int MinRoomWidth = 10;
         public int MinRoomHeight = 10;
-
+        public List<RoomConnection> RoomConnections = new List<RoomConnection>();
 
         /// <summary>
         /// 런타임 데이터 생성

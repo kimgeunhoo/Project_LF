@@ -15,6 +15,7 @@ namespace BSPDungeonGenrator.Generation
             ctx.WallCells.Clear();
             CollectWallCandidates();
             //GeneratedCheckWalls(ctx);
+            ApplyWalls();
         }
 
         private void CollectWallCandidates()
@@ -24,9 +25,9 @@ namespace BSPDungeonGenrator.Generation
                 for (int y = 0; y < ctx.MapSize.y; y++)
                 {
                     bool isRoom = ctx.MapData[x, y] == TileType.Room;
-                    bool isCorrider = ctx.CorriderCells.Contains(new Vector2Int(x, y));
+                    bool isPath = ctx.MapData[x, y] == TileType.Path;
 
-                    if(isRoom || isCorrider)
+                    if(isRoom || isPath)
                     {
                         CollectWallAround(x, y);
                     }
@@ -50,11 +51,18 @@ namespace BSPDungeonGenrator.Generation
                         continue;
 
                     Vector2Int pos = new Vector2Int(nx, ny);
-
-                    if (ctx.CorriderCells.Contains(pos))
-                        continue;
-
                     ctx.WallCells.Add(pos);
+                }
+            }
+        }
+
+        private void ApplyWalls()
+        {
+            foreach (var pos in ctx.WallCells)
+            {
+                if (ctx.MapData[pos.x, pos.y] == TileType.Empty)
+                {
+                    ctx.MapData[pos.x, pos.y] = TileType.Wall;
                 }
             }
         }
