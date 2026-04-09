@@ -33,9 +33,9 @@ namespace BSPDungeonGenrator.Core
         /// <summary>
         /// Leaf 경계, 방 사이와의 최소 거리
         /// </summary>
-        public int RoomPadding = 1;
-        public int MinRoomWidth = 10;
-        public int MinRoomHeight = 10;
+        public int RoomPadding = 5;
+        public int MinRoomWidth = 12;
+        public int MinRoomHeight = 12;
         public List<RoomConnection> RoomConnections = new List<RoomConnection>();
 
         /// <summary>

@@ -1,6 +1,4 @@
-using System.Xml.Linq;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using BSPDungeonGenrator.Config;
 using BSPDungeonGenrator.Core;
 
@@ -14,6 +12,18 @@ namespace BSPDungeonGenrator.Generation
         {
             this.ctx = ctx;
             GenerateDeungeuon(ctx.Root);
+        }
+
+        private RectInt GetRoomBuildArea(RectInt area, int padding)
+        {
+            int x = area.x + padding;
+            int y = area.y + padding;
+            int w = area.width - padding * 2;
+            int h = area.height - padding * 2;
+            if (w < 5 || h < 5) 
+                return new RectInt(area.x, area.y, 0, 0);
+
+            return new RectInt(x, y, w, h);
         }
         private RectInt GenerateDeungeuon(TreeNode treeNode)
         {

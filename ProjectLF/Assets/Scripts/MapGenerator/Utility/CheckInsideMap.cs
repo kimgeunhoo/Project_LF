@@ -2,9 +2,9 @@ using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using BSPDungeonGenrator.Config;
 
-namespace BSPDungeonGenrator.Generation
+namespace BSPDungeonGenrator.Utility
 {
-    public class CheckInsideMap : MonoBehaviour
+    public class CheckInsideMap
     {
         [Header("Map Size")]
         [SerializeField]
@@ -16,19 +16,19 @@ namespace BSPDungeonGenrator.Generation
         // 2 = 벽
 
         // 벽 함수 초기화
-        private void InitializeMap()
+        public void InitializeMap(TileType[,] tileData)
         {
             mapData = new TileType[mapSize.x, mapSize.y];
         }
 
         // 맵 범위 체크 (예외방지)
-        private bool IsInsideMap(int x, int y)
+        public bool IsInsideMap(int x, int y)
         {
             return x >= 0 && y >= 0 && x < mapSize.x && y < mapSize.y;
         }
 
         // 방 중심 계산
-        private Vector2Int GetRoomCenter(RectInt room)
+        public Vector2Int GetRoomCenter(RectInt room)
         {
             return new Vector2Int
                 (room.x + room.width / 2, room.y + room.height / 2);

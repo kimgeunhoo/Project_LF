@@ -19,8 +19,6 @@ public class RoomRuntimeData
     public int AliveMonsterCount = 0;
     public bool HasSpawnedMonsters = false;
 
-
-
     public Vector2Int SpawnPoint;
     public List<GameObject> SpawnedMonsters = new List<GameObject>();
 }

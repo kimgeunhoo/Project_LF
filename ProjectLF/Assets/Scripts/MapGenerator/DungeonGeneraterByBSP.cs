@@ -135,7 +135,7 @@ namespace BSPDungeonGenrator
                         wallCount++;
                 }
             }
-            Debug.Log($"[WallGenerator] wallCount = {wallCount}");
+           // Debug.Log($"[WallGenerator] wallCount = {wallCount}");
         }
 
         private void RunRoomLayoutPipeline()

@@ -35,7 +35,7 @@ public class RoomBattleSystem : MonoBehaviour
             {
                 if (door != null)
                 {
-                   // door.SetOpen(true);
+                    door.OpenDoor();
                 }
             }
         }

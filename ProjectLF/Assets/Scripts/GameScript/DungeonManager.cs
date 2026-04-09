@@ -180,7 +180,7 @@ namespace BSPDungeonGenrator.Generation
 
             Vector3Int cellPos = new Vector3Int(psp.x - _ctx.MapSize.x / 2, psp.y - _ctx.MapSize.y / 2, 0);
 
-            Vector3 worldPos = floorTilemap.CellToWorld(cellPos) + new Vector3(0.5f, 0.5f, 0);
+            Vector3 worldPos = floorTilemap.CellToWorld(cellPos) + new Vector3(0f, 0f, 0f);
 
             _playerObj.transform.position = worldPos;
 
@@ -256,7 +256,7 @@ namespace BSPDungeonGenrator.Generation
             {
                 if (door != null)
                 {
-                   // door.SetOpen(false);
+                   //door.SetOpen(false);
                 }
             }
         }

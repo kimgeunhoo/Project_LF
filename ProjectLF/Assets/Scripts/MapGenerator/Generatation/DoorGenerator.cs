@@ -96,7 +96,7 @@ namespace BSPDungeonGenrator.Generation
                         roomNeighborCount++;
                     if (ctx.MapData[x, y - 1] == TileType.Room)
                         roomNeighborCount++;
-                    if (roomNeighborCount != 1)
+                    if (roomNeighborCount <= 1)
                         continue;
 
                     // 경로 체크
