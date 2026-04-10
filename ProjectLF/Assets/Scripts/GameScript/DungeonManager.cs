@@ -110,7 +110,7 @@ namespace BSPDungeonGenrator.Generation
                 colObj.transform.parent = transform;
 
                 BoxCollider2D col = colObj.AddComponent<BoxCollider2D>();
-
+                col.isTrigger = true;
                 Vector3Int cellCenter = new Vector3Int(
                     rect.x + rect.width / 2 - ctx.MapSize.x / 2,
                     rect.y + rect.height / 2 - ctx.MapSize.y / 2,
