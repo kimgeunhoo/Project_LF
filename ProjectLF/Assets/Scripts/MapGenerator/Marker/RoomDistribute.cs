@@ -43,33 +43,33 @@ namespace BSPDungeonGenrator.marker
             startSpawnPoint = Vector2Int.zero;
         }
 
-        private void ResolveRoomPoints(DungeonContext ctx)
+        private void ResolveRoomPoints(DungeonContext _ctx)
         {
-            foreach (var room in ctx.Rooms)
+            foreach (var room in _ctx.Rooms)
             {
                 Vector2Int center = room.Center;
 
                 switch (room.Type)
                 {
                     case RoomType.Start:
-                        ctx.StartPoint = center;
+                        _ctx.StartPoint = center;
                         startSpawnPoint = center;
                         break;
 
                     case RoomType.Stairs:
-                        ctx.StairPoint = center;
+                        _ctx.StairPoint = center;
                         break;
 
                     case RoomType.Shop:
-                        ctx.ShopPoint = center;
+                        _ctx.ShopPoint = center;
                         break;
 
                     case RoomType.Encounter:
-                        ctx.EncounterPoints.Add(center);
+                        _ctx.EncounterPoints.Add(center);
                         break;
 
                     case RoomType.Monster:
-                        ctx.MonsterPoints.Add(center);
+                        _ctx.MonsterPoints.Add(center);
                         monsterSpawnPoint.Add(center);
                         break;
                 }

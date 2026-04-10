@@ -26,6 +26,10 @@ namespace BSPDungeonGenrator.Utility
         {
             return x >= 0 && y >= 0 && x < mapSize.x && y < mapSize.y;
         }
+        public bool IsInsideMap(Vector2Int pos)
+        {
+            return pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y;
+        }
 
         // 방 중심 계산
         public Vector2Int GetRoomCenter(RectInt room)

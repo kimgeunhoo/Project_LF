@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rigid;
 
     [SerializeField]
-    private Vector3 movePosition = new Vector3();
+    private Vector3 moveInput = new Vector3();
 
 
     private Player player;
@@ -24,16 +24,18 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+
     }
 
     private void Start()
-    {      
-        movePosition = transform.position;
+    {
+        moveInput = Vector2.zero;
     }
+
 
     private void FixedUpdate()
     {
-        rigid.linearVelocity = movePosition * p_character.Speed;
+        rigid.linearVelocity = moveInput * p_character.Speed;
     }
 
     private void Update()
@@ -45,7 +47,7 @@ public class Player : MonoBehaviour
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
-        movePosition = new Vector3(moveX, moveY, 0);
+        moveInput = new Vector3(moveX, moveY, 0).normalized;
     }
 
 

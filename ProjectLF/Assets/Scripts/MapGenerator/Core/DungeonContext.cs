@@ -50,6 +50,7 @@ namespace BSPDungeonGenrator.Core
         /// 문 위치 생성
         /// </summary>
         public List<Vector2Int> DoorPositions = new List<Vector2Int>();
+        public HashSet<Vector2Int> DoorCandidates = new HashSet<Vector2Int>();
 
         /// <summary>
         /// 중간값

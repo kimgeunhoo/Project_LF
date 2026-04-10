@@ -17,8 +17,12 @@ public class EnemyRoomTrigger : MonoBehaviour
         if (!collision.CompareTag("Player"))
             return;
 
+        if (dungeonManager == null)
+        {
+            Debug.LogWarning($"[Trigger] DungeonManager is null / roomId={roomId}");
+            return;
+        }
         Debug.Log($"[Trigger] Player entered room : {roomId}");
-
         dungeonManager.EnterEnemyRoom(roomId);
     }
 

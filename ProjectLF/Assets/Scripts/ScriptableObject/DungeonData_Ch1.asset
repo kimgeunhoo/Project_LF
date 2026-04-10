@@ -19,7 +19,7 @@ MonoBehaviour:
   maxDivideSize: 0.6
   floorTile: {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
   wallTile: {fileID: 11400000, guid: 96945c2584c47b44ebe75d015b3cde49, type: 2}
-  doorTile: {fileID: 11400000, guid: 5fe40d7b004adde4293bdf59101e1f97, type: 2}
+  doorTile: {fileID: 11400000, guid: b52eb31537a3c0f4d9b909925745af72, type: 2}
   pathTile: {fileID: 11400000, guid: f5945c4f4a016ae419bd0fb1152e2d1a, type: 2}
   openDoorTile: {fileID: 11400000, guid: b52eb31537a3c0f4d9b909925745af72, type: 2}
   doorHalfwidth: 1

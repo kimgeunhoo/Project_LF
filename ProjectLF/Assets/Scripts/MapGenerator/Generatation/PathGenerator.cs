@@ -70,9 +70,11 @@ namespace BSPDungeonGenrator.Generation
 
         private void ConnectRoomWithAstar(RectInt roomA, RectInt roomB)
         {
-            //Debug.Log($"[ConnectRoomWithAstar] roomA={roomA}, roomB={roomB}");
             ExitFindEndConnection.GetConnectionPoints(roomA, roomB, out Vector2Int start, out Vector2Int end);
-            //Debug.Log($"[ConnectRoomWithAstar] start={start}, end={end}");
+
+            ctx.DoorCandidates.Add(start);
+            ctx.DoorCandidates.Add(end);
+
             List<Vector2Int> path = pathFinder.FindPath(start, end);
 
             if (path == null || path.Count == 0)
@@ -84,7 +86,7 @@ namespace BSPDungeonGenrator.Generation
             CarvePath(path, start, end);
         }
 
-        // 문 밖 영역 추출
+        // 문 밖 영역 추출 메서드
         private Vector2Int GetPorchPoint(Vector2Int doorPos, Vector2Int outwardDir, int porchLength)
         {
             return doorPos + outwardDir * porchLength;

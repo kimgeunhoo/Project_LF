@@ -73,6 +73,8 @@ namespace BSPDungeonGenrator.Rendering
             }
 
         }
+
+        // 예전 테두리 벽 생성
         private void CreateWallAroundByRoom(DungeonContext ctx)
         {
            // Debug.Log($"TileMapRender : RoomTiles.Length{ctx.RoomTiles.Length}, PathTiles.Length{ctx.PathTiles.Length}");

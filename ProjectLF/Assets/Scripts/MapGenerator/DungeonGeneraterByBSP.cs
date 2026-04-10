@@ -45,12 +45,12 @@ namespace BSPDungeonGenrator
         private readonly RoomGenerater roomGenerater = new RoomGenerater();
         private readonly WallGenerator wallGenerator = new WallGenerator();
         private readonly PathGenerator pathGenerator = new PathGenerator();
-        private readonly MapDataPainter mapDataPainter = new MapDataPainter();
+        private readonly MapDataPainter mapDataPainter;
 
         private DungeonCtxBuilder contextBuilder;
         private DungeonRoomStateInitializer roomStateInitializer;
 
-        private DoorGenerator doorGenerator;
+        private DoorGenerator doorGenerator = new DoorGenerator();
         private DoorSpawner doorSpawner;
         private BspDrawer bspDrawer;
         private TileMapRenderer tileMapRenderer;
@@ -92,7 +92,6 @@ namespace BSPDungeonGenrator
             tileMapRenderer = GetComponent<TileMapRenderer>();
             roomDistribute = GetComponent<RoomDistribute>();
             roomMarkerRenderer = GetComponent<RoomMarkerRenderer>();
-            doorGenerator = GetComponent<DoorGenerator>();
             doorSpawner = GetComponent<DoorSpawner>();
         }
 
