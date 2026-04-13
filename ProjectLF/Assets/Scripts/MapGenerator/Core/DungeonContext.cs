@@ -66,16 +66,18 @@ namespace BSPDungeonGenrator.Core
         public Tilemap DoorTilemap;
         public Tilemap OpenDoorTileMap;
         public Tilemap PathTilemap;
-
+        public Tilemap BackgroundTilemap;
 
         public TileBase FloorTile;
         public TileBase WallTile;
         public TileBase DoorTile;
         public TileBase OpenDoorTile;
         public TileBase PathTile;
+        public TileBase BackgroundTile;
 
         public TileBase[] PathTiles;
         public TileBase[] RoomTiles;
+        public TileBase[] BackgroundTiles;
 
 
         /// <summary>

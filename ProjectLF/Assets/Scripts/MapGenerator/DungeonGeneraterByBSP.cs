@@ -21,7 +21,7 @@ namespace BSPDungeonGenrator
         [SerializeField] 
         private DungeonData dungeonData;
 
-        [Header("Wall, FloorTile, Path, Door")]
+        [Header("Wall, FloorTile, Path, Door, background")]
         [SerializeField] 
         private Tilemap floorTilemap;
         [SerializeField] 
@@ -32,6 +32,8 @@ namespace BSPDungeonGenrator
         private Tilemap doorTilemap;
         [SerializeField]
         private Tilemap openDoorTilemap;
+        [SerializeField]
+        private Tilemap backgroundTilemap;
 
         [Header("Line Holder")]
         [SerializeField]
@@ -68,7 +70,7 @@ namespace BSPDungeonGenrator
             contextBuilder = new DungeonCtxBuilder();
             roomStateInitializer = new DungeonRoomStateInitializer();
 
-            ctx = contextBuilder.Build(dungeonData, floorTilemap, wallTilemap, pathTilemap, doorTilemap, openDoorTilemap);
+            ctx = contextBuilder.Build(dungeonData, floorTilemap, wallTilemap, pathTilemap, doorTilemap, openDoorTilemap, backgroundTilemap);
 
             // split, debug draw, room generator
             RunGenerationPipeline();
@@ -79,11 +81,9 @@ namespace BSPDungeonGenrator
             // door, render, marker, spawn
             RunDoorPipeline();
 
-            //if(lineHolderPF != null)
-            //{
-            //    lineHolderPF.SetActive(true);
-            //}
+       
 
+            lineHolderPF.SetActive(false);
         }
 
         private void CacheComponents()

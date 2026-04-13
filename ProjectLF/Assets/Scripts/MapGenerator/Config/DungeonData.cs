@@ -84,6 +84,10 @@ namespace BSPDungeonGenrator.Config
         [SerializeField]
         private TileBase[] roomTiles;
 
+        [Header("Random TileArray : Room")]
+        [SerializeField]
+        private TileBase[] backgroundTiles;
+
 
         public TileBase FloorTile { get { return floorTile; } }
         public TileBase WallTile { get { return wallTile; } }
@@ -93,6 +97,7 @@ namespace BSPDungeonGenrator.Config
         public TileBase[] PathTiles { get { return pathTiles; } }
 
         public TileBase[] RoomTiles { get { return roomTiles; } }
+        public TileBase[] BackgroundTiles { get { return backgroundTiles; } }
 
 
         // ∏ µ•¿Ã≈Õ
@@ -114,6 +119,7 @@ namespace BSPDungeonGenrator.Config
         public GameObject Rectangle { get { return rectangle; } }
         public GameObject LineRenderer { get { return lineRenderer; } }
 
+        public TileBase BackgroundTile { get; internal set; }
     }
     public class RoomInfo
     {

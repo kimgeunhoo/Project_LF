@@ -16,7 +16,6 @@ public class HitBox : MonoBehaviour
             {
                 monster.Die();
             }
-            monster.Die();
         }
     }
 }

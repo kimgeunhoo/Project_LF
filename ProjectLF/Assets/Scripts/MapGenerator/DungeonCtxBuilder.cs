@@ -14,7 +14,8 @@ namespace BSPDungeonGenrator
             Tilemap wallTilemap,
             Tilemap pathTilemap,
             Tilemap doorTilemap,
-            Tilemap openDoorTilemap)
+            Tilemap openDoorTilemap,
+            Tilemap backgroundTileMap)
         {
             var ctx = new DungeonContext();
 
@@ -32,6 +33,7 @@ namespace BSPDungeonGenrator
             ctx.PathTilemap = pathTilemap;
             ctx.DoorTilemap = doorTilemap;
             ctx.OpenDoorTileMap = openDoorTilemap;
+            ctx.BackgroundTilemap = backgroundTileMap;
 
             ctx.FloorTile = dungeonData.FloorTile;
             ctx.WallTile = dungeonData.WallTile;
@@ -40,6 +42,7 @@ namespace BSPDungeonGenrator
             ctx.OpenDoorTile = dungeonData.OpenDoorTile;
             ctx.PathTiles = dungeonData.PathTiles;
             ctx.RoomTiles = dungeonData.RoomTiles;
+            ctx.BackgroundTile = dungeonData.BackgroundTile;
 
             // 결과 값 넣기
             ctx.MapData = new TileType[ctx.MapSize.x, ctx.MapSize.y];

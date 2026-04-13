@@ -14,6 +14,7 @@ namespace BSPDungeonGenrator.Rendering
 
         public TileBase[] PathTiles;
         public TileBase[] RoomTiles;
+        public TileBase[] BackgroundTiles;
     }
 }
 

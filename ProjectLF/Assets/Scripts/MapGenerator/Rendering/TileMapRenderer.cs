@@ -66,6 +66,18 @@ namespace BSPDungeonGenrator.Rendering
                         case TileType.Door:
                             renderRefs.DoorTilemap.SetTile(pos, assetRefs.DoorTile);
                             break;
+
+                        case TileType.Empty:
+                            if (assetRefs.BackgroundTiles != null && assetRefs.BackgroundTiles.Length > 0)
+                            {
+                                renderRefs.BackgroundTilemap.SetTile(
+                                    pos,
+                                    assetRefs.BackgroundTiles[Random.Range(0, assetRefs.BackgroundTiles.Length)]
+                                );
+                            }
+       
+                            break;
+
                     }
 
                 }

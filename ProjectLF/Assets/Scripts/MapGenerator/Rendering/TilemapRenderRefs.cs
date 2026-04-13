@@ -9,6 +9,7 @@ namespace BSPDungeonGenrator.Rendering
         public Tilemap WallTilemap;
         public Tilemap PathTilemap;
         public Tilemap DoorTilemap;
+        public Tilemap BackgroundTilemap;
         public Tilemap OpenDoorTileMap;
     }
 }

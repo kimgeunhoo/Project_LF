@@ -978,6 +978,7 @@ MonoBehaviour:
   pathTilemap: {fileID: 1245205044}
   doorTilemap: {fileID: 1778886087}
   openDoorTilemap: {fileID: 868030755}
+  backgroundTilemap: {fileID: 1029894460}
   lineHolder: {fileID: 1610037826}
   lineHolderPF: {fileID: 2352065182494810184, guid: 3d04db699949e8143af59af29a1d46b7, type: 3}
 --- !u!114 &1146640538
