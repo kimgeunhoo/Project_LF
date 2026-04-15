@@ -56,7 +56,6 @@ namespace BSPDungeonGenrator.Generation
             ResetRoomStates();
             AssignSpawnPointsToRooms(ctx);
             CreateRoomColliders();
-            CheckStartRoom();
         }
 
         private RoomRuntimeData GetRoomId(int roomId)
@@ -155,30 +154,6 @@ namespace BSPDungeonGenrator.Generation
             }
 
         }
-
-        // 시작 방 체크
-        private void CheckStartRoom()
-        {
-            if (playerPF == null)
-                return;
-
-            Vector3 playerPos = playerPF.transform.position;
-            Vector2Int gridPos = WorldToGrid(playerPos);
-
-            foreach (var room in ctx.RoomStates)
-            {
-                RectInt rect = room.RoomInfo.Rect;
-
-                if (rect.Contains(gridPos))
-                {
-                    Debug.Log($"[StartRoom] Player starts in Room {room.RoomId}");
-                    break;
-                }
-
-            }
-            Debug.LogWarning("[StartRoom] 플레이어가 어떤 방에도 포함되지 않았습니다.");
-        }
-
         // World를 Grid로 변환
         private Vector2Int WorldToGrid(Vector3 worldPos)
         {
