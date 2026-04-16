@@ -14,7 +14,6 @@ namespace BSPDungeonGenrator
             Tilemap wallTilemap,
             Tilemap pathTilemap,
             Tilemap doorTilemap,
-            Tilemap openDoorTilemap,
             Tilemap backgroundTileMap)
         {
             var ctx = new DungeonContext();
@@ -32,14 +31,12 @@ namespace BSPDungeonGenrator
             ctx.WallTilemap = wallTilemap;
             ctx.PathTilemap = pathTilemap;
             ctx.DoorTilemap = doorTilemap;
-            ctx.OpenDoorTileMap = openDoorTilemap;
             ctx.BackgroundTilemap = backgroundTileMap;
 
             ctx.FloorTile = dungeonData.FloorTile;
             ctx.WallTile = dungeonData.WallTile;
             ctx.DoorTile = dungeonData.DoorTile;
             ctx.PathTile = dungeonData.PathTile;
-            ctx.OpenDoorTile = dungeonData.OpenDoorTile;
             ctx.PathTiles = dungeonData.PathTiles;
             ctx.RoomTiles = dungeonData.RoomTiles;
             ctx.BackgroundTile = dungeonData.BackgroundTile;

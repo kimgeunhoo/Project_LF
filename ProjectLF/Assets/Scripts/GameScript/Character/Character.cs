@@ -5,19 +5,22 @@ using UnityEngine;
 public class Character : ScriptableObject
 {
     [SerializeField]
-    private int hp;
+    protected int hp;
+    [SerializeField] 
+    protected int maxHp;
     [SerializeField]
-    private int mana;
+    protected int mana;
     [SerializeField]
-    private int atk;
+    protected int atk;
     [SerializeField]
-    private int def;
+    protected int def;
     [SerializeField]
-    private int speed;
+    protected int speed;
     [SerializeField]
-    private int dashGage;
+    protected int dashGage;
 
     public int Hp { get { return hp; } }
+    public int MaxHp { get { return maxHp; } }
     public int Mana {  get { return mana; } }
     public int Atk { get { return atk; } }
     public int Def {  get { return def; } }

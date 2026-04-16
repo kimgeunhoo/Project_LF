@@ -33,16 +33,16 @@ namespace BSPDungeonGenrator.marker
                 if (prefab == null)
                     continue;
 
-                Vector2Int center = room.Center;
+                Vector2 center = room.Center;
                 Vector3Int cellPos = new Vector3Int(
-                    center.x - _ctx.MapSize.x / 2,
-                    center.y - _ctx.MapSize.y / 2,
+                    Mathf.RoundToInt(center.x - _ctx.MapSize.x / 2),
+                    Mathf.RoundToInt(center.y - _ctx.MapSize.y / 2),
                     0
                     );
 
-                Vector3 worldPos = _ctx.FloorTilemap.CellToWorld(cellPos);
+                Vector3 worldPos = _ctx.FloorTilemap.GetCellCenterWorld(cellPos);
 
-                GameObject obj = Instantiate(prefab, worldPos, Quaternion.identity, markerHolder);
+                Instantiate(prefab, worldPos, Quaternion.identity, markerHolder);
             }
 
         }

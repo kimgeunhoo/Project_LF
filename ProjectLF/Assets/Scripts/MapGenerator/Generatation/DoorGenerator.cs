@@ -6,6 +6,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine.Rendering;
 using System.Text.RegularExpressions;
+using BSPDungeonGenrator.Utility;
 
 
 
@@ -13,68 +14,86 @@ namespace BSPDungeonGenrator.Generation
 {
     public class DoorGenerator
     {
-   
+
+
 
         private DungeonContext ctx;
 
+        private CheckInsideMap insideMap = new CheckInsideMap();
 
-        //Vector2Int pos = new Vector2Int();
-        public void Run(DungeonContext ctx)
+        public void Run(DungeonContext _ctx)
         {
-            this.ctx = ctx;
+            this.ctx = _ctx;
+
             if (ctx.MapData == null)
             {
-                Debug.LogError("[DoorGenerator] doorPrefab is NULL");
                 return;
             }
 
+            ctx.DoorPositions.Clear();
 
-            foreach (var pos in ctx.DoorCandidates)
+            foreach (var candidate in ctx.DoorCandidates)
             {
-                if(IsValidDoorPosition(pos))
+                Vector2Int doorPos;
+                
+                if(!GetDoorSpawnPosition(candidate, out doorPos))
                 {
-                    ctx.MapData[pos.x, pos.y] = TileType.Door;
+                    Debug.LogWarning($"[DoorGenerator] Invalid Door Candidate: {candidate}");
+                    continue;
                 }
+
+                if(ctx.DoorPositions.Contains(doorPos))
+                {
+                    continue;
+                }
+
+                ctx.MapData[doorPos.x, doorPos.y] = TileType.Door;
+                ctx.DoorPositions.Add(doorPos);
+
             }
+            Debug.Log($"[DoorGenerator] DoorPositions Count = {ctx.DoorPositions.Count}");
+
+
         }
 
-        private bool IsValidDoorPosition(Vector2Int pos)
+        private bool GetDoorSpawnPosition(Vector2Int pos, out Vector2Int doorPos)
         {
-            if (!IsInsideMap(pos))
-                return false;
+            Vector2Int[] dirs = new Vector2Int[]
+            {
+                Vector2Int.up,
+                Vector2Int.down,
+                Vector2Int.left,
+                Vector2Int.right
+            };
 
-            TileType current = ctx.MapData[pos.x, pos.y];
-            if (current!= TileType.Room && current!= TileType.Path)
-                return false;
+            foreach (var dir in dirs)
+            {
+                Vector2Int a = pos + dir;
+                Vector2Int b = pos - dir;
 
-            // »óÇÏ
-            if (CheckDoorPair(pos + Vector2Int.up, pos + Vector2Int.down))
-                return true;
-            // ÁÂ¿ì
-            if (CheckDoorPair(pos + Vector2Int.left, pos + Vector2Int.right))
-                return true;
+                if (insideMap.IsInsideMap(a) || insideMap.IsInsideMap(b))
+                    continue;
 
+                TileType ta = ctx.MapData[a.x, a.y];
+                TileType tb = ctx.MapData[b.x, b.y];
+
+                if (ta == TileType.Room && tb == TileType.Path)
+                {
+                    doorPos = b;
+                    return true;
+                }
+                if (ta == TileType.Path && tb == TileType.Room)
+                {
+                    doorPos = a;
+                    return true;
+                }
+            }
+            doorPos = Vector2Int.zero;
             return false;
         }
 
-        private bool CheckDoorPair(Vector2Int a, Vector2Int b)
-        {
-            if(!IsInsideMap(a) || !IsInsideMap(b))
-                return false;
+        
 
-            TileType ta = ctx.MapData[a.x, a.y];
-            TileType tb = ctx.MapData[b.x, b.y];
-
-            return (ta == TileType.Room && tb == TileType.Path) ||
-                (ta == TileType.Path && tb == TileType.Room);
-
-        }
-
-
-        private bool IsInsideMap(Vector2Int pos)
-        {
-            return pos.x >= 0 && pos.y >= 0 && pos.x < ctx.MapSize.x && pos.y < ctx.MapSize.y;
-        }
     }
 
 }

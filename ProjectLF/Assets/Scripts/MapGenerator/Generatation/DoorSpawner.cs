@@ -15,6 +15,8 @@ namespace BSPDungeonGenrator.Generation
 
         public void Run(DungeonContext _ctx)
         {
+            Debug.Log($"[DoorSpawner] DoorPos Count = {_ctx.DoorPositions.Count}");
+
             if (doorPrefab == null)
             {
                 Debug.LogError("[DoorSpawner] doorPrefab is NULL");
@@ -44,7 +46,10 @@ namespace BSPDungeonGenrator.Generation
         private void ClearOldDoors()
         {
             if (doorParent == null)
+            {
+                Debug.LogError("[DoorSpawner] doorParent is NULL");
                 return;
+            }
 
             for (int i = doorParent.childCount - 1; i >= 0; i--)
             {
@@ -54,6 +59,8 @@ namespace BSPDungeonGenrator.Generation
 
         private void SpawnDoor(DungeonContext _ctx, Vector2Int mapPos)
         {
+            Debug.Log($"[DoorSpawner] Spawning door at {mapPos}");
+
             Vector3Int cellPos = new Vector3Int(
                 mapPos.x - _ctx.MapSize.x / 2,
                 mapPos.y - _ctx.MapSize.y / 2,
@@ -68,7 +75,7 @@ namespace BSPDungeonGenrator.Generation
                 return;
 
             int roomId = FindRoomIdFromDoorPos(_ctx, mapPos);
-            if (roomId > 0 && roomId < _ctx.RoomStates.Count)
+            if (roomId >= 0 && roomId < _ctx.RoomStates.Count)
             {
                 doorController.SetRoomId(roomId);
                 _ctx.RoomStates[roomId].Doors.Add(doorController);

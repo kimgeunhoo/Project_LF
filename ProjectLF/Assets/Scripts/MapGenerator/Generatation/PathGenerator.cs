@@ -19,7 +19,7 @@ namespace BSPDungeonGenrator.Generation
         private DungeonContext ctx;
         private AStarPathFinder pathFinder;
 
-        private int corriderPathWidth = 3;
+        //private int corriderPathWidth = 3;
 
         public void Run(DungeonContext _ctx)
         {

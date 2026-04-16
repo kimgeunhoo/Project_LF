@@ -34,6 +34,8 @@ namespace BSPDungeonGenrator.Generation
         [SerializeField]
         private RoomDistribute roomDistribute;
 
+        private DoorSpawner doorSpawner;
+
         private DungeonContext ctx;
 
         private GameObject playerObj;
@@ -45,22 +47,19 @@ namespace BSPDungeonGenrator.Generation
             
             var cam = FindFirstObjectByType<CinemachineCamera>();
 
+            //doorSpawner.Run(ctx);
+
             if (cam != null)
             {
                 cam.Follow = playerObj.transform;
                 cam.LookAt = playerObj.transform;
             }
 
-            InitAllDoorsOpen();
             //dungeonGenerator.SetupMonsterSpawnPoint(ctx);
             ResetRoomStates();
             AssignSpawnPointsToRooms(ctx);
             CreateRoomColliders();
-        }
-
-        private RoomRuntimeData GetRoomId(int roomId)
-        {
-            return ctx.RoomStates.Find(r => r.RoomId == roomId);
+            InitAllDoorsOpen();
         }
 
         private void InitAllDoorsOpen()
@@ -106,25 +105,33 @@ namespace BSPDungeonGenrator.Generation
                 RectInt rect = room.RoomInfo.Rect;
 
                 GameObject colObj = new GameObject($"RoomCollider_{room.RoomId}");
-                colObj.transform.parent = transform;
+                colObj.transform.SetParent(transform, false);
 
                 BoxCollider2D col = colObj.AddComponent<BoxCollider2D>();
                 col.isTrigger = true;
-                Vector3Int cellCenter = new Vector3Int(
-                    rect.x + rect.width / 2 - ctx.MapSize.x / 2,
-                    rect.y + rect.height / 2 - ctx.MapSize.y / 2,
+
+                Vector3Int minCell = new Vector3Int(
+                    rect.xMin - ctx.MapSize.x / 2,
+                    rect.yMin - ctx.MapSize.y / 2,
                     0
                     );
-                Vector3 worldCenter = floorTilemap.GetCellCenterWorld(cellCenter);
+
+                Vector3Int maxCell = new Vector3Int(
+                    rect.xMax - 1 - ctx.MapSize.x / 2,
+                    rect.yMax - 1 - ctx.MapSize.y / 2,
+                    0
+                    );
+
+                Vector3 minWorld = floorTilemap.GetCellCenterWorld(minCell);
+                Vector3 maxWorld = floorTilemap.GetCellCenterWorld(maxCell);
+
+                Vector3 worldCenter = (minWorld + maxWorld) * 0.5f;
+
                 colObj.transform.position = worldCenter;
-      
-                col.size = new Vector2(rect.width, rect.height);
-                col.offset = Vector2.zero;
+                col.size = new Vector2(rect.width - 0.5f, rect.height - 0.5f);
 
                 EnemyRoomTrigger trigger = colObj.AddComponent<EnemyRoomTrigger>();
                 trigger.Init(room.RoomId, this);
-
-                col.offset = worldCenter - colObj.transform.position;
             }
 
        
@@ -180,7 +187,7 @@ namespace BSPDungeonGenrator.Generation
 
         }
 
-        // 몬스터 스폰 roomID reFectorying 버전
+        // 몬스터 스폰 roomID 
         private void SpawnMonstersInRoom(RoomRuntimeData room)
         {
             if (room == null)
@@ -208,16 +215,26 @@ namespace BSPDungeonGenrator.Generation
 
                 Vector3 worldPos = floorTilemap.GetCellCenterLocal(cellPos);
 
-                for(int i = 0; i < monsterCount; i++)
+                RectInt rect = room.RoomInfo.Rect;
+
+                for (int i = 0; i < monsterCount; i++)
                 {
-                    Vector3 offset = new Vector3
-                    (
-                        Random.Range(-5f, 5f),
-                        Random.Range(-5f, 5f),
-                        0);
+
+                    int randomX = Random.Range(rect.xMin + 1, rect.xMax - 1);
+                    int randomY = Random.Range(rect.yMin + 1, rect.yMax - 1);
+
+                    Vector3Int randCell = new Vector3Int(
+                        randomX - ctx.MapSize.x / 2,
+                        randomY - ctx.MapSize.y / 2,
+                        0
+                        );
+
+                    Vector3 offset = floorTilemap.GetCellCenterWorld(randCell);
+                        
 
                     GameObject monster = Instantiate(
-                        monsterPF[0], worldPos + offset, 
+                        monsterPF[0],
+                        offset, 
                         Quaternion.identity, 
                         monsterHolder
                         );
@@ -265,9 +282,18 @@ namespace BSPDungeonGenrator.Generation
         // enemyPoint 들어갔을 시
         public void EnterEnemyRoom(int roomId)
         {
+
             RoomRuntimeData room = ctx.RoomStates.Find(r => r.RoomId == roomId);
+
+
             if (room == null)
                 return;
+
+            if (room.RoomInfo.Type != RoomType.Monster)
+            {
+                return;
+            }
+
 
             if (room.IsCleared)
             {
@@ -285,9 +311,6 @@ namespace BSPDungeonGenrator.Generation
             CloseRoomDoors(room);
             SpawnMonstersInRoom(room);
         }
-
-
-        // refactorying 방식
 
         public void OnMonsterDead(int roomId)
         {
