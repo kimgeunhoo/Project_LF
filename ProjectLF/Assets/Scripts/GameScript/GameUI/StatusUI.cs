@@ -11,10 +11,10 @@ public class StatusUI : MonoBehaviour
 
     private Player player;
 
-    private void Awake()
-    {
-        hpText.text = ($"Hp : {player.Hp}/{player.MaxHp}");
-    }
+    //private void Awake()
+    //{
+    //    hpText.text = ($"Hp : {player.Hp}/{player.MaxHp}");
+    //}
 
 
 }

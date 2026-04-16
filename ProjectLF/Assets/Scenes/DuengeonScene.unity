@@ -873,7 +873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7022eafe2bd21e74a8d22abc2a96742a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BSPDungeonGenrator.Generation.DungeonManager
-  playerPF: {fileID: 6199281365791584735, guid: 89592f305b13db94aa6c33710af39574, type: 3}
+  playerPF: {fileID: 4501874852732790876, guid: c55d73e45040f9b419242eadc0747b95, type: 3}
   monsterPF:
   - {fileID: 8093317626143208978, guid: 87afa5922d5f42d468b2263e28266e02, type: 3}
   monsterCount: 7
