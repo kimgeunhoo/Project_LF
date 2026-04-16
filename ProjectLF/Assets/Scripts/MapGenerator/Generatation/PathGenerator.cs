@@ -19,7 +19,7 @@ namespace BSPDungeonGenrator.Generation
         private DungeonContext ctx;
         private AStarPathFinder pathFinder;
 
-        //private int corriderPathWidth = 3;
+        private int corriderPathWidth = 1;
 
         public void Run(DungeonContext _ctx)
         {
@@ -96,6 +96,7 @@ namespace BSPDungeonGenrator.Generation
 
         private void CarvePath(List<Vector2Int> path, Vector2Int start, Vector2Int end)
         {
+
             for (int i = 0; i < path.Count; i++)
             {
                 Vector2Int p = path[i];
