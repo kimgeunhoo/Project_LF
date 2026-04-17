@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class MonsterTracking : MonoBehaviour
 {
@@ -28,6 +29,9 @@ public class MonsterTracking : MonoBehaviour
     [SerializeField]
     private float attackCooldown = 1f;
 
+    private Animator animator;
+
+    private Transform visualRoot;
     private Transform player;
     private Rigidbody2D rigid;
 
@@ -38,6 +42,8 @@ public class MonsterTracking : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();   
+        animator = GetComponentInChildren<Animator>();
+        visualRoot = GetComponent<Transform>();
         //if(rigid == null)
         //{
         //    //Debug.LogError($"[{name}] Rigidbody2D가 없습니다.");
@@ -83,12 +89,23 @@ public class MonsterTracking : MonoBehaviour
         float distance = Vector2.Distance(transform.position, player.position);
         //Debug.Log($"[{name}] 현재 상태={currentState}, 거리={distance}");
 
+        float dirX = player.position.x - transform.position.x;
+
+        if (dirX > 0.01f)
+        {
+            visualRoot.localScale = new Vector3(-1f, 1f, 1f);
+        }
+        else if (dirX < -0.01f)
+        {
+            visualRoot.localScale = new Vector3(1f, 1f, 1f);
+        }
 
         switch (currentState)
         {
             case State.Idle:
                 rigid.linearVelocity = Vector2.zero;
                 //Debug.Log($"[{name}] Idle 상태");
+                animator.SetBool("Move", false);
                 if (distance <= detectedRange)
                 {
                    // Debug.Log($"[{name}] detectRange 진입 -> Chase 전환");
@@ -97,6 +114,7 @@ public class MonsterTracking : MonoBehaviour
                 break;
             case State.Tracking:
                 //Debug.Log($"[{name}] Tracking 상태");
+                animator.SetBool("Move", true);
                 if (distance <= attackRange)
                 {
                    // Debug.Log($"[{name}] attackRange 진입 -> Attack 전환");
@@ -124,7 +142,7 @@ public class MonsterTracking : MonoBehaviour
                 if (!isAttacking)
                 {
                     //Debug.Log($"[{name}] Attack 시작");
-                    StartCoroutine(MonsterAttack());
+                    StartCoroutine(MonsterAttack()); 
                 }
 
                 if (distance > attackRange)
@@ -203,7 +221,7 @@ public class MonsterTracking : MonoBehaviour
 
         // 공격 활성
         attackCollider.enabled = true;
-
+        animator.SetTrigger("Attack");
         yield return new WaitForSeconds(attackDuration);
         // Debug.Log($"[PlayerAttack] attackCollider ON / enabled = {attackCollider.enabled}");
 

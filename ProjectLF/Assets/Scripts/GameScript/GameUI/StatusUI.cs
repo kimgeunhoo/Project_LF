@@ -9,7 +9,7 @@ public class StatusUI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI hpText;
 
-    private Player player;
+    //private Player player;
 
     //private void Awake()
     //{

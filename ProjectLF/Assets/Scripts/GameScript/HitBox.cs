@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HitBox : MonoBehaviour
@@ -5,6 +6,7 @@ public class HitBox : MonoBehaviour
 
     [SerializeField]
     private Character _player;
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -14,8 +16,13 @@ public class HitBox : MonoBehaviour
             monster.Hp -= _player.Atk;
             if (monster.Hp <= 0)
             {
-                monster.Die();
+                monster.StartCoroutine(monster.DiyingAnimation());
+            }
+            else
+            {
+                monster.StartCoroutine(monster.DamageAnimation());
             }
         }
     }
+
 }

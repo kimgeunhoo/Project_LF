@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [Header("Player Data")]
+    [SerializeField]
+    private Character p_data;
+
+
+
     [SerializeField]
     private Collider2D attackCollider;
     [SerializeField]
@@ -14,11 +20,15 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField]
     private SpriteRenderer attackSprite;
 
+    private Animator animator;
+    
+
     private bool isAttacking = false;
 
     private void Awake()
     {
-        
+        animator = GetComponentInChildren<Animator>();
+
         attackCollider.gameObject.SetActive(true);
         if(attackCollider == null)
         {    
@@ -35,6 +45,8 @@ public class PlayerAttack : MonoBehaviour
         attackSprite.enabled = false;
         //Debug.Log("[PlayerAttack] attackCollider disabled at start");
         
+
+      
     }
 
     private void Update()
@@ -61,6 +73,10 @@ public class PlayerAttack : MonoBehaviour
     {
        // Debug.Log("[PlayerAttack] AttackRoutine START");
         isAttacking = true;
+        animator.SetTrigger("Attack");
+
+        yield return new WaitForSeconds(attackDuration);
+
         attackSprite.enabled = true;
 
         if (attackCollider == null) 

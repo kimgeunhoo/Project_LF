@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72b40470ed0d55345999cc8b033422f4, type: 3}
   m_Name: MonsterData
   m_EditorClassIdentifier: Assembly-CSharp::Character
-  hp: 3
+  hp: 11
+  maxHp: 0
   mana: 1
   atk: 1
   def: 1

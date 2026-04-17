@@ -51,7 +51,7 @@ namespace BSPDungeonGenrator.Generation
                 ctx.DoorPositions.Add(doorPos);
 
             }
-            Debug.Log($"[DoorGenerator] DoorPositions Count = {ctx.DoorPositions.Count}");
+            //Debug.Log($"[DoorGenerator] DoorPositions Count = {ctx.DoorPositions.Count}");
 
 
         }

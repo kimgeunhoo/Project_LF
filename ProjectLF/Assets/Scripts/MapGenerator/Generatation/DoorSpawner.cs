@@ -15,7 +15,7 @@ namespace BSPDungeonGenrator.Generation
 
         public void Run(DungeonContext _ctx)
         {
-            Debug.Log($"[DoorSpawner] DoorPos Count = {_ctx.DoorPositions.Count}");
+            //Debug.Log($"[DoorSpawner] DoorPos Count = {_ctx.DoorPositions.Count}");
 
             if (doorPrefab == null)
             {
@@ -59,7 +59,7 @@ namespace BSPDungeonGenrator.Generation
 
         private void SpawnDoor(DungeonContext _ctx, Vector2Int mapPos)
         {
-            Debug.Log($"[DoorSpawner] Spawning door at {mapPos}");
+            //Debug.Log($"[DoorSpawner] Spawning door at {mapPos}");
 
             Vector3Int cellPos = new Vector3Int(
                 mapPos.x - _ctx.MapSize.x / 2,

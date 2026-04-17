@@ -22,7 +22,7 @@ public class EnemyRoomTrigger : MonoBehaviour
             Debug.LogWarning($"[Trigger] DungeonManager is null / roomId={roomId}");
             return;
         }
-        Debug.Log($"[Trigger] Player entered room : {roomId}");
+        //Debug.Log($"[Trigger] Player entered room : {roomId}");
         dungeonManager.EnterEnemyRoom(roomId);
     }
 

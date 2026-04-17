@@ -14,8 +14,6 @@ namespace BSPDungeonGenrator.Generation
     public class PathGenerator
     {
 
-
-
         private DungeonContext ctx;
         private AStarPathFinder pathFinder;
 
@@ -105,11 +103,8 @@ namespace BSPDungeonGenrator.Generation
                     continue;
 
                 TileType current = ctx.MapData[p.x, p.y];
-
-                // 시작점, 끝점이 Door
                 if(p == start || p == end)
-                {
-                    ctx.MapData[p.x, p.y] = TileType.Door;
+                { 
                     continue;
                 }
 

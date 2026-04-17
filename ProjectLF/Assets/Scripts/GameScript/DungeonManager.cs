@@ -297,14 +297,14 @@ namespace BSPDungeonGenrator.Generation
 
             if (room.IsCleared)
             {
-                Debug.Log($"[EnterEnemyRoom] Room {roomId} already cleared.");
+                //Debug.Log($"[EnterEnemyRoom] Room {roomId} already cleared.");
                 OpenRoomDoors(roomId);
                 return;
             }
 
             if (room.IsBattleStarted)
             {
-                Debug.Log($"[EnterEnemyRoom] Room{roomId} Battle started.");
+                //Debug.Log($"[EnterEnemyRoom] Room{roomId} Battle started.");
                 return;
             }
 
@@ -318,7 +318,7 @@ namespace BSPDungeonGenrator.Generation
 
             room.AliveMonsterCount--;
 
-            Debug.Log($"[Room {roomId}] Remaining: {room.AliveMonsterCount}");
+            //Debug.Log($"[Room {roomId}] Remaining: {room.AliveMonsterCount}");
 
             if (room.AliveMonsterCount <= 0)
             {
