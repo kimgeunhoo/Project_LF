@@ -192,10 +192,9 @@ namespace BSPDungeonGenrator.Utility
             if (IsNearRoom(pos, 4))
                 return 30;
             if (tile == TileType.Path)
-                return 8;
+                return 1;
             if (tile == TileType.Wall)
-                return 20;
-
+                return 5;
             return 10;
         }
 

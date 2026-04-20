@@ -14,7 +14,7 @@ public class PlayerMove : MonoBehaviour
     private Vector3 moveInput = new Vector3();
 
 
-    private bool isMove = false;
+    //private bool isMove = false;
 
     private void Awake()
     {

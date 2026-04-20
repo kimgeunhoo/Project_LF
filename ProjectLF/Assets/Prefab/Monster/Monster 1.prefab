@@ -6759,9 +6759,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8108751140138843797}
   - component: {fileID: -8634483611149875081}
+  - component: {fileID: -8280501099709555682}
   - component: {fileID: 1576040035922171179}
   - component: {fileID: 3248278383799856964}
-  - component: {fileID: -8280501099709555682}
   m_Layer: 0
   m_Name: Monster 1
   m_TagString: Untagged
@@ -6806,6 +6806,20 @@ MonoBehaviour:
   attackWarnningTime: 0.8
   attackDuration: 0.2
   attackCooldown: 1
+--- !u!114 &-8280501099709555682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8093317626143208978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98ab5f239035fb245b8923cd14ce62a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Monster
+  m_Monster: {fileID: 11400000, guid: 01eca7489d726184eb5068add5d9c29b, type: 2}
+  Hp: 0
 --- !u!70 &1576040035922171179
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -6870,20 +6884,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &-8280501099709555682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8093317626143208978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98ab5f239035fb245b8923cd14ce62a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Monster
-  m_Monster: {fileID: 11400000, guid: 01eca7489d726184eb5068add5d9c29b, type: 2}
-  Hp: 0
 --- !u!1 &8147536057234976817
 GameObject:
   m_ObjectHideFlags: 0

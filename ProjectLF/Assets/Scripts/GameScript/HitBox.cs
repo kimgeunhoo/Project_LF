@@ -13,6 +13,7 @@ public class HitBox : MonoBehaviour
         Monster monster = collision.GetComponent<Monster>();
         if (monster != null)
         {
+            Debug.Log($"[HitBox] Hit detected with {monster.name} / Monster HP before hit = {monster.Hp}");
             monster.Hp -= _player.Atk;
             if (monster.Hp <= 0)
             {
@@ -24,5 +25,7 @@ public class HitBox : MonoBehaviour
             }
         }
     }
+
+
 
 }

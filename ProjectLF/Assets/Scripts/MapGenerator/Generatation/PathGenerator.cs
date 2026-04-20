@@ -15,7 +15,7 @@ namespace BSPDungeonGenrator.Generation
     {
 
         private DungeonContext ctx;
-        private AStarPathFinder pathFinder;
+        private AStarPathFinder aStarPathFinder;
 
         private int corriderPathWidth = 1;
 
@@ -32,9 +32,9 @@ namespace BSPDungeonGenrator.Generation
                 Debug.LogError("PathGenerator.Run: ctx.MapData is null");
                 return;
             }
-            
+
             this.ctx = _ctx;
-            this.pathFinder = new AStarPathFinder(ctx);
+            this.aStarPathFinder = new AStarPathFinder(ctx);
 
             //Debug.Log($"[PathGenerator] MapSize={ctx.MapSize}, Root={(ctx.Root == null ? "null" : "ok")}");
 
@@ -43,13 +43,13 @@ namespace BSPDungeonGenrator.Generation
 
         private void GeneratePath(TreeNode treeNode, int depth)
         {
-            if(treeNode == null) 
+            if (treeNode == null)
                 return;
 
             if (depth == ctx.MaxNode)
                 return;
 
-            if(treeNode.leftTree != null)
+            if (treeNode.leftTree != null)
             {
                 GeneratePath(treeNode.leftTree, depth + 1);
             }
@@ -72,16 +72,38 @@ namespace BSPDungeonGenrator.Generation
         {
             ExitFindEndConnection.GetConnectionPoints(roomA, roomB, out Vector2Int start, out Vector2Int end);
 
+            Debug.Log(
+                   $"[ConnectRoomWithAstar] " +
+                   $"roomA={roomA}, roomB={roomB}, start={start}, end={end}"
+               );
+
+            Debug.Log(
+                $"[ConnectRoomWithAstar] " +
+                $"startInBounds={IsInBounds(start)}, endInBounds={IsInBounds(end)}"
+            );
+
+            if (IsInBounds(start))
+            {
+                Debug.Log($"[ConnectRoomWithAstar] startTile={ctx.MapData[start.x, start.y]}");
+            }
+
+            if (IsInBounds(end))
+            {
+                Debug.Log($"[ConnectRoomWithAstar] endTile={ctx.MapData[end.x, end.y]}");
+            }
+
             ctx.DoorCandidates.Add(start);
             ctx.DoorCandidates.Add(end);
 
-            List<Vector2Int> path = pathFinder.FindPath(start, end);
+            List<Vector2Int> path = aStarPathFinder.FindPath(start, end);
 
             if (path == null || path.Count == 0)
             {
                 Debug.LogWarning($"A* path not found: {start} -> {end}");
                 return;
             }
+
+            Debug.Log($"[ConnectRoomWithAstar] path found, count={path.Count}");
 
             CarvePath(path, start, end);
         }
@@ -103,14 +125,18 @@ namespace BSPDungeonGenrator.Generation
                     continue;
 
                 TileType current = ctx.MapData[p.x, p.y];
-                if(p == start || p == end)
-                { 
+                if (p == start || p == end)
+                {
                     continue;
                 }
 
                 if (current == TileType.Room)
+                {
+                    Debug.Log($"[CarvePath] Skip room tile: {p}");
                     continue;
+                }
 
+                Debug.Log($"[CarvePath] Carve path at {p}, previous={current}");
                 ctx.MapData[p.x, p.y] = TileType.Path;
             }
         }

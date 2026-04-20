@@ -63,7 +63,7 @@ public class PlayerAttack : MonoBehaviour
         Debug.Log("[PlayerAttack] TryAttack called");
         if (isAttacking)
         {
-            Debug.Log("[PlayerAttack] blocked - already attacking");
+            //Debug.Log("[PlayerAttack] blocked - already attacking");
             return;
         }
         StartCoroutine(AttackCouroutine());

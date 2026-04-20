@@ -12,12 +12,12 @@ public class RoomBattleSystem : MonoBehaviour
     [SerializeField]
     private DungeonGeneraterByBSP dungeonGenerater;
 
-    public void MonsterDeadMethod(int roomId)
+    public void RoomMonsterDeadMethod(int roomId)
     {
-        OnMonsterDead(roomId);
+        OnMonstersDeadInRoom(roomId);
     }
 
-    private void OnMonsterDead(int roomId)
+    private void OnMonstersDeadInRoom(int roomId)
     {
         DungeonContext ctx = dungeonGenerater.Ctx;
         RoomRuntimeData room = ctx.RoomStates.Find(r => r.RoomId == roomId);
@@ -41,20 +41,20 @@ public class RoomBattleSystem : MonoBehaviour
         }
 
     }
-    public void LockRoom(int roomId)
-    {
-        DungeonContext ctx = dungeonGenerater.Ctx;
-        RoomRuntimeData room = ctx.RoomStates.Find(r => r.RoomId == roomId);
+    //public void LockRoom(int roomId)
+    //{
+    //    DungeonContext ctx = dungeonGenerater.Ctx;
+    //    RoomRuntimeData room = ctx.RoomStates.Find(r => r.RoomId == roomId);
 
-        if (room == null)
-            return;
+    //    if (room == null)
+    //        return;
 
-        foreach (var door in room.Doors)
-        {
-            //if (door != null)
-               // door.SetOpen(false);
-        }
-    }
+    //    foreach (var door in room.Doors)
+    //    {
+    //        //if (door != null)
+    //           // door.SetOpen(false);
+    //    }
+    //}
 
 
 }

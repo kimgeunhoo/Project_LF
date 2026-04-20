@@ -39,10 +39,18 @@ namespace BSPDungeonGenrator.Generation
         private DungeonContext ctx;
 
         private GameObject playerObj;
+
+        [Header("GameOver UI")]
+        [SerializeField]
+        private GameObject gameOverUI;
+
+
         private void Start()
         {
             ctx = dungeonGenerator.Ctx;
             playerObj = Instantiate(playerPF);
+            //GameManager.Instance.RegisterPlayer(playerObj.GetComponent<Player>());
+
             PlayerSpawn(ctx, playerObj);
             
             var cam = FindFirstObjectByType<CinemachineCamera>();
@@ -324,6 +332,11 @@ namespace BSPDungeonGenrator.Generation
             {
                 OnRoomClear(roomId);
             }
+        }
+
+        public void OnPlayerDeath()
+        {
+            gameOverUI.SetActive(true);
         }
 
         private void OnRoomClear(int roomId)

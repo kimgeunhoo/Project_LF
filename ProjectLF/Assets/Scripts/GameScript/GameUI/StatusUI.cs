@@ -9,12 +9,19 @@ public class StatusUI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI hpText;
 
-    //private Player player;
+    [SerializeField]
+    private Player player;
 
-    //private void Awake()
-    //{
-    //    hpText.text = ($"Hp : {player.Hp}/{player.MaxHp}");
-    //}
+    private int currentHp;
+
+    private void Awake()
+    {
+        //player = GameManager.Instance.Player;
+
+        //currentHp = player.Hp;
+        //hpText.text = ($"Hp : {player.Hp}/{currentHp}");
+    }
+
 
 
 }

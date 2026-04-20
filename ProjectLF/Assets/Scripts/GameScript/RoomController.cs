@@ -35,35 +35,6 @@ public class RoomController : MonoBehaviour
         monsters.Clear();
     }
 
-    //private void RegisterDoor(DoorController doorController)
-    //{
-    //    if (doorController == null)
-    //        return;
-    //    if (doors.Contains(doorController))
-    //        return;
-
-    //    doors.Add(doorController);
-    //}
-
-    //private void RegisterMonster(Monster monster)
-    //{
-    //    if (monster == null) 
-    //        return;
-    //    if (monsters.Contains(monster))
-    //        return;
-
-    //    isBattleStarted = true;
-
-    //    if(aliveMonsterCount > 0)
-    //    {
-    //        CloseAllDoors();
-    //    }
-    //    else
-    //    {
-    //        ClearRoom();
-    //    }
-
-    //}
     public void OnMonsterDead(Monster monster)
     {
         if (monster != null)
@@ -83,7 +54,6 @@ public class RoomController : MonoBehaviour
             ClearRoom();
         }
     }
-
     public void ClearRoom()
     {
         if (isCleared) return;
