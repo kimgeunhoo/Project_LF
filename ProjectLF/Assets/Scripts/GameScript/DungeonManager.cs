@@ -36,7 +36,7 @@ namespace BSPDungeonGenrator.Generation
 
         private DoorSpawner doorSpawner;
 
-        private DungeonContext ctx;
+        private OldDungeonContext ctx;
 
         private GameObject playerObj;
 
@@ -145,7 +145,7 @@ namespace BSPDungeonGenrator.Generation
        
         }
 
-        private void AssignSpawnPointsToRooms(DungeonContext _ctx)
+        private void AssignSpawnPointsToRooms(OldDungeonContext _ctx)
         {
             if(roomDistribute == null)
             {
@@ -181,7 +181,7 @@ namespace BSPDungeonGenrator.Generation
         }
 
         // 플레이어 스폰
-        private void PlayerSpawn(DungeonContext _ctx, GameObject _playerObj)
+        private void PlayerSpawn(OldDungeonContext _ctx, GameObject _playerObj)
         {
             Vector2Int psp = roomDistribute.StartSpawnPoint;
             Vector3Int cellPos = new Vector3Int(

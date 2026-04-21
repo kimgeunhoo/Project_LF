@@ -19,7 +19,7 @@ public class RoomBattleSystem : MonoBehaviour
 
     private void OnMonstersDeadInRoom(int roomId)
     {
-        DungeonContext ctx = dungeonGenerater.Ctx;
+        OldDungeonContext ctx = dungeonGenerater.Ctx;
         RoomRuntimeData room = ctx.RoomStates.Find(r => r.RoomId == roomId);
 
         if (room == null)
