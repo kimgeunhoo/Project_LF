@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1945fc5aefd82a2458b64d2cc27fcf1e, type: 3}
+  m_Name: DungeonConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ModularBSP.Config.DungeonConfig
+  cellSize: 6
+  mapWidthInCells: 24
+  mapHeightInCells: 24
+  roomSizeInCells: {x: 3, y: 3}
+  minLeafSize: {x: 6, y: 6}
+  maxLeafSize: {x: 6, y: 6}
+  maxDepth: 6
+  splitPadding: 1
+  corridorWidthInCells: 1
+  roomPrefab: {fileID: 9017026743383539115, guid: 402252f5384f98d46a2684748651f711, type: 3}
+  PathPrefabs:
+    Empty: {fileID: 7844002894497495918, guid: 9036770b58c70424bba87afca701e200, type: 3}
+    UpEnd: {fileID: 8404469827346277521, guid: 50327b7254fb04f499b3cdd2a7588db7, type: 3}
+    RightEnd: {fileID: 4180171438888520517, guid: 0ae99a2f5b5d92e47ad7e8e966db7da8, type: 3}
+    DownEnd: {fileID: 7279069594305206755, guid: 3a631854abde1724db00678d93839165, type: 3}
+    LeftEnd: {fileID: 7326571088532291067, guid: 11d40d5105579be498d4fdd53bbe1d5c, type: 3}
+    Horizontal: {fileID: 4390574385076408838, guid: 1c3bf151094ec024987e2ed9f3c54cc7, type: 3}
+    Vertical: {fileID: 3296361041855550044, guid: 3064f350409d9bb40a6b3d4b555c906c, type: 3}
+    UpRightCorner: {fileID: 4794486653584959407, guid: 82e4baf8db1efd74898a9c526d4a11cb, type: 3}
+    RightDownCorner: {fileID: 6663901047569010941, guid: 9e162fce3472a684e94161afab0733da, type: 3}
+    DownLeftCorner: {fileID: 3195027455207360763, guid: 719f775f27807dc4fb194dcd609a8ca5, type: 3}
+    LeftUpCorner: {fileID: 7092345859376607083, guid: 646b48b6f02c500478d1c355d375d6a1, type: 3}
+    UpRightDownTJunction: {fileID: 1389422239397369224, guid: 9cf94e600bbcee648bfb40c00559f4a8, type: 3}
+    RightDownLeftTJunction: {fileID: 3137264078723148455, guid: 4f361db7574b5c04cb096859e6761b24, type: 3}
+    DownLeftUpTJunction: {fileID: 7706116366678791888, guid: 924e0ba363fee4148877e94e0bf4d361, type: 3}
+    LeftUpRightTJunction: {fileID: 8457579055787028345, guid: 32f296973f7e5c7469ab171f25e0a2a7, type: 3}
+    cross: {fileID: 7081448137902154615, guid: 141c7890c283f0d43baf72647bee81ed, type: 3}
+  roomParent: {fileID: 0}
+  roadParent: {fileID: 0}

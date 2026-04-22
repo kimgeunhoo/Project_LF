@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 1620591483247387078}
   - component: {fileID: 4719695351666037936}
   m_Layer: 0
-  m_Name: Left-Right-Down Corner
+  m_Name: Left-Right-Down T
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

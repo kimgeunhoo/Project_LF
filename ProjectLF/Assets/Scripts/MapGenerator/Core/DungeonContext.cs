@@ -19,6 +19,7 @@ namespace ModularBSP.Core
         public BspNode Root;
         public List<IntRect> Rooms = new List<IntRect>();
         public HashSet<Vector2Int> CorridorCells = new HashSet<Vector2Int>();
+        public HashSet<Vector2Int> RoomEnteranceCells = new HashSet<Vector2Int>();
 
         public DungeonContext(int cellSize, Vector2Int mapSizeInCells)
         {

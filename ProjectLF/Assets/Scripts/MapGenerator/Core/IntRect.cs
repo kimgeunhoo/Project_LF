@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ModularBSP.Core
 {
     [System.Serializable]
-    public class IntRect
+    public struct IntRect
     {
         public int x;
         public int y; 

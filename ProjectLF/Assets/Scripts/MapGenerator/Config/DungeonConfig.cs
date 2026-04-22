@@ -14,20 +14,21 @@ namespace ModularBSP.Config
 
         [Header("Room")]
         public Vector2Int roomSizeInCells = new Vector2Int(3, 3);   // 18x18
-        public Vector2Int minLeafSize = new Vector2Int(6, 6);
-        public Vector2Int maxLeafSize = new Vector2Int(12, 12);
+        public Vector2Int minLeafSize = new Vector2Int(4, 4);// def 6x6
+        public Vector2Int maxLeafSize = new Vector2Int(6, 6);// def 12x12
 
         [Header("BSP")]
-        public int maxDepth = 4;
+        public int maxDepth = 5; // def 4
         public int splitPadding = 1;
 
         [Header("Corridor")]
         public int corridorWidthInCells = 1; // 6x6
-        public bool useRandomExtraWidth = false;
+        //public bool useRandomExtraWidth = false;
 
         [Header("Prefabs")]
         public GameObject roomPrefab;
-        public GameObject roadPrefab;
+        public PathPrefabSet PathPrefabs;
+
         public Transform roomParent;
         public Transform roadParent;
     }

@@ -2,7 +2,7 @@ using ModularBSP.Config;
 using ModularBSP.Core;
 using UnityEngine;
 
-namespace ModularBSP.Generataion
+namespace ModularBSP.Generation
 {
     public class BspPartitioner
     {
