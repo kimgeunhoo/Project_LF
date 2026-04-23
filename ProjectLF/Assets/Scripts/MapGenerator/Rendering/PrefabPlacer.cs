@@ -1,6 +1,9 @@
 using UnityEngine;
 using ModularBSP.Config;
 using ModularBSP.Core;
+using System.Collections.Generic;
+using ModularBSP.Generation;
+using ModularBSP.Marker;
 
 namespace ModularBSP.Rendering
 {
@@ -26,9 +29,19 @@ namespace ModularBSP.Rendering
             foreach (var room in context.Rooms)
             {
                 Vector3 worldPos = GridToWorldForRoom(room);
-                Object.Instantiate
+                GameObject roomObj = Object.Instantiate
                     (config.roomPrefab, worldPos, Quaternion.identity, config.roomParent);
+
+                RoomInstance roomInstance = roomObj.GetComponent<RoomInstance>();
+                if(roomInstance != null)
+                {
+                    HashSet<DoorDir> connectedDirs = GetConnectedDirections(room);
+                    roomInstance.SetupBlockedDoors(connectedDirs);
+                }
+
             }
+
+
         }
 
         private void PlaceCorridors()
@@ -55,6 +68,7 @@ namespace ModularBSP.Rendering
             bool right = IsConnectedForPath(x + 1, y);
             bool down = IsConnectedForPath(x, y - 1);
             bool left = IsConnectedForPath(x - 1, y);
+            bool isRoom = IsConnectedForPath(x, y);
 
             int mask = 0;
             if (up)
@@ -69,12 +83,16 @@ namespace ModularBSP.Rendering
             switch (mask)
             {
                 case 0: return config.PathPrefabs.Empty; 
-                case 1: return config.PathPrefabs.UpEnd;
-                case 2: return config.PathPrefabs.RightEnd;
-                case 4: return config.PathPrefabs.DownEnd;
-                case 8: return config.PathPrefabs.LeftEnd;
+                //case 1: return config.PathPrefabs.UpEnd;
+                //case 2: return config.PathPrefabs.RightEnd;
+                //case 4: return config.PathPrefabs.DownEnd;
+                //case 8: return config.PathPrefabs.LeftEnd;
 
+                case 1:
+                case 4:
                 case 5: return config.PathPrefabs.Vertical;
+                case 2:
+                case 8:
                 case 10: return config.PathPrefabs.Horizontal;
 
                 case 3: return config.PathPrefabs.UpRightCorner;
@@ -125,5 +143,55 @@ namespace ModularBSP.Rendering
             return new Vector3(worldX, worldY, 0f);
         }
 
+        private HashSet<DoorDir> GetConnectedDirections(IntRect room)
+        {
+            HashSet<DoorDir> result = new HashSet<DoorDir>();
+
+            Vector2Int upOutside = GetOutsideDoorCell(room, DoorDir.Up);
+            Vector2Int rightOutside = GetOutsideDoorCell(room, DoorDir.Right);
+            Vector2Int downOutside = GetOutsideDoorCell(room, DoorDir.Down);
+            Vector2Int leftOutside = GetOutsideDoorCell(room, DoorDir.Left);
+
+            if (IsCorridorCell(upOutside))
+                result.Add(DoorDir.Up);
+            if (IsCorridorCell(rightOutside))
+                result.Add(DoorDir.Right);
+            if (IsCorridorCell(downOutside))
+                result.Add(DoorDir.Down);
+            if (IsCorridorCell(leftOutside))
+                result.Add(DoorDir.Left);
+
+            return result;  
+        }
+
+        private bool IsCorridorCell(Vector2Int pos)
+        {
+            if(!context.IsInside(pos.x, pos.y))
+                return false;
+
+            return context.Grid[pos.x, pos.y] == CellType.Corridor;
+        }
+
+        private Vector2Int GetOutsideDoorCell(IntRect room, DoorDir dir)
+        {
+            int left = room.xMin;
+            int right = room.xMax - 1;
+            int top = room.yMax - 1;
+            int bottom = room.yMin;
+
+            int centerX = room.xMin + room.width / 2;
+            int centerY = room.yMin + room.height / 2; 
+
+            switch (dir)
+            {
+                case DoorDir.Up: return new Vector2Int(centerX, top + 1);
+                case DoorDir.Right: return new Vector2Int(right + 1, centerY);
+                case DoorDir.Down: return new Vector2Int(centerX, bottom - 1);
+                case DoorDir.Left: return new Vector2Int(left - 1, centerY);
+            }
+
+            return new Vector2Int(centerX, centerY);
+
+        }
     }
 }

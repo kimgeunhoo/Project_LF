@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using ModularBSP.Marker;
 
 namespace ModularBSP.Config
 {
@@ -31,6 +31,10 @@ namespace ModularBSP.Config
 
         public Transform roomParent;
         public Transform roadParent;
+
+        [Header("Room Markers")]
+        public RoomMarkerSet roomMarkerSet;
+        public Transform markerParent;
     }
 
 }

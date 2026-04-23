@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DungeonConfig
   m_EditorClassIdentifier: Assembly-CSharp::ModularBSP.Config.DungeonConfig
   cellSize: 6
-  mapWidthInCells: 24
+  mapWidthInCells: 36
   mapHeightInCells: 24
   roomSizeInCells: {x: 3, y: 3}
   minLeafSize: {x: 6, y: 6}
