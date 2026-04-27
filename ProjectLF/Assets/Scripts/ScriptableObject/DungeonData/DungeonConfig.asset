@@ -15,7 +15,7 @@ MonoBehaviour:
   minRoomCount: 8
   maxGenerateRetry: 10
   cellSize: 6
-  mapWidthInCells: 30
+  mapWidthInCells: 36
   mapHeightInCells: 24
   roomSizeInCells: {x: 3, y: 3}
   minLeafSize: {x: 5, y: 5}
