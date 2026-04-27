@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using BSPDungeonGenrator.Config;
-using BSPDungeonGenrator.Generation;
+using LegacyGameScrpit;
 
 namespace BSPDungeonGenrator.Core
 {
@@ -91,7 +91,7 @@ namespace BSPDungeonGenrator.Core
         /// <summary>
         /// 런타임 방 상태
         /// </summary>
-        public List<RoomRuntimeData> RoomStates;
+        public List<EnemyRoomRuntimeData> RoomStates;
 
 
     }

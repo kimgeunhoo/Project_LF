@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using ModularBSP.Generation;
 using System;
+using ModularBSP.Core;
 
 namespace ModularBSP.Marker
 { 
@@ -38,12 +39,14 @@ namespace ModularBSP.Marker
             if (marker == null || blockPF == null)
                 return;
 
-            if (connectedDirs.Contains(dir))
-                return;
+            if (!connectedDirs.Contains(dir))
+            {
+                GameObject obj = Instantiate(blockPF, marker.position, marker.rotation, transform);
+                spawnedBlocks.Add(obj);
+            }
 
-            GameObject obj = Instantiate(blockPF, marker.position, marker.rotation, transform);
-            spawnedBlocks.Add(obj);
-        }
+        }  
+
 
         private void ClearBlocks()
         {

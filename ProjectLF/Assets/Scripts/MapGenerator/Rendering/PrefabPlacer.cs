@@ -11,11 +11,20 @@ namespace ModularBSP.Rendering
     {
         private readonly DungeonConfig config;
         private readonly DungeonContext context;
+        private readonly Transform roomParent;
+        private readonly Transform roadParent;
 
-        public PrefabPlacer(DungeonConfig config, DungeonContext context)
+        public PrefabPlacer(
+            DungeonConfig config,
+            DungeonContext context,
+            Transform roomParent,
+            Transform roadParent
+            )
         {
             this.config = config;
             this.context = context;
+            this.roomParent = roomParent;
+            this.roadParent = roadParent;
         }
 
         public void PlaceAll()
@@ -30,7 +39,7 @@ namespace ModularBSP.Rendering
             {
                 Vector3 worldPos = GridToWorldForRoom(room);
                 GameObject roomObj = Object.Instantiate
-                    (config.roomPrefab, worldPos, Quaternion.identity, config.roomParent);
+                    (config.roomPrefab, worldPos, Quaternion.identity, roomParent);
 
                 RoomInstance roomInstance = roomObj.GetComponent<RoomInstance>();
                 if(roomInstance != null)
@@ -58,7 +67,7 @@ namespace ModularBSP.Rendering
 
                 Vector3 worldPos = GridToWorldCell(cell.x, cell.y);
                 Object.Instantiate
-                    (roadPrefab, worldPos, Quaternion.identity, config.roadParent);
+                    (roadPrefab, worldPos, Quaternion.identity, roadParent);
             }
         }
 

@@ -12,13 +12,13 @@ namespace MapGenerator.Core
         public Vector2Int CenterCell;
         public Vector3 CenterWorld;
 
-        public RoomRuntimeData(int roomId, IntRect roomRect, Vector2Int centerCell, RoomType roomType)
+        public RoomRuntimeData(int roomId, IntRect roomRect, RoomType roomType, Vector2Int centerCell, Vector3 centerWorld)
         {
             RoomId = roomId;
             RoomRect = roomRect;
             RoomType = roomType;
             CenterCell = centerCell;
-            CenterWorld = Vector3.zero;
+            CenterWorld = centerWorld;
         }
 
     }

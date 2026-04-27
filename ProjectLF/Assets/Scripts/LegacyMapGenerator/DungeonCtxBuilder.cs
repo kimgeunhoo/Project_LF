@@ -1,8 +1,10 @@
 using BSPDungeonGenrator.Config;
 using BSPDungeonGenrator.Core;
+using LegacyGameScrpit;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+
 
 namespace BSPDungeonGenrator
 {
@@ -44,7 +46,7 @@ namespace BSPDungeonGenrator
             // 결과 값 넣기
             ctx.MapData = new TileType[ctx.MapSize.x, ctx.MapSize.y];
             ctx.Rooms = new List<RoomInfo>();
-            ctx.RoomStates = new List<RoomRuntimeData>();
+            ctx.RoomStates = new List<EnemyRoomRuntimeData>();
             ctx.SplitLines = new List<LineSegment>();
             ctx.EncounterPoints = new List<Vector2Int>();
             ctx.MonsterPoints = new List<Vector2Int>();

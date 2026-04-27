@@ -1,5 +1,9 @@
+using GameScript.Manager;
+using MapGenerator.Generation;
+using MapGenerator.Marker;
 using ModularBSP.Config;
 using ModularBSP.Core;
+using ModularBSP.Marker;
 using ModularBSP.Rendering;
 using UnityEngine;
 
@@ -20,6 +24,12 @@ namespace ModularBSP.Generation
         public DungeonConfig Config => config;
 
         private BspLineDrawing lineDrawer;
+        private DungeonManager dungeonManager;
+
+        [SerializeField] private Transform roomParent;
+        [SerializeField] private Transform roadParent;
+        [SerializeField] private Transform markerParent;
+        [SerializeField] private Transform triggerParent;
 
         private void Awake()
         {
@@ -46,15 +56,36 @@ namespace ModularBSP.Generation
                 return;
             }
 
-            ClearChildren(config.roomParent);
-            ClearChildren(config.roadParent);
+            ClearChildren(roomParent);
+            ClearChildren(roadParent);
+            ClearChildren(markerParent);
 
+            TryBuildLayout();
+
+            RoomSlotGenerator roomSlotGenerator = new RoomSlotGenerator(config, context);
+            roomSlotGenerator.Generate(context.Root);
+
+            CorridorGenerator corridorGenerator = new CorridorGenerator(config, context);
+            corridorGenerator.Run(context.Root);
+
+            PrefabPlacer placer = new PrefabPlacer(config, context, roomParent, roadParent);
+            placer.PlaceAll();
+
+            RoomTypeDistributor typeDistributor = new RoomTypeDistributor();
+            context.RoomStates = typeDistributor.BuildRoomStates(context.Rooms, config.cellSize);
+
+            RoomMarkerPlacer markerPlacer = new RoomMarkerPlacer(config);
+            markerPlacer.PlaceMarkers(context.RoomStates, markerParent);
+
+            RoomTriggerPlacer triggerPlacer = new RoomTriggerPlacer(config, dungeonManager);
+            triggerPlacer.PlaceTriggers(context.RoomStates, markerParent);
+        }
+        private bool TryBuildLayout()
+        {
             context = new DungeonContext
                 (config.cellSize,
                 new Vector2Int(config.mapWidthInCells, config.mapHeightInCells)
                 );
-            //BspPartitioner partitioner = new BspPartitioner(config);
-            //context.Root = partitioner.CreateTree();
 
             if (useFixedGridPartition)
             {
@@ -67,15 +98,10 @@ namespace ModularBSP.Generation
                 context.Root = partitioner.CreateTree();
             }
 
-            RoomSlotGenerator roomSlotGenerator = new RoomSlotGenerator(config, context);
-            roomSlotGenerator.Generate(context.Root);
-
-            CorridorGenerator corridorGenerator = new CorridorGenerator(config, context);
-            corridorGenerator.Run(context.Root);
-
-            PrefabPlacer placer = new PrefabPlacer(config, context);
-            placer.PlaceAll();
+            return context.Rooms.Count >= config.minRoomCount;
         }
+
+
         private void ClearChildren(Transform parent)
         {
             if (parent == null) return;

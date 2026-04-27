@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MapGenerator.Core;
 using ModularBSP.Generation;
 using UnityEngine;
 

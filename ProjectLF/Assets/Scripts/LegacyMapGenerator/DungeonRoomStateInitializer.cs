@@ -1,5 +1,6 @@
 using BSPDungeonGenrator.Core;
 using BSPDungeonGenrator.marker;
+using LegacyGameScrpit;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,17 +17,12 @@ namespace BSPDungeonGenrator
         // 방 상태 저장
         private void BuildRoomStates(OldDungeonContext ctx)
         {
-            ctx.RoomStates = new List<RoomRuntimeData>();
+            ctx.RoomStates = new List<EnemyRoomRuntimeData>();
 
             for (int i = 0; i < ctx.Rooms.Count; i++)
             {
-                RoomRuntimeData data = new RoomRuntimeData
-                {
-                    RoomId = i,
-                    RoomInfo = ctx.Rooms[i],
-                    Doors = new List<DoorController>(),
-                    AliveMonsterCount = 0
-                };
+                EnemyRoomRuntimeData data = new EnemyRoomRuntimeData(i, ctx.Rooms[i]);
+
 
                 ctx.RoomStates.Add(data);
             }

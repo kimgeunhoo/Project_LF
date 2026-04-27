@@ -6,6 +6,10 @@ namespace ModularBSP.Config
     [CreateAssetMenu(fileName = "DungeonConfig", menuName = "Dungeon/Modular BSP Config")]
     public class DungeonConfig : ScriptableObject
     {
+        [Header("Room Count")]
+        public int minRoomCount = 8;
+        public int maxGenerateRetry = 10;
+
         // 프리팹 공간사이즈를 6으로 만들었는데, 크기를 바꾼다면 기초값도 그에 따라 바뀔거다.
         [Header("Grid")]
         public int cellSize = 6;
@@ -29,12 +33,8 @@ namespace ModularBSP.Config
         public GameObject roomPrefab;
         public PathPrefabSet PathPrefabs;
 
-        public Transform roomParent;
-        public Transform roadParent;
-
         [Header("Room Markers")]
         public RoomMarkerSet roomMarkerSet;
-        public Transform markerParent;
     }
 
 }

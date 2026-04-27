@@ -1,41 +1,39 @@
 using System.Collections;
-using BSPDungeonGenrator.Generation;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+[CreateAssetMenu(menuName = "Character/PlayerData")]
+public class Player : MonoBehaviour
 {
-    private int roomId;
-    private DungeonManager dungeonManager;
-    private RoomBattleSystem roomBattleSystem;
-    private Animator animator;
+    public int[,] inventory;
 
-    [Header("Monster Data")]
-    [SerializeField]
-    private Character m_Monster;
+    public int[] weaponSlot = new int[2];
 
-    public int Hp;
+    public GameObject atkCol;
+
+    public Animator animator;
 
     private bool isDead = false;
 
+    [Header("Player Data")]
+    [SerializeField]
+    private Character m_Player;
+
+    public int Hp;
+
     private void Awake()
     {
-        Hp = m_Monster.Hp;
+        Hp = m_Player.Hp;
         animator = GetComponentInChildren<Animator>();
     }
 
-    public void Init(int _roomId, DungeonManager _dungeonManager)
-    {
-        //Debug.Log($"[Monster] Init called / roomId={roomId}");
-        this.roomId = _roomId;
-        this.dungeonManager = _dungeonManager;
-    }
-    
     public void TakeDamage(int damage)
     {
-        if (isDead) 
+        if (isDead)
             return;
-        
+
         Hp -= damage;
+        DamageAnimation();
+
         if (Hp <= 0)
         {
             Die();
@@ -46,13 +44,12 @@ public class Monster : MonoBehaviour
         }
     }
 
-    public void Die()
+    private void Die()
     {
-        if (isDead) 
+        if (isDead)
             return;
         isDead = true;
         StartCoroutine(DiyingAnimation());
-        dungeonManager.OnMonsterDead(roomId);
         Destroy(gameObject);
     }
 
@@ -60,7 +57,6 @@ public class Monster : MonoBehaviour
     {
         animator.SetTrigger("Death");
         yield return new WaitForSeconds(0.5f); // 애니메이션 길이에 맞게 조절
-        Die();
     }
 
     public IEnumerator DamageAnimation()

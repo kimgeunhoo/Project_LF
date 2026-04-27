@@ -17,7 +17,7 @@ namespace BSPDungeonGenrator.Generation
         private OldDungeonContext ctx;
         private AStarPathFinder aStarPathFinder;
 
-        private int corriderPathWidth = 1;
+        //private int corriderPathWidth = 1;
 
         public void Run(OldDungeonContext _ctx)
         {

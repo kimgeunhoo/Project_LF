@@ -2,6 +2,7 @@ using BSPDungeonGenrator.Config;
 using BSPDungeonGenrator.Generation;
 using BSPDungeonGenrator.Core;
 using UnityEngine;
+using LegacyGameScrpit;
 
 namespace BSPDungeonGenrator.marker
 {

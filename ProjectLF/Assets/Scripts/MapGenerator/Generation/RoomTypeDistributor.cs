@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MapGenerator.Core;
 using ModularBSP.Core;
 using UnityEngine;
 
@@ -42,32 +43,60 @@ namespace MapGenerator.Generation
                 else if(i == shopIndex)
                     type = RoomType.Shop;
                 else
-                    type = Random.value < 0.3f ? RoomType.Enemy : RoomType.Encounter;
+                    type = Random.value < 0.8f ? RoomType.Enemy : RoomType.Encounter;
 
                 IntRect room = rooms[i];
                 Vector2Int centerCell = room.Center;
-                Vector3 centerWoeld = new Vector3(
+                Vector3 centerWorld = new Vector3(
                     centerCell.x * cellSize + cellSize * 0.5f,
                     centerCell.y * cellSize + cellSize * 0.5f,
                     0f
                     );
 
-
+                result.Add(new RoomRuntimeData(i, room, type, centerCell, centerWorld));
             }
 
 
-            return null;
+            return result;
 
         }
 
         private int FindTopRightRoom(List<IntRect> rooms)
         {
-            throw new System.NotImplementedException();
+            int bestIndex = 0;
+            int bestScore = int.MaxValue;
+
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                Vector2Int c = rooms[i].Center;
+                int score = c.x + c.y;
+                if (score < bestScore)
+                {
+                    bestScore = score;
+                    bestIndex = i;
+                }
+            }
+
+            return bestIndex;
         }
 
         private int FindBottomLeftMostRoom(List<IntRect> rooms)
         {
-            throw new System.NotImplementedException();
+            int bestIndex = 0;
+            int bestScore = int.MinValue;
+
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                Vector2Int c = rooms[i].Center;
+                int score = c.x + c.y;
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    bestIndex = i;
+                }
+            }
+
+            return bestIndex;
         }
     }
 }

@@ -3,18 +3,13 @@ using UnityEngine;
 namespace ModularBSP.Marker
 {
     [System.Serializable]
-    public class RoomMarkerSet : MonoBehaviour
+    public class RoomMarkerSet
     {
-        [SerializeField]
-        private GameObject StartMarkerPrefab;
-        [SerializeField]
-        private GameObject ShopMarkerPrefab;
-        [SerializeField]
-        private GameObject StairMarkerPrefab;
-        [SerializeField]
-        private GameObject EncounterMarkerPrefab;
-        [SerializeField]
-        private GameObject EnemyMarkerPrefab;
+        public GameObject StartMarkerPrefab;
+        public GameObject ShopMarkerPrefab;
+        public GameObject StairMarkerPrefab;
+        public GameObject EncounterMarkerPrefab;
+        public GameObject EnemyMarkerPrefab;
 
     }
 }
