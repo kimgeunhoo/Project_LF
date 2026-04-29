@@ -30,11 +30,11 @@ namespace BSPDungeonGenrator.Generation
                 return;
             }
 
-            if (_ctx.RoomStates == null)
-            {
-                Debug.LogError("[DoorSpawner] ctx.RoomStates is NULL");
-                return;
-            }
+            //if (_ctx.RoomStates == null)
+            //{
+            //    Debug.LogError("[DoorSpawner] ctx.RoomStates is NULL");
+            //    return;
+            //}
 
             ClearOldDoors();
 
@@ -71,35 +71,35 @@ namespace BSPDungeonGenrator.Generation
 
             GameObject doorObj = Instantiate(doorPrefab, worldPos, Quaternion.identity, doorParent);
 
-            DoorController doorController = doorObj.GetComponent<DoorController>();
-            if (doorController == null)
-                return;
+            //DoorController doorController = doorObj.GetComponent<DoorController>();
+            //if (doorController == null)
+            //    return;
 
-            int roomId = FindRoomIdFromDoorPos(_ctx, mapPos);
-            if (roomId >= 0 && roomId < _ctx.RoomStates.Count)
-            {
-                doorController.SetRoomId(roomId);
-                _ctx.RoomStates[roomId].Doors.Add(doorController);
-            }
+            //int roomId = FindRoomIdFromDoorPos(_ctx, mapPos);
+            //if (roomId >= 0 && roomId < _ctx.RoomStates.Count)
+            //{
+            //    doorController.SetRoomId(roomId);
+            //    _ctx.RoomStates[roomId].Doors.Add(doorController);
+            //}
 
         }
 
 
         private int FindRoomIdFromDoorPos(OldDungeonContext _ctx, Vector2Int doorPos)
         {
-            for (int i = 0; i < _ctx.RoomStates.Count; i++)
-            {
-                RectInt rect = _ctx.RoomStates[i].RoomInfo.Rect;
+            //for (int i = 0; i < _ctx.RoomStates.Count; i++)
+            //{
+            //    RectInt rect = _ctx.RoomStates[i].RoomInfo.Rect;
 
-                bool adjacent =
-                    rect.Contains(doorPos + Vector2Int.left) ||
-                    rect.Contains(doorPos + Vector2Int.right) ||
-                    rect.Contains(doorPos + Vector2Int.up) ||
-                    rect.Contains(doorPos + Vector2Int.down);
+            //    bool adjacent =
+            //        rect.Contains(doorPos + Vector2Int.left) ||
+            //        rect.Contains(doorPos + Vector2Int.right) ||
+            //        rect.Contains(doorPos + Vector2Int.up) ||
+            //        rect.Contains(doorPos + Vector2Int.down);
 
-                if (adjacent)
-                    return i;
-            }
+            //    if (adjacent)
+            //        return i;
+            //}
  
             return -1;
         }

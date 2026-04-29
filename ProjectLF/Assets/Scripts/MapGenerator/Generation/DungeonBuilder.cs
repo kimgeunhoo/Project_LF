@@ -6,6 +6,7 @@ using ModularBSP.Core;
 using ModularBSP.Marker;
 using ModularBSP.Rendering;
 using UnityEngine;
+using Unity.Cinemachine;
 
 namespace ModularBSP.Generation
 {
@@ -18,6 +19,9 @@ namespace ModularBSP.Generation
         [SerializeField]
         private bool useFixedGridPartition = false;
 
+        [SerializeField]
+        private GameObject lineParentObject;
+
         private DungeonContext context;
 
         public DungeonContext Context => context;
@@ -26,10 +30,24 @@ namespace ModularBSP.Generation
         private BspLineDrawing lineDrawer;
         private DungeonManager dungeonManager;
 
-        [SerializeField] private Transform roomParent;
-        [SerializeField] private Transform roadParent;
-        [SerializeField] private Transform markerParent;
-        [SerializeField] private Transform triggerParent;
+        [SerializeField] 
+        private Transform emptyParent;
+        [SerializeField] 
+        private Transform roomParent;
+        [SerializeField] 
+        private Transform roadParent;
+        [SerializeField] 
+        private Transform markerParent;
+        [SerializeField] 
+        private Transform triggerParent;
+        [SerializeField] 
+        private Transform doorParent;
+
+        [SerializeField]
+        private Transform playerParent;
+
+        [SerializeField] 
+        private CinemachineCamera cinemachineCamera;
 
         private void Awake()
         {
@@ -45,6 +63,7 @@ namespace ModularBSP.Generation
         {
             BuildDungeon();
             lineDrawer.DrawLines();
+           
         }
 
         [ContextMenu("Generate Dungeon")]
@@ -68,17 +87,31 @@ namespace ModularBSP.Generation
             CorridorGenerator corridorGenerator = new CorridorGenerator(config, context);
             corridorGenerator.Run(context.Root);
 
-            PrefabPlacer placer = new PrefabPlacer(config, context, roomParent, roadParent);
-            placer.PlaceAll();
-
             RoomTypeDistributor typeDistributor = new RoomTypeDistributor();
             context.RoomStates = typeDistributor.BuildRoomStates(context.Rooms, config.cellSize);
+
+            PrefabPlacer placer = new PrefabPlacer(config, context, roomParent, roadParent, emptyParent);
+            placer.PlaceAll();
+
+            DoorPlacer doorPlacer = new DoorPlacer(config, context, doorParent);
+            doorPlacer.PlaceDoor();
 
             RoomMarkerPlacer markerPlacer = new RoomMarkerPlacer(config);
             markerPlacer.PlaceMarkers(context.RoomStates, markerParent);
 
             RoomTriggerPlacer triggerPlacer = new RoomTriggerPlacer(config, dungeonManager);
             triggerPlacer.PlaceTriggers(context.RoomStates, markerParent);
+
+            PlayerSpawner playerSpawner = new PlayerSpawner(config, context, playerParent);
+            GameObject player = playerSpawner.SpawnPlayer();
+
+            lineParentObject.SetActive(false);
+
+            if (player != null && cinemachineCamera != null)
+            {
+                cinemachineCamera.Follow = player.transform;
+                cinemachineCamera.LookAt = player.transform;
+            }
         }
         private bool TryBuildLayout()
         {

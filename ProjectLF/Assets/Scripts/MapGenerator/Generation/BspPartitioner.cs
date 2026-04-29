@@ -38,7 +38,7 @@ namespace ModularBSP.Generation
             bool splitVertical;
             if (canSplitHorizontally && canSplitVertically)
             {
-                splitVertical = UnityEngine.Random.value > 0.5f;
+                splitVertical = Random.value > 0.5f;
             }
             else
             {

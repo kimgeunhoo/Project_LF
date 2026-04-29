@@ -91,7 +91,7 @@ namespace BSPDungeonGenrator.Core
         /// <summary>
         /// 런타임 방 상태
         /// </summary>
-        public List<EnemyRoomRuntimeData> RoomStates;
+        //public List<EnemyRoomRuntimeData> RoomStates;
 
 
     }

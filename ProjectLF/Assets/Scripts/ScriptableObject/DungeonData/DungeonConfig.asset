@@ -12,19 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1945fc5aefd82a2458b64d2cc27fcf1e, type: 3}
   m_Name: DungeonConfig
   m_EditorClassIdentifier: Assembly-CSharp::ModularBSP.Config.DungeonConfig
-  minRoomCount: 8
+  minRoomCount: 10
   maxGenerateRetry: 10
   cellSize: 6
-  mapWidthInCells: 36
-  mapHeightInCells: 24
+  mapWidthInCells: 24
+  mapHeightInCells: 18
   roomSizeInCells: {x: 3, y: 3}
   minLeafSize: {x: 5, y: 5}
   maxLeafSize: {x: 6, y: 6}
-  maxDepth: 6
+  maxDepth: 5
   splitPadding: 1
   corridorWidthInCells: 1
-  roomPrefab: {fileID: 9017026743383539115, guid: 402252f5384f98d46a2684748651f711, type: 3}
-  PathPrefabs:
+  defRoomPrefab: {fileID: 9017026743383539115, guid: 402252f5384f98d46a2684748651f711, type: 3}
+  startRoomPrefab: {fileID: 9017026743383539115, guid: ca4b6bfaa8d41434996e3470331ef378, type: 3}
+  shopRoomPrefab: {fileID: 9017026743383539115, guid: c5f326ecd145b2c4a8da9e22dfafb003, type: 3}
+  stairsRoomPrefab: {fileID: 9017026743383539115, guid: 089bd19819be8e541aaa20f890fed59c, type: 3}
+  encounterRoomPrefab:
+  - {fileID: 1258961570534342038, guid: 4eb6857daf20ae448b33739a9eb0acf5, type: 3}
+  enemyRoomPrefab:
+  - {fileID: 9017026743383539115, guid: d6d40c5c2e70a4b438c5ad5ac605a088, type: 3}
+  - {fileID: 9017026743383539115, guid: 402252f5384f98d46a2684748651f711, type: 3}
+  - {fileID: 9017026743383539115, guid: 66080b80b21daa94b9d412da3abe2796, type: 3}
+  pathPrefabs:
     Empty: {fileID: 7844002894497495918, guid: 9036770b58c70424bba87afca701e200, type: 3}
     UpEnd: {fileID: 8404469827346277521, guid: 50327b7254fb04f499b3cdd2a7588db7, type: 3}
     RightEnd: {fileID: 4180171438888520517, guid: 0ae99a2f5b5d92e47ad7e8e966db7da8, type: 3}
@@ -41,6 +50,9 @@ MonoBehaviour:
     DownLeftUpTJunction: {fileID: 7706116366678791888, guid: 924e0ba363fee4148877e94e0bf4d361, type: 3}
     LeftUpRightTJunction: {fileID: 8457579055787028345, guid: 32f296973f7e5c7469ab171f25e0a2a7, type: 3}
     cross: {fileID: 7081448137902154615, guid: 141c7890c283f0d43baf72647bee81ed, type: 3}
+  doorHorizontalPrefab: {fileID: 7848744490516778174, guid: 5b5c27fc1275e0947ba3ed283d409da1, type: 3}
+  doorVerticalPrefab: {fileID: 5777081309166332728, guid: 6bfbc05c245ab124bbb3d984b9f13843, type: 3}
+  playerPrefab: {fileID: 1628625901795220638, guid: 9aa9f784dcc8fcc47ae78a86593f3717, type: 3}
   roomMarkerSet:
     StartMarkerPrefab: {fileID: 6883092143605729427, guid: 4704ef6bbb29c774d8499a244cb64b2a, type: 3}
     ShopMarkerPrefab: {fileID: 5346286869219666318, guid: 610daaa9ffc94e44aa6e3e790df15dc6, type: 3}

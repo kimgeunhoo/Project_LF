@@ -30,8 +30,19 @@ namespace ModularBSP.Config
         //public bool useRandomExtraWidth = false;
 
         [Header("Prefabs")]
-        public GameObject roomPrefab;
-        public PathPrefabSet PathPrefabs;
+        public GameObject defRoomPrefab;
+        public GameObject startRoomPrefab;
+        public GameObject shopRoomPrefab;
+        public GameObject stairsRoomPrefab;
+        public GameObject[] encounterRoomPrefab;
+        public GameObject[] enemyRoomPrefab;
+
+        public PathPrefabSet pathPrefabs;
+        public GameObject doorHorizontalPrefab;
+        public GameObject doorVerticalPrefab;
+
+        public GameObject playerPrefab;
+
 
         [Header("Room Markers")]
         public RoomMarkerSet roomMarkerSet;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ModularBSP.Generation
 {
-    public class RoomSlotGenerator : MonoBehaviour
+    public class RoomSlotGenerator
     {
         private readonly DungeonConfig config;
         private readonly DungeonContext context;

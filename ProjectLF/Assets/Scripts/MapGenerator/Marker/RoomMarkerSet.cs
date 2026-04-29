@@ -12,4 +12,6 @@ namespace ModularBSP.Marker
         public GameObject EnemyMarkerPrefab;
 
     }
+
+
 }

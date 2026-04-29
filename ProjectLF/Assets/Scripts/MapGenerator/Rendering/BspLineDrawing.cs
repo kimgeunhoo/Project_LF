@@ -137,6 +137,7 @@ namespace ModularBSP.Rendering
             lr.SetPosition(4, bl); // Close the loop
 
             spawnedLines.Add(go);
+            
         }
 
         private Vector3 GridToWorld(int cellX, int cellY)

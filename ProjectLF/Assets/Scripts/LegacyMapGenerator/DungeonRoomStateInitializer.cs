@@ -1,6 +1,5 @@
 using BSPDungeonGenrator.Core;
 using BSPDungeonGenrator.marker;
-using LegacyGameScrpit;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,14 +16,19 @@ namespace BSPDungeonGenrator
         // 방 상태 저장
         private void BuildRoomStates(OldDungeonContext ctx)
         {
-            ctx.RoomStates = new List<EnemyRoomRuntimeData>();
+            //ctx.RoomStates = new List<RoomRuntimeData>();
 
             for (int i = 0; i < ctx.Rooms.Count; i++)
             {
-                EnemyRoomRuntimeData data = new EnemyRoomRuntimeData(i, ctx.Rooms[i]);
+                //RoomRuntimeData data = new RoomRuntimeData
+                //{
+                //    RoomId = i,
+                //    RoomInfo = ctx.Rooms[i],
+                //    Doors = new List<DoorController>(),
+                //    AliveMonsterCount = 0
+                //};
 
-
-                ctx.RoomStates.Add(data);
+                //ctx.RoomStates.Add(data);
             }
         }
         // 스폰 포인트 저장
@@ -32,16 +36,16 @@ namespace BSPDungeonGenrator
         {
             foreach (var spawnPos in monsterSpawnPoints)
             {
-                for (int i = 0; i < ctx.RoomStates.Count; i++)
-                {
-                    RectInt rect = ctx.RoomStates[i].RoomInfo.Rect;
+                //for (int i = 0; i < ctx.RoomStates.Count; i++)
+                //{
+                //    RectInt rect = ctx.RoomStates[i].RoomInfo.Rect;
 
-                    if (rect.Contains(spawnPos))
-                    {
-                        ctx.RoomStates[i].SpawnPoint = spawnPos;
-                        break;
-                    }
-                }
+                //    if (rect.Contains(spawnPos))
+                //    {
+                //        ctx.RoomStates[i].SpawnPoint = spawnPos;
+                //        break;
+                //    }
+                //}
             }
         }
     }

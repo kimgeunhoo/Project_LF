@@ -13,45 +13,108 @@ namespace ModularBSP.Rendering
         private readonly DungeonContext context;
         private readonly Transform roomParent;
         private readonly Transform roadParent;
+        private readonly Transform emptyParent;
 
         public PrefabPlacer(
             DungeonConfig config,
             DungeonContext context,
             Transform roomParent,
-            Transform roadParent
+            Transform roadParent,
+            Transform emptyParent
             )
         {
             this.config = config;
             this.context = context;
             this.roomParent = roomParent;
             this.roadParent = roadParent;
+            this.emptyParent = emptyParent;
         }
 
         public void PlaceAll()
         {
+            PlaceEmptyCells();
             PlaceRooms();
             PlaceCorridors();
         }
 
+        private void PlaceEmptyCells()
+        {
+            if (config.pathPrefabs.Empty == null)
+                return;
+
+            for (int x = 0; x < context.MapSizeInCells.x; x++)
+            {
+                for (int y = 0; y < context.MapSizeInCells.y; y++)
+                {
+                    if (context.Grid[x, y] != CellType.Empty)
+                        continue;
+                    Vector3 worldPos = GridToWorldCell(x, y);
+
+                    Object.Instantiate(config.pathPrefabs.Empty, worldPos, Quaternion.identity, emptyParent);
+                }
+            }
+        }
+
         private void PlaceRooms()
         {
-            foreach (var room in context.Rooms)
+            foreach (var roomState in context.RoomStates)
             {
-                Vector3 worldPos = GridToWorldForRoom(room);
-                GameObject roomObj = Object.Instantiate
-                    (config.roomPrefab, worldPos, Quaternion.identity, roomParent);
+                GameObject prefab = GetRoomPrefab(roomState.RoomType);
+                if (prefab == null)
+                {
+                    Debug.LogWarning($"Room prefab missing");
+                    continue;
+                }
+
+                Vector3 worldPos = GridToWorldForRoom(roomState.RoomRect);
+
+                GameObject roomObj = Object.Instantiate(
+                    prefab, 
+                    worldPos, 
+                    Quaternion.identity, 
+                    roomParent);
 
                 RoomInstance roomInstance = roomObj.GetComponent<RoomInstance>();
                 if(roomInstance != null)
                 {
-                    HashSet<DoorDir> connectedDirs = GetConnectedDirections(room);
+                    string key = GetRoomKey(roomState.RoomRect);
+
+                    if(!context.RoomConnectedDirs.TryGetValue(key, out HashSet<DoorDir> connectedDirs))
+                    {
+                        connectedDirs = new HashSet<DoorDir>();
+                    }
+
                     roomInstance.SetupBlockedDoors(connectedDirs);
                 }
-
             }
 
-
         }
+
+        private string GetRoomKey(IntRect room)
+        {
+            return $"{room.x}_{room.y}_{room.width}_{room.height}";
+        }
+
+        private GameObject GetRoomPrefab(RoomType roomType)
+        {
+            switch (roomType)
+            {
+                case RoomType.Start:
+                    return config.startRoomPrefab;
+                case RoomType.Shop:
+                    return config.shopRoomPrefab;
+                case RoomType.Stairs:
+                    return config.stairsRoomPrefab;
+                case RoomType.Encounter:
+                    return PickRandomPrefab(config.encounterRoomPrefab);
+                case RoomType.Enemy:
+                    return PickRandomPrefab(config.enemyRoomPrefab);
+            }
+
+            return null;
+        }
+
+       
 
         private void PlaceCorridors()
         {
@@ -71,6 +134,14 @@ namespace ModularBSP.Rendering
             }
         }
 
+        private GameObject PickRandomPrefab(GameObject[] roomPrefab)
+        {
+            if (roomPrefab == null || roomPrefab.Length == 0)
+                return null;
+
+            return roomPrefab[Random.Range(0, roomPrefab.Length)];
+        }
+
         private GameObject GetCorridorPrefab(int x, int y)
         {
             bool up = IsConnectedForPath(x, y + 1);
@@ -80,6 +151,7 @@ namespace ModularBSP.Rendering
             bool isRoom = IsConnectedForPath(x, y);
 
             int mask = 0;
+
             if (up)
                 mask |= 1;
             if (right)
@@ -88,33 +160,33 @@ namespace ModularBSP.Rendering
                 mask |= 4;
             if (left)
                 mask |= 8;
-
+            
             switch (mask)
             {
-                case 0: return config.PathPrefabs.Empty; 
-                //case 1: return config.PathPrefabs.UpEnd;
-                //case 2: return config.PathPrefabs.RightEnd;
-                //case 4: return config.PathPrefabs.DownEnd;
-                //case 8: return config.PathPrefabs.LeftEnd;
+                case 0: return config.pathPrefabs.Empty;
+                case 1: return config.pathPrefabs.DownEnd;
+                case 2: return config.pathPrefabs.LeftEnd;
+                case 4: return config.pathPrefabs.UpEnd;
+                case 8: return config.pathPrefabs.RightEnd;
 
-                case 1:
-                case 4:
-                case 5: return config.PathPrefabs.Vertical;
-                case 2:
-                case 8:
-                case 10: return config.PathPrefabs.Horizontal;
+                //case 1:
+                //case 4:
+                case 5: return config.pathPrefabs.Vertical;
+                //case 2:
+                //case 8:
+                case 10: return config.pathPrefabs.Horizontal;
 
-                case 3: return config.PathPrefabs.UpRightCorner;
-                case 6: return config.PathPrefabs.RightDownCorner;
-                case 9: return config.PathPrefabs.LeftUpCorner;
-                case 12: return config.PathPrefabs.DownLeftCorner;
+                case 3: return config.pathPrefabs.UpRightCorner;
+                case 6: return config.pathPrefabs.RightDownCorner;
+                case 9: return config.pathPrefabs.LeftUpCorner;
+                case 12: return config.pathPrefabs.DownLeftCorner;
 
-                case 7: return config.PathPrefabs.UpRightDownTJunction;
-                case 11: return config.PathPrefabs.LeftUpRightTJunction;
-                case 13: return config.PathPrefabs.DownLeftUpTJunction;
-                case 14: return config.PathPrefabs.RightDownLeftTJunction;
+                case 7: return config.pathPrefabs.UpRightDownTJunction;
+                case 11: return config.pathPrefabs.LeftUpRightTJunction;
+                case 13: return config.pathPrefabs.DownLeftUpTJunction;
+                case 14: return config.pathPrefabs.RightDownLeftTJunction;
 
-                case 15: return config.PathPrefabs.cross;
+                case 15: return config.pathPrefabs.cross;
             }
             return null;
         }

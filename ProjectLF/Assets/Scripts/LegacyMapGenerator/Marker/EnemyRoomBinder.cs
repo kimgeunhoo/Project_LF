@@ -8,8 +8,8 @@ namespace BSPDungeonGenrator.marker
 {
     public class EnemyRoomBinder : MonoBehaviour
     {
-        [SerializeField]
-        private DungeonManager dungeonManager;
+        //[SerializeField]
+        //private DungeonManager dungeonManager;
 
         public void Bind(GameObject obj, RoomInfo room, int roomId, OldDungeonContext ctx)
         {
@@ -19,11 +19,11 @@ namespace BSPDungeonGenrator.marker
 
         private void BindTrigger(GameObject obj, int roomId)
         {
-            EnemyRoomTrigger trigger = obj.GetComponent<EnemyRoomTrigger>();
-            if (trigger != null)
-            {
-                trigger.Init(roomId, dungeonManager);
-            }
+           // EnemyRoomTrigger trigger = obj.GetComponent<EnemyRoomTrigger>();
+            //if (trigger != null)
+            //{
+            //    trigger.Init(roomId, dungeonManager);
+            //}
 
         }
 

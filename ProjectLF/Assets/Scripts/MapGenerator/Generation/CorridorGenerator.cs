@@ -29,8 +29,6 @@ namespace ModularBSP.Generation
             List<BspNode> leafNodes = new List<BspNode>();
             CollectLeaves(root, leafNodes);
 
-            Debug.Log($"[Corridor] leaf count = {leafNodes.Count}");
-
             if (leafNodes.Count <= 1)
                 return;
 
@@ -88,7 +86,7 @@ namespace ModularBSP.Generation
 
         private void AddExtraConnections(List<BspNode> leafNodes, HashSet<string> connectedPairs, Dictionary<BspNode, int> degreeMap)
         {
-            const float extraChance = 0.5f;
+            const float extraChance = 0.9f;
             const int maxDegree = 3;
 
             foreach (var node in leafNodes)
@@ -430,7 +428,7 @@ namespace ModularBSP.Generation
 
         private string GetRoomKey(IntRect room)
         {
-            return $"{room.x}_{room.y}";
+            return $"{room.x}_{room.y}_{room.width}_{room.height}";
         }
     }
 }
