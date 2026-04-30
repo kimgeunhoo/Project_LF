@@ -20,7 +20,7 @@ MonoBehaviour:
   roomSizeInCells: {x: 3, y: 3}
   minLeafSize: {x: 5, y: 5}
   maxLeafSize: {x: 6, y: 6}
-  maxDepth: 5
+  maxDepth: 4
   splitPadding: 1
   corridorWidthInCells: 1
   defRoomPrefab: {fileID: 9017026743383539115, guid: 402252f5384f98d46a2684748651f711, type: 3}
@@ -35,10 +35,10 @@ MonoBehaviour:
   - {fileID: 9017026743383539115, guid: 66080b80b21daa94b9d412da3abe2796, type: 3}
   pathPrefabs:
     Empty: {fileID: 7844002894497495918, guid: 9036770b58c70424bba87afca701e200, type: 3}
-    UpEnd: {fileID: 8404469827346277521, guid: 50327b7254fb04f499b3cdd2a7588db7, type: 3}
-    RightEnd: {fileID: 4180171438888520517, guid: 0ae99a2f5b5d92e47ad7e8e966db7da8, type: 3}
-    DownEnd: {fileID: 7279069594305206755, guid: 3a631854abde1724db00678d93839165, type: 3}
-    LeftEnd: {fileID: 7326571088532291067, guid: 11d40d5105579be498d4fdd53bbe1d5c, type: 3}
+    UpEnd: {fileID: 7279069594305206755, guid: 3a631854abde1724db00678d93839165, type: 3}
+    RightEnd: {fileID: 7326571088532291067, guid: 11d40d5105579be498d4fdd53bbe1d5c, type: 3}
+    DownEnd: {fileID: 8404469827346277521, guid: 50327b7254fb04f499b3cdd2a7588db7, type: 3}
+    LeftEnd: {fileID: 4180171438888520517, guid: 0ae99a2f5b5d92e47ad7e8e966db7da8, type: 3}
     Horizontal: {fileID: 4390574385076408838, guid: 1c3bf151094ec024987e2ed9f3c54cc7, type: 3}
     Vertical: {fileID: 3296361041855550044, guid: 3064f350409d9bb40a6b3d4b555c906c, type: 3}
     UpRightCorner: {fileID: 4794486653584959407, guid: 82e4baf8db1efd74898a9c526d4a11cb, type: 3}

@@ -1,16 +1,23 @@
+using GameScript.Manager;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class Monster : Character
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private GameObject monster;
+    private int roomId;
+    private DungeonManager dungeonManager;
+
+    public void Init(int _roomId, DungeonManager _manager, GameObject _monster)
     {
-        
+        roomId = _roomId;
+        dungeonManager = _manager;
+        monster = _monster;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Die()
     {
-        
+        dungeonManager.OnMonsterDead(roomId);
+        Destroy(monster);
     }
+
 }

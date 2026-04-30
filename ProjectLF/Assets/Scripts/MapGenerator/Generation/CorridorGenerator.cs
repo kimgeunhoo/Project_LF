@@ -26,13 +26,15 @@ namespace ModularBSP.Generation
 
         public void Run(BspNode root)
         {
+            if (root == null)
+                return;
+
+
             List<BspNode> leafNodes = new List<BspNode>();
             CollectLeaves(root, leafNodes);
 
             if (leafNodes.Count <= 1)
                 return;
-
-            List<BspNode> ordered = BuildNearestOrder(leafNodes);
 
             HashSet<string> connectedPairs = new HashSet<string>();
             Dictionary<BspNode, int> degreeMap = new Dictionary<BspNode, int>();
@@ -42,16 +44,25 @@ namespace ModularBSP.Generation
                 degreeMap[node] = 0;
             }
 
-            for (int i = 0; i < ordered.Count - 1; i++)
-            {
-                TryConnectRooms(ordered[i], ordered[i + 1], connectedPairs, degreeMap);
-            }
+            //List<BspNode> ordered = BuildNearestOrder(leafNodes);
+
+            ConnectNodesRecursive(root, connectedPairs, degreeMap);
+
+            //for (int i = 0; i < ordered.Count - 1; i++)
+            //{
+            //    TryConnectRooms(ordered[i], ordered[i + 1], connectedPairs, degreeMap);
+            //}
 
             AddExtraConnections(leafNodes, connectedPairs, degreeMap);
         }
 
         private void TryConnectRooms(BspNode bspNode1, BspNode bspNode2, HashSet<string> connectedPairs, Dictionary<BspNode, int> degreeMap)
         {
+            if (!degreeMap.ContainsKey(bspNode1))
+                degreeMap[bspNode1] = 0;
+            if (!degreeMap.ContainsKey(bspNode2))
+                degreeMap[bspNode2] = 0;
+
             if (!bspNode1.RoomBounds.HasValue || !bspNode2.RoomBounds.HasValue)
                 return;
 
@@ -67,6 +78,7 @@ namespace ModularBSP.Generation
 
             Vector2Int roomDoorA = GetRoomDoorCell(roomA, dirA);
             Vector2Int roomDoorB = GetRoomDoorCell(roomB, dirB);
+
 
             Vector2Int start = GetOutsideDoorCell(roomA, dirA);
             Vector2Int end = GetOutsideDoorCell(roomB, dirB);
@@ -110,6 +122,43 @@ namespace ModularBSP.Generation
             }
         }
 
+        // bsp 식 재귀 연결
+        private void ConnectNodesRecursive(
+            BspNode node,
+            HashSet<string> connectedPairs,
+            Dictionary<BspNode, int> degreeMap
+            )
+        {
+            if (node.IsLeaf)
+                return;
+
+            ConnectNodesRecursive(node.Left, connectedPairs, degreeMap);
+            ConnectNodesRecursive(node.Right, connectedPairs, degreeMap);
+
+            BspNode leftLeaf = GetAnyLeafWithRoom(node.Left);
+            BspNode rightLeaf = GetAnyLeafWithRoom(node.Right);
+
+            if (leftLeaf != null && rightLeaf != null)
+            {
+                TryConnectRooms(leftLeaf, rightLeaf, connectedPairs, degreeMap);
+            }
+        }
+
+        private BspNode GetAnyLeafWithRoom(BspNode node)
+        {
+            if (node == null)
+                return null;
+            if (node.IsLeaf && node.RoomBounds.HasValue)
+                return node;
+            BspNode leftResult = GetAnyLeafWithRoom(node.Left);
+            if (leftResult != null)
+                return leftResult;
+
+            return GetAnyLeafWithRoom(node.Right);
+
+        }
+
+        // 그리디 방식
         private List<BspNode> GetNearestCandidates(BspNode node, List<BspNode> leafNodes, HashSet<string> connectedPairs, Dictionary<BspNode, int> degreeMap, int maxDegree)
         {
             List<(BspNode node, float dist)> temp = new List<(BspNode, float)>();
@@ -128,7 +177,7 @@ namespace ModularBSP.Generation
 
                 Vector2Int targetCenter = other.RoomBounds.Value.Center;
                 float dist = Vector2Int.Distance(sourceCenter, targetCenter);
-                if (dist > 14f) // 임의값. 거리제한이니 값 조절 필요하면
+                if (dist > 20f) // 임의값. 거리제한이니 값 조절 필요하면
                     continue;
                 temp.Add((other, dist));
             }
@@ -145,6 +194,7 @@ namespace ModularBSP.Generation
             return candidates;
         }
 
+        // 그리디 방식
         private List<BspNode> BuildNearestOrder(List<BspNode> leafNodes)
         {
             List<BspNode> result = new List<BspNode>();
@@ -305,7 +355,7 @@ namespace ModularBSP.Generation
                         continue;
 
                     if (context.Grid[x, y] == CellType.Room)
-                        return;
+                        continue;
 
                     if (context.Grid[x, y] == CellType.Empty)
                     {
@@ -324,9 +374,8 @@ namespace ModularBSP.Generation
             int bottom = room.yMin;
             int top = room.yMax - 1;
 
-            int centerX = room.xMin + room.width / 2;
-            int centerY = room.yMin + room.height / 2;
-
+            int centerX = room.xMin + (room.width - 1) / 2;
+            int centerY = room.yMin + (room.height - 1) / 2;
             switch (dir)
             {
                 case DoorDir.Up:
@@ -337,9 +386,7 @@ namespace ModularBSP.Generation
                     return new Vector2Int(left, centerY);
                 case DoorDir.Right:
                     return new Vector2Int(right, centerY);
-
             }
-
             return new Vector2Int(centerX, centerY);
 
         }
@@ -364,28 +411,20 @@ namespace ModularBSP.Generation
 
         private Vector2Int GetOutsideDoorCell(IntRect room, DoorDir dir)
         {
-            int left = room.xMin;
-            int right = room.xMax - 1;
-            int bottom = room.yMin;
-            int top = room.yMax - 1;
-
-            int centerX = room.xMin + room.width / 2;
-            int centerY = room.yMin + room.height / 2;
+            Vector2Int doorCell = GetRoomDoorCell(room, dir);
 
             switch (dir)
             {
                 case DoorDir.Up:
-                    return new Vector2Int(centerX, top + 1);
+                    return doorCell + Vector2Int.up;
                 case DoorDir.Down:
-                    return new Vector2Int(centerX, bottom - 1);
+                    return doorCell + Vector2Int.down;
                 case DoorDir.Left:
-                    return new Vector2Int(left - 1, centerY);
+                    return doorCell + Vector2Int.left;
                 case DoorDir.Right:
-                    return new Vector2Int(right + 1, centerY);
-
+                    return doorCell + Vector2Int.right;
             }
-
-            return new Vector2Int(centerX, centerY);
+            return doorCell;
         }
 
         private DoorDir GetOpposite(DoorDir dir)
@@ -418,7 +457,7 @@ namespace ModularBSP.Generation
         {
             string key = GetRoomKey(room);
 
-            if(!context.RoomConnectedDirs.ContainsKey(key))
+            if (!context.RoomConnectedDirs.ContainsKey(key))
             {
                 context.RoomConnectedDirs[key] = new HashSet<DoorDir>();
             }
@@ -430,17 +469,19 @@ namespace ModularBSP.Generation
         {
             return $"{room.x}_{room.y}_{room.width}_{room.height}";
         }
+
+
     }
 }
 
-        //// 연결 키 방식
-        //private string GetConnectionKey(BspNode a, BspNode b)
-        //{
-        //    int ha = a.GetHashCode();
-        //    int hb = b.GetHashCode();
+//// 연결 키 방식
+//private string GetConnectionKey(BspNode a, BspNode b)
+//{
+//    int ha = a.GetHashCode();
+//    int hb = b.GetHashCode();
 
-        //    return ha < hb ? $"{ha}_{hb}" : $"{hb}_{ha}";
-        //}
+//    return ha < hb ? $"{ha}_{hb}" : $"{hb}_{ha}";
+//}
 
 //private Vector2Int GetExitPoint(IntRect room, Vector2Int targetCenter)
 //{

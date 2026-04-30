@@ -1,47 +1,33 @@
-using BSPDungeonGenrator.Config;
-using LegacyGameScrpit;
 using System.Collections.Generic;
+using ModularBSP.Core;
 using UnityEngine;
 
-
-namespace BSPDungeonGenrator.Core
+namespace MapGenerator.Core
 {
     [System.Serializable]
     public class RoomRuntimeData
     {
         public int RoomId;
-        public RoomInfo RoomInfo;
+        public IntRect RoomRect;
+        public RoomType RoomType;
+        public Vector2Int CenterCell;
+        public Vector3 CenterWorld;
 
-        //public List<DoorController> Doors = new List<DoorController>();
-        public BoxCollider2D RoomCollider;
-
-        public bool IsCleared = false;
-        public bool IsBattleStarted = false;
-
-
-        public int AliveMonsterCount = 0;
-        public bool HasSpawnedMonsters = false;
-
-        public Vector2Int SpawnPoint;
+        // 몬스터 룸 데이터
+        public List<DoorController> Doors = new List<DoorController>();
         public List<GameObject> SpawnedMonsters = new List<GameObject>();
-        private int i;
-        private IntRect room;
-        private RoomType type;
-        private Vector2Int centerCell;
-        private Vector3 centerWorld;
+        public List<MonsterSpawn> monsterSpawnPoints = new List<MonsterSpawn>();
+        public int AliveMonsterCount;
+        public bool IsCleared = false;
 
-        public RoomRuntimeData(int i, RoomType type, Vector2Int centerCell, Vector3 centerWorld)
+        public RoomRuntimeData(int roomId, IntRect roomRect, RoomType roomType, Vector2Int centerCell, Vector3 centerWorld)
         {
-            this.i = i;
-            this.type = type;
-            this.centerCell = centerCell;
-            this.centerWorld = centerWorld;
+            RoomId = roomId;
+            RoomRect = roomRect;
+            RoomType = roomType;
+            CenterCell = centerCell;
+            CenterWorld = centerWorld;
         }
 
-        private class IntRect
-        {
-
-        }
     }
-
 }

@@ -24,7 +24,11 @@ namespace ModularBSP.Generation
 
         private void SplitRecursive(BspNode node, int depth)
         {
-            if (depth >= config.maxDepth)
+
+            float area = node.Bounds.width * node.Bounds.height;
+            float minArea = config.minLeafSize.x * config.minLeafSize.y * 2.5f;
+
+            if (area < minArea && depth >= (config.maxDepth - 1))
                 return;
 
             bool canSplitHorizontally = 
