@@ -164,10 +164,10 @@ namespace ModularBSP.Rendering
             switch (mask)
             {
                 case 0: return config.pathPrefabs.Empty;
-                case 1: return config.pathPrefabs.DownEnd;
-                case 2: return config.pathPrefabs.LeftEnd;
-                case 4: return config.pathPrefabs.UpEnd;
-                case 8: return config.pathPrefabs.RightEnd;
+                case 1: return config.pathPrefabs.UpEnd;
+                case 2: return config.pathPrefabs.RightEnd;
+                case 4: return config.pathPrefabs.DownEnd;
+                case 8: return config.pathPrefabs.LeftEnd;
 
                 //case 1:
                 //case 4:
@@ -274,5 +274,7 @@ namespace ModularBSP.Rendering
             return new Vector2Int(centerX, centerY);
 
         }
+
+       
     }
 }

@@ -6761,8 +6761,6 @@ GameObject:
   - component: {fileID: -8634483611149875081}
   - component: {fileID: 1576040035922171179}
   - component: {fileID: 3248278383799856964}
-  - component: {fileID: 5161954377169083785}
-  - component: {fileID: 8077711615255117233}
   m_Layer: 0
   m_Name: Monster 1
   m_TagString: Untagged
@@ -6871,38 +6869,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5161954377169083785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8093317626143208978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f770ac0e9e074d6428ffd7526bdba561, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Monster
---- !u!114 &8077711615255117233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8093317626143208978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 972f6487926808e42ad1dd1399270e21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LegacyGameScrpit.MonsterTracking
-  moveSpeed: 3
-  detectedRange: 8
-  attackRange: 1.2
-  attackSprite: {fileID: 8232192690010990940}
-  attackCollider: {fileID: 2151418498704766128}
-  attackWarnningTime: 0.8
-  attackDuration: 0.2
-  attackCooldown: 1
 --- !u!1 &8147536057234976817
 GameObject:
   m_ObjectHideFlags: 0

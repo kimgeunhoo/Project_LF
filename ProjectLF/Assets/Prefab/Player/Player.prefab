@@ -158,7 +158,6 @@ GameObject:
   - component: {fileID: 6214852577832384841}
   - component: {fileID: 5273261999878791389}
   - component: {fileID: 4357664838293498658}
-  - component: {fileID: 1926190741819223620}
   m_Layer: 0
   m_Name: AttackPos
   m_TagString: Untagged
@@ -277,19 +276,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 1}
   m_Direction: 0
---- !u!114 &1926190741819223620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6570602205873882253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc395244240be67469205472cad49242, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  _player: {fileID: 11400000, guid: a5bf530a273421b469592f74b96122c1, type: 2}
 --- !u!1 &9080633660668484525
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +287,6 @@ GameObject:
   - component: {fileID: 496690618784458537}
   - component: {fileID: 3357135121263182359}
   - component: {fileID: 4606082555473374357}
-  - component: {fileID: 330475286106738426}
   m_Layer: 0
   m_Name: SkillPos
   m_TagString: Untagged
@@ -420,19 +405,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 1}
   m_Direction: 0
---- !u!114 &330475286106738426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9080633660668484525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc395244240be67469205472cad49242, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitBox
-  _player: {fileID: 11400000, guid: a5bf530a273421b469592f74b96122c1, type: 2}
 --- !u!1001 &956759879602025850
 PrefabInstance:
   m_ObjectHideFlags: 0
