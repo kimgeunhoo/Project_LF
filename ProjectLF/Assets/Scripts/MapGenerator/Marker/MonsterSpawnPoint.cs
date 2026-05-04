@@ -8,4 +8,9 @@ public class MonsterSpawnPoint : MonoBehaviour
     private Transform spawnPoint;
 
     public Transform SpawnPoint => spawnPoint;
+
+    private void Awake()
+    {
+        spawnPoint = GetComponent<Transform>();   
+    }
 }

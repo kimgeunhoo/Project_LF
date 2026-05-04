@@ -98,8 +98,8 @@ namespace ModularBSP.Rendering
             int bottom = room.yMin;
             int top = room.yMax - 1;
 
-            int centerX = room.xMin + room.width / 2;
-            int centerY = room.yMin + room.height / 2;
+            int centerX = room.xMin + (room.width - 1) / 2;
+            int centerY = room.yMin + (room.height - 1) / 2;
 
             switch (dir)
             {
@@ -123,8 +123,8 @@ namespace ModularBSP.Rendering
             int bottom = room.yMin;
             int top = room.yMax - 1;
 
-            int centerX = room.xMin + room.width / 2;
-            int centerY = room.yMin + room.height / 2;
+            int centerX = room.xMin + (room.width - 1)/ 2;
+            int centerY = room.yMin + (room.height - 1)/ 2;
 
             switch (dir)
             {

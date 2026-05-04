@@ -28,6 +28,7 @@ namespace ModularBSP.Rendering
             this.roomParent = roomParent;
             this.roadParent = roadParent;
             this.emptyParent = emptyParent;
+           
         }
 
         public void PlaceAll()
@@ -35,6 +36,7 @@ namespace ModularBSP.Rendering
             PlaceEmptyCells();
             PlaceRooms();
             PlaceCorridors();
+            CleanupIsolatedCorridors(context);
         }
 
         private void PlaceEmptyCells()
@@ -144,11 +146,11 @@ namespace ModularBSP.Rendering
 
         private GameObject GetCorridorPrefab(int x, int y)
         {
-            bool up = IsConnectedForPath(x, y + 1);
-            bool right = IsConnectedForPath(x + 1, y);
-            bool down = IsConnectedForPath(x, y - 1);
-            bool left = IsConnectedForPath(x - 1, y);
-            bool isRoom = IsConnectedForPath(x, y);
+            bool up = IsConnectedForPath(context, x, y + 1);
+            bool right = IsConnectedForPath(context, x + 1, y);
+            bool down = IsConnectedForPath(context, x, y - 1);
+            bool left = IsConnectedForPath(context, x - 1, y);
+            bool isRoom = IsConnectedForPath(context, x, y);
 
             int mask = 0;
 
@@ -163,6 +165,11 @@ namespace ModularBSP.Rendering
             
             switch (mask)
             {
+                //case 0:
+                //case 1:
+                //case 2:
+                //case 4:
+                //case 8: return config.pathPrefabs.Empty;
                 case 0: return config.pathPrefabs.Empty;
                 case 1: return config.pathPrefabs.UpEnd;
                 case 2: return config.pathPrefabs.RightEnd;
@@ -190,7 +197,7 @@ namespace ModularBSP.Rendering
             }
             return null;
         }
-        private bool IsConnectedForPath(int x, int y)
+        private bool IsConnectedForPath(DungeonContext context, int x, int y)
         {
             if (!context.IsInside(x, y))
                 return false;
@@ -198,10 +205,19 @@ namespace ModularBSP.Rendering
             Vector2Int pos = new Vector2Int(x, y);
             CellType cell = context.Grid[x, y];
 
-            if(cell == CellType.Corridor)
-                return true;
+            // 좌표값의 문제인지 눈으로 확인하기 위한 디버깅용 코드
+            //if (context.Grid[x, y] != CellType.Empty)
+            //    return true;
 
-            if(cell == CellType.Room && context.RoomEnteranceCells.Contains(pos))
+            //if(cell == CellType.Corridor)
+            //    return true;
+
+            //if(cell == CellType.Room)
+            //    return context.RoomEnteranceCells.Contains(pos);
+
+            if (context.CorridorCells.Contains(pos))
+                return true;
+            if (context.RoomEnteranceCells.Contains(pos))
                 return true;
 
             return false;
@@ -260,8 +276,8 @@ namespace ModularBSP.Rendering
             int top = room.yMax - 1;
             int bottom = room.yMin;
 
-            int centerX = room.xMin + room.width / 2;
-            int centerY = room.yMin + room.height / 2; 
+            int centerX = room.xMin + (room.width - 1) / 2;
+            int centerY = room.yMin + (room.height - 1) / 2; 
 
             switch (dir)
             {
@@ -274,7 +290,36 @@ namespace ModularBSP.Rendering
             return new Vector2Int(centerX, centerY);
 
         }
+        
+        private void CleanupIsolatedCorridors(DungeonContext context)
+        {
+            List<Vector2Int> corridorsToRemove = new List<Vector2Int>();
 
+            foreach (var pos in context.CorridorCells)
+            {
+                if(GetConnectionCount(context, pos.x, pos.y) == 0)
+                {
+                    corridorsToRemove.Add(pos);
+                }
+            }
+        }
+
+        private int GetConnectionCount(DungeonContext context, int x, int y)
+        {
+            int count = 0;
+            Vector2Int[] neighbors = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right};
+
+            foreach (var neighbor in neighbors)
+            {
+                if(IsConnectedForPath(context, x + neighbor.x, y + neighbor.y))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+
+        }
        
     }
 }

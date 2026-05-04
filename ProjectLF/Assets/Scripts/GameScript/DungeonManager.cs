@@ -106,9 +106,6 @@ namespace GameScript.Manager
 
             int monsterCount = Random.Range(6, 7);
 
-            List<MonsterSpawnPoint> shuffled = new List<MonsterSpawnPoint>(room.monsterSpawnPoints);
-            Shuffled(shuffled);
-
 
             Debug.Log($"[Spawn] Room {roomId} / Count = {room.AliveMonsterCount}");
         }
@@ -122,10 +119,6 @@ namespace GameScript.Manager
             }
         }
 
-        private Vector3 GetPosInRoom(RoomRuntimeData room)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 
 }

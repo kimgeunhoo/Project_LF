@@ -16,7 +16,7 @@ namespace MapGenerator.Core
         // 몬스터 룸 데이터
         public List<DoorController> Doors = new List<DoorController>();
         public List<GameObject> SpawnedMonsters = new List<GameObject>();
-        public List<MonsterSpawnPoint> monsterSpawnPoints = new List<MonsterSpawnPoint>();
+        public List<MonsterSpawn> monsterSpawnPoints = new List<MonsterSpawn>();
         public int AliveMonsterCount;
         public bool IsCleared = false;
 

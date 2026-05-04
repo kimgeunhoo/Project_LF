@@ -1100,7 +1100,7 @@ GameObject:
   - component: {fileID: 8969440989579664030}
   - component: {fileID: 6716209251317864450}
   m_Layer: 0
-  m_Name: PathWidth _LeftEnd
+  m_Name: PathWidth _RightEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
