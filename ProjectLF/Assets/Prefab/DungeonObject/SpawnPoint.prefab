@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9ca9cabc3302e7439f6757a03eed4cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterSpawnPoint
-  spawnPoint: {fileID: 0}
+  spawnPoint: {fileID: 4680913901900622595}

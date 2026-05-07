@@ -19,10 +19,19 @@ namespace ModularBSP.Trigger
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if(!collision.CompareTag("Player"))
-				return;
+            Debug.Log($"[RoomTrigger] Enter 감지: {collision.name}, tag={collision.tag}");
 
-			if (dungeonManager != null)
+            if (!collision.CompareTag("Player"))
+                return;
+
+            Debug.Log($"[RoomTrigger] Player 입장 / roomId={roomId}, roomType={roomType}");
+
+            if (dungeonManager == null)
+            {
+                dungeonManager = FindFirstObjectByType<DungeonManager>();
+            }
+
+            if (dungeonManager != null)
 			{
 				dungeonManager.OnEnterRoom(roomId, roomType);
 			}

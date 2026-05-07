@@ -75,6 +75,15 @@ namespace ModularBSP.Rendering
                     worldPos, 
                     Quaternion.identity, 
                     roomParent);
+                // 몬스터 방일떄만 실행되야함
+                MonsterSpawnPoint[] spawnPoints =
+                roomObj.GetComponentsInChildren<MonsterSpawnPoint>(true);
+
+                roomState.monsterSpawnPoints.AddRange(spawnPoints);
+
+                //Debug.Log($"[Room {roomState.RoomId}] SpawnPoint Count = {spawnPoints.Length}");
+                //Debug.Log($"[PrefabPlacer] Room {roomState.RoomId} SpawnPoint 등록 = {roomState.monsterSpawnPoints.Count}");
+
 
                 RoomInstance roomInstance = roomObj.GetComponent<RoomInstance>();
                 if(roomInstance != null)

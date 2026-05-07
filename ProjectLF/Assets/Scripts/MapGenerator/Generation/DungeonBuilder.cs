@@ -29,6 +29,8 @@ namespace ModularBSP.Generation
         public DungeonConfig Config => config;
 
         private BspLineDrawing lineDrawer;
+
+        [SerializeField]
         private DungeonManager dungeonManager;
 
         [SerializeField] 
@@ -113,6 +115,14 @@ namespace ModularBSP.Generation
                 cinemachineCamera.Follow = player.transform;
                 cinemachineCamera.LookAt = player.transform;
             }
+
+            dungeonManager = Object.FindFirstObjectByType<DungeonManager>();
+
+            if (dungeonManager != null)
+            {
+                dungeonManager.SetContext(context);
+            }
+
         }
         private bool TryBuildLayout()
         {

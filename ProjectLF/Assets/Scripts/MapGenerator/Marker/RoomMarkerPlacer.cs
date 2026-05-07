@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ModularBSP.Marker
 {
-    public class RoomMarkerPlacer : MonoBehaviour
+    public class RoomMarkerPlacer 
     {
         private readonly DungeonConfig config;
 

@@ -128,7 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 113959378}
-  - component: {fileID: 113959377}
+  - component: {fileID: 113959379}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -136,21 +136,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &113959377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113959376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ebe3c730ec59d74395167232db2e63f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameScript.Manager.DungeonManager
-  monsterPF:
-  - {fileID: 8093317626143208978, guid: 6cfb3d5210ed78947aca79a57d5c8cd4, type: 3}
-  monsterHolder: []
 --- !u!4 &113959378
 Transform:
   m_ObjectHideFlags: 0
@@ -173,6 +158,19 @@ Transform:
   - {fileID: 507562229}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &113959379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113959376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20e61a0d32c270f4eae6910174d36815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameScript.Manager.GameManager
+  dungeonManager: {fileID: 507562230}
 --- !u!1 &290485866
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,6 +443,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 507562229}
+  - component: {fileID: 507562230}
   m_Layer: 0
   m_Name: DungeonManager
   m_TagString: Untagged
@@ -467,6 +466,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 113959378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &507562230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507562228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ebe3c730ec59d74395167232db2e63f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameScript.Manager.DungeonManager
+  monsterPF:
+  - {fileID: 8093317626143208978, guid: 6cfb3d5210ed78947aca79a57d5c8cd4, type: 3}
 --- !u!1 &522736872
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,6 +513,7 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 8a17cd581a45f4740aa8b8e9274fe02a, type: 2}
   useFixedGridPartition: 0
   lineParentObject: {fileID: 1433331338}
+  dungeonManager: {fileID: 507562230}
   emptyParent: {fileID: 697411437}
   roomParent: {fileID: 305796228}
   roadParent: {fileID: 735556578}

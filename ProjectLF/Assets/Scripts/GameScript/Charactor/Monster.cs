@@ -1,22 +1,24 @@
 using GameScript.Manager;
 using UnityEngine;
 
-public class Monster : Character
+public class Monster : MonoBehaviour
 {
     private GameObject monster;
     private int roomId;
     private DungeonManager dungeonManager;
 
-    public void Init(int _roomId, DungeonManager _manager, GameObject _monster)
+    //[SerializeField]
+    //private Character monsterConfig;
+
+
+    public void Init(int _roomId)
     {
         roomId = _roomId;
-        dungeonManager = _manager;
-        monster = _monster;
     }
 
     public void Die()
     {
-        dungeonManager.OnMonsterDead(roomId);
+        GameManager.Instance.NotifyMonsterDead(roomId);
         Destroy(monster);
     }
 

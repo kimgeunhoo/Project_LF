@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: DungeonConfig
   m_EditorClassIdentifier: Assembly-CSharp::ModularBSP.Config.DungeonConfig
   minRoomCount: 10
-  maxGenerateRetry: 10
+  maxGenerateRetry: 30
   cellSize: 6
   mapWidthInCells: 24
   mapHeightInCells: 18
   roomSizeInCells: {x: 3, y: 3}
-  minLeafSize: {x: 5, y: 5}
-  maxLeafSize: {x: 6, y: 6}
-  maxDepth: 4
+  minLeafSize: {x: 4, y: 4}
+  maxLeafSize: {x: 5, y: 5}
+  maxDepth: 5
   splitPadding: 1
   corridorWidthInCells: 1
   defRoomPrefab: {fileID: 9017026743383539115, guid: 402252f5384f98d46a2684748651f711, type: 3}
