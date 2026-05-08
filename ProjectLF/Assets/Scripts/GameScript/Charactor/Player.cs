@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Character/PlayerData")]
+
 public class Player : MonoBehaviour
 {
     public int[,] inventory;
