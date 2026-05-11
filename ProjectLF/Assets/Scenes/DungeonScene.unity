@@ -554,7 +554,7 @@ MonoBehaviour:
   dungeonBuilder: {fileID: 522736873}
   lineParent: {fileID: 1433331340}
   lineMaterial: {fileID: 2100000, guid: 1df5c5dbb8fb7234d95733114f9b4e75, type: 2}
-  lineWidth: 1
+  lineWidth: 0.5
   zOffset: -0.1
   drawAllNodes: 1
   drawLeafOnly: 0

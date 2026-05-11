@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f82ec1a81f4c2324a82fb547c0196d4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  p_data: {fileID: 11400000, guid: a5bf530a273421b469592f74b96122c1, type: 2}
+  p_data: {fileID: 11400000, guid: c0ec1a5541526364b87d79e7aaede801, type: 2}
   attackCollider: {fileID: 4357664838293498658}
   attackDuration: 0.2
   attackCooldown: 0.2
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28dc76b0761eff449a6ed6ea32156558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
-  p_data: {fileID: 11400000, guid: a5bf530a273421b469592f74b96122c1, type: 2}
+  p_data: {fileID: 11400000, guid: c0ec1a5541526364b87d79e7aaede801, type: 2}
 --- !u!114 &-103764101292369137
 MonoBehaviour:
   m_ObjectHideFlags: 0

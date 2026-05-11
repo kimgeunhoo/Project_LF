@@ -47,14 +47,25 @@ namespace GameScript.Manager
         #region 몬스터 사망 메서드
         public void OnMonsterDead(int roomId)
         {
+            if (ctx == null || ctx.RoomStates == null)
+                return;
+
+            if (roomId < 0 || roomId >= ctx.RoomStates.Count)
+                return;
+
             RoomRuntimeData room = ctx.RoomStates[roomId];
 
+            if (room == null || room.IsCleared)
+                return;
+            Debug.Log($"[MonsterDead] 호출 전 / Room={roomId}, Alive={room.AliveMonsterCount}");
             room.AliveMonsterCount--;
-
-            if(room.AliveMonsterCount <= 0)
+            Debug.Log($"[MonsterDead] 호출 후 / Room={roomId}, Alive={room.AliveMonsterCount}");
+            if (room.AliveMonsterCount <= 0)
             {
+                room.AliveMonsterCount = 0;
                 OnRoomClear(roomId);
             }
+
         }
         #endregion
 
@@ -122,7 +133,7 @@ namespace GameScript.Manager
 
             foreach (var door in room.Doors)
             {
-                door.gameObject.SetActive(true);
+                door.Close();
             }
         }
         #endregion
@@ -134,13 +145,16 @@ namespace GameScript.Manager
 
             foreach (var door in room.Doors)
             {
-                door.gameObject.SetActive(false);
+                if (door == null)
+                    continue;
+
+                door.Open();
             }
         }
         #endregion
 
         #region 몬스터 스폰 메서드
-        private void SpawnMonsters(int roomId)
+        private bool SpawnMonsters(int roomId)
         {
 
             RoomRuntimeData room = ctx.RoomStates[roomId];
@@ -148,7 +162,7 @@ namespace GameScript.Manager
             if (room.monsterSpawnPoints == null || room.monsterSpawnPoints.Count <= 0)
             {
                 Debug.LogWarning($"[Room {roomId}] SpawnPoint 없음");
-                return;
+                return false;
             }
 
             if (monsterPF == null || monsterPF.Length <= 0)
@@ -157,10 +171,10 @@ namespace GameScript.Manager
             }
 
             if (room.AliveMonsterCount > 0)
-                return;
+                return false;
 
             int monsterCount = Mathf.Min(
-                Random.Range(6, 7), room.monsterSpawnPoints.Count);
+                Random.Range(6, 9), room.monsterSpawnPoints.Count);
 
             List<MonsterSpawnPoint> spawnPoints = new List<MonsterSpawnPoint>(room.monsterSpawnPoints);
 
@@ -178,11 +192,12 @@ namespace GameScript.Manager
                 Monster monsterScript = monster.GetComponent<Monster>();
                 if (monsterScript != null)
                 {
-                    monsterScript.Init(room.RoomId);
+                    monsterScript.Init(room.RoomId, this);
                 }
             }
 
-            Debug.Log($"[Spawn] Room {roomId} / Count = {room.AliveMonsterCount}");
+            Debug.Log($"[Spawn] Room {roomId} / Alive = {room.AliveMonsterCount}");
+            return room.AliveMonsterCount > 0;
         }
         #endregion
 

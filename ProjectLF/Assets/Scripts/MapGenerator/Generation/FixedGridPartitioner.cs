@@ -50,6 +50,8 @@ namespace ModularBSP.Generation
 
             for(int i = 1; i < leaves.Count; i++)
             {
+
+
                 IntRect merged = MergeRects(currentRoot.Bounds, leaves[i].Bounds);
                 BspNode parent = new BspNode(merged);
 

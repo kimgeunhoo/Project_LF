@@ -113,7 +113,7 @@ namespace MapGenerator.Generation
 
                 float roll = Random.value;
 
-                if (roll < 0.3f)
+                if (roll < 0.1f)
                     room.RoomType = RoomType.Encounter;
                 else
                     room.RoomType = RoomType.Enemy;

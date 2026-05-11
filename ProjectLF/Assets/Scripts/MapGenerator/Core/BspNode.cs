@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ModularBSP.Core
@@ -11,6 +12,8 @@ namespace ModularBSP.Core
 
         public IntRect? RoomBounds;
 
+        // leaf 저장방식
+        public List<BspNode> FixedLeaves = new List<BspNode>();
         public bool IsLeaf => Left == null && Right == null;
 
         public BspNode(IntRect bounds)

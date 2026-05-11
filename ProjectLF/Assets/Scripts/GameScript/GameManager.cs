@@ -68,13 +68,6 @@ namespace GameScript.Manager
             dungeonManager.OnEnterRoom(room.RoomId, room.RoomType);
         }
 
-        public void NotifyMonsterDead(int roomId)
-        {
-            if (dungeonManager == null)
-                return;
-
-            dungeonManager.OnMonsterDead(roomId);
-        }
 
     }
 

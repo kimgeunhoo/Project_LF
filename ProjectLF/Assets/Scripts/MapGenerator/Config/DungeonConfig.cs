@@ -15,14 +15,16 @@ namespace ModularBSP.Config
         public int cellSize = 6;
         public int mapWidthInCells = 48;
         public int mapHeightInCells = 48;
+        //public Vector2Int targetLeafSize = new Vector2Int(24, 18);
+        public int splitVariance = 2;
 
         [Header("Room")]
-        public Vector2Int roomSizeInCells = new Vector2Int(3, 3);   // 18x18
-        public Vector2Int minLeafSize = new Vector2Int(4, 4);// def 6x6
-        public Vector2Int maxLeafSize = new Vector2Int(6, 6);// def 12x12
+        public Vector2Int roomSizeInCells = new Vector2Int(18, 18);   // 18x18
+        public Vector2Int minLeafSize = new Vector2Int(6, 6);// def 6x6
+        public Vector2Int maxLeafSize = new Vector2Int(12, 12);// def 12x12
 
         [Header("BSP")]
-        public int maxDepth = 5; // def 4
+        public int maxDepth = 4; // def 4
         public int splitPadding = 1;
 
         [Header("Corridor")]

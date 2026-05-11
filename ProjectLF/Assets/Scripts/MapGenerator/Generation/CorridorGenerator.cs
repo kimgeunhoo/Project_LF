@@ -89,7 +89,7 @@ namespace ModularBSP.Generation
             RegisterRoomConnection(roomA, dirA);
             RegisterRoomConnection(roomB, dirB);
 
-            Connect(start, end);
+            Connect(start, end, dirA);
 
             connectedPairs.Add(key);
             degreeMap[bspNode1]++;
@@ -194,70 +194,7 @@ namespace ModularBSP.Generation
             return candidates;
         }
 
-        // 그리디 방식
-        private List<BspNode> BuildNearestOrder(List<BspNode> leafNodes)
-        {
-            List<BspNode> result = new List<BspNode>();
-
-            if (leafNodes == null || leafNodes.Count == 0)
-                return result;
-
-            List<BspNode> remaining = new List<BspNode>();
-
-            foreach (var node in leafNodes)
-            {
-                if (node != null && node.RoomBounds.HasValue)
-                    remaining.Add(node);
-            }
-
-            if (remaining.Count == 0)
-                return result;
-
-            remaining.Sort((a, b) =>
-            {
-                Vector2Int ca = a.RoomBounds.Value.Center;
-                Vector2Int cb = b.RoomBounds.Value.Center;
-
-                int yCompare = ca.y.CompareTo(cb.y);
-                if (yCompare != 0)
-                    return yCompare;
-
-                return ca.x.CompareTo(cb.x);
-            });
-
-            BspNode current = remaining[0];
-            result.Add(current);
-            remaining.RemoveAt(0);
-
-            while (remaining.Count > 0)
-            {
-                BspNode nearest = null;
-                float nestDist = float.MaxValue;
-
-                Vector2Int currentCenter = current.RoomBounds.Value.Center;
-
-                foreach (var candidate in remaining)
-                {
-                    Vector2Int candidateCenter = candidate.RoomBounds.Value.Center;
-                    float dist = Vector2Int.Distance(currentCenter, candidateCenter);
-
-                    if (dist < nestDist)
-                    {
-                        nestDist = dist;
-                        nearest = candidate;
-                    }
-                }
-
-                if (nearest == null)
-                    break;
-
-                result.Add(nearest);
-                remaining.Remove(nearest);
-                current = nearest;
-
-            }
-            return result;
-        }
+        
 
         private void CollectLeaves(BspNode node, List<BspNode> leaves)
         {
@@ -277,17 +214,17 @@ namespace ModularBSP.Generation
         }
 
 
-        private void Connect(Vector2Int val1, Vector2Int val2)
+        private void Connect(Vector2Int start, Vector2Int end, DoorDir startDir)
         {
-            if (Random.value > 0.5f)
+            if (startDir == DoorDir.Left || startDir == DoorDir.Right)
             {
-                DigHorizontal(val1.x, val2.x, val1.y);
-                DigVertical(val1.y, val2.y, val2.x);
+                DigHorizontal(start.x, end.x, start.y);
+                DigVertical(start.y, end.y, end.x);
             }
             else
             {
-                DigVertical(val1.y, val2.y, val1.x);
-                DigHorizontal(val1.x, val2.x, val2.y);
+                DigVertical(start.y, end.y, start.x);
+                DigHorizontal(start.x, end.x, end.y);
             }
         }
 
@@ -392,21 +329,23 @@ namespace ModularBSP.Generation
         }
 
         private DoorDir GetDoorDirection(IntRect from, IntRect to)
-        {
-            Vector2Int a = from.Center;
-            Vector2Int b = to.Center;
+        {          
+            bool xOverlap = from.xMin < to.xMax && from.xMax > to.xMin;
+            bool yOverlap = from.yMin < to.yMax && from.yMax > to.yMin;
 
-            int dx = b.x - a.x;
-            int dy = b.y - a.y;
+            if (yOverlap)
+                return (to.Center.x > from.Center.x)? DoorDir.Right : DoorDir.Left;
+
+            if (xOverlap)
+                return (to.Center.y > from.Center.y) ? DoorDir.Up : DoorDir.Down;
+
+            int dx = to.Center.x - from.Center.x;
+            int dy = to.Center.y - from.Center.y;
 
             if (Mathf.Abs(dx) >= Mathf.Abs(dy))
-            {
                 return dx >= 0 ? DoorDir.Right : DoorDir.Left;
-            }
             else
-            {
                 return dy >= 0 ? DoorDir.Up : DoorDir.Down;
-            }
         }
 
         private Vector2Int GetOutsideDoorCell(IntRect room, DoorDir dir)
@@ -473,6 +412,71 @@ namespace ModularBSP.Generation
 
     }
 }
+
+// 그리디 방식
+//private List<BspNode> BuildNearestOrder(List<BspNode> leafNodes)
+//{
+//    List<BspNode> result = new List<BspNode>();
+
+//    if (leafNodes == null || leafNodes.Count == 0)
+//        return result;
+
+//    List<BspNode> remaining = new List<BspNode>();
+
+//    foreach (var node in leafNodes)
+//    {
+//        if (node != null && node.RoomBounds.HasValue)
+//            remaining.Add(node);
+//    }
+
+//    if (remaining.Count == 0)
+//        return result;
+
+//    remaining.Sort((a, b) =>
+//    {
+//        Vector2Int ca = a.RoomBounds.Value.Center;
+//        Vector2Int cb = b.RoomBounds.Value.Center;
+
+//        int yCompare = ca.y.CompareTo(cb.y);
+//        if (yCompare != 0)
+//            return yCompare;
+
+//        return ca.x.CompareTo(cb.x);
+//    });
+
+//    BspNode current = remaining[0];
+//    result.Add(current);
+//    remaining.RemoveAt(0);
+
+//    while (remaining.Count > 0)
+//    {
+//        BspNode nearest = null;
+//        float nestDist = float.MaxValue;
+
+//        Vector2Int currentCenter = current.RoomBounds.Value.Center;
+
+//        foreach (var candidate in remaining)
+//        {
+//            Vector2Int candidateCenter = candidate.RoomBounds.Value.Center;
+//            float dist = Vector2Int.Distance(currentCenter, candidateCenter);
+
+//            if (dist < nestDist)
+//            {
+//                nestDist = dist;
+//                nearest = candidate;
+//            }
+//        }
+
+//        if (nearest == null)
+//            break;
+
+//        result.Add(nearest);
+//        remaining.Remove(nearest);
+//        current = nearest;
+
+//    }
+//    return result;
+//}
 
 //// 연결 키 방식
 //private string GetConnectionKey(BspNode a, BspNode b)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MapGenerator.Core;
 using ModularBSP.Config;
 using ModularBSP.Core;
 using ModularBSP.Generation;
@@ -56,6 +57,22 @@ namespace ModularBSP.Rendering
             Vector3 worldPos = GetDoorWorldPos(room, dir);
 
             GameObject doorObj = Object.Instantiate(prefab, worldPos, Quaternion.identity, doorParent);
+
+            RoomRuntimeData runtimeData = FindRoomRuntimeData(room);
+
+            if (runtimeData == null)
+            {
+                doorObj.SetActive(false);
+                return;
+            }
+
+            DoorController doorController = doorObj.GetComponent<DoorController>();
+            if (doorController == null)
+            {
+                doorController = doorObj.AddComponent<DoorController>();
+            }
+            doorController.SetRoomId(runtimeData.RoomId);
+            runtimeData.Doors.Add(doorController);
 
             doorObj.SetActive(false);
         }
@@ -168,6 +185,25 @@ namespace ModularBSP.Rendering
         private string GetRoomKey(IntRect room)
         {
             return $"{room.x}_{room.y}_{room.width}_{room.height}";
+        }
+
+        private RoomRuntimeData FindRoomRuntimeData(IntRect room)
+        {
+            if (context.RoomStates == null)
+                return null;
+
+            foreach (RoomRuntimeData runtimeRoom in context.RoomStates)
+            {
+                if (runtimeRoom.RoomRect.x == room.x &&
+                    runtimeRoom.RoomRect.y == room.y &&
+                    runtimeRoom.RoomRect.width == room.width &&
+                    runtimeRoom.RoomRect.height == room.height)
+                {
+                    return runtimeRoom;
+                }
+            }
+
+            return null;
         }
     }
 

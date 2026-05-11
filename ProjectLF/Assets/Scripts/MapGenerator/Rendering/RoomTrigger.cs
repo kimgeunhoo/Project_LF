@@ -19,7 +19,7 @@ namespace ModularBSP.Trigger
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            Debug.Log($"[RoomTrigger] Enter 감지: {collision.name}, tag={collision.tag}");
+            //Debug.Log($"[RoomTrigger] Enter 감지: {collision.name}, tag={collision.tag}");
 
             if (!collision.CompareTag("Player"))
                 return;

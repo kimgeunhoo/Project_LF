@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
 
     [Header("Player Data")]
     [SerializeField]
-    private Character m_Player;
+    private PlayerData m_Player;
 
     public int Hp;
 

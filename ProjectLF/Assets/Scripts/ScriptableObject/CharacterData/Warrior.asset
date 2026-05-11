@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72b40470ed0d55345999cc8b033422f4, type: 3}
-  m_Name: PlayerData
-  m_EditorClassIdentifier: Assembly-CSharp::Character
-  hp: 100
-  maxHp: 100
-  mana: 5
-  atk: 5
-  def: 3
-  speed: 8
+  m_Script: {fileID: 11500000, guid: e8bb49930327d114aae170d7100a96a0, type: 3}
+  m_Name: Warrior
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
+  hp: 16
+  mana: 2
+  atk: 4
+  def: 2
+  speed: 7
   dashGage: 3

@@ -1,13 +1,14 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
     [Header("Player Data")]
     [SerializeField]
-    private Character p_data;
+    private PlayerData p_data;
 
-
+    private HashSet<Monster> hitMonsters = new HashSet<Monster>();
 
     [SerializeField]
     private Collider2D attackCollider;
@@ -52,14 +53,14 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log($"[PlayerAttack] Left Click detected / isAttacking = {isAttacking}");
+            //Debug.Log($"[PlayerAttack] Left Click detected / isAttacking = {isAttacking}");
             TryAttack();
         }
     }
 
     private void TryAttack()
     {
-        Debug.Log("[PlayerAttack] TryAttack called");
+        //Debug.Log("[PlayerAttack] TryAttack called");
         if (isAttacking)
         {
             //Debug.Log("[PlayerAttack] blocked - already attacking");
@@ -94,6 +95,28 @@ public class PlayerAttack : MonoBehaviour
         yield return new WaitForSeconds(attackCooldown);
 
         isAttacking = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log($"[HitBox] 충돌 감지: {collision.name}, Layer={collision.gameObject.layer}");
+        Monster monster = collision.GetComponentInParent<Monster>();
+
+        if (collision.CompareTag("Monster"))
+        {
+            if (monster == null)
+            {
+                Debug.LogWarning($"[HitBox] Monster 컴포넌트 없음: {collision.name}");
+                return;
+            }
+
+            hitMonsters.Add(monster);
+
+            Debug.Log($"[HitBox] 데미지 전달: {collision.name}, Damage={p_data.Atk}");
+
+            monster.TakeDamage(p_data.Atk);
+        }
+
     }
 
 }

@@ -6764,7 +6764,7 @@ GameObject:
   - component: {fileID: 8604864514178584040}
   m_Layer: 0
   m_Name: Monster 1
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6882,6 +6882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f770ac0e9e074d6428ffd7526bdba561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Monster
+  data: {fileID: 11400000, guid: 4463626ca14854d4d9371e20aa470015, type: 2}
 --- !u!1 &8147536057234976817
 GameObject:
   m_ObjectHideFlags: 0
