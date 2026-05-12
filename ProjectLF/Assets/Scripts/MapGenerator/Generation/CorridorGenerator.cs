@@ -1,10 +1,24 @@
-using System.Collections.Generic;
 using ModularBSP.Config;
 using ModularBSP.Core;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ModularBSP.Generation
 {
+    struct DoorPort
+    {
+        public DoorDir dir;
+        public Vector2Int doorCell;
+        public Vector2Int outsideCell;
+
+        public DoorPort(DoorDir _dir, Vector2Int _doorCell, Vector2Int _outsideCell)
+        { 
+            this.dir = _dir;
+            this.doorCell = _doorCell;
+            this.outsideCell = _outsideCell;
+        }
+    }
+
     public enum DoorDir
     {
         Up,
@@ -44,14 +58,7 @@ namespace ModularBSP.Generation
                 degreeMap[node] = 0;
             }
 
-            //List<BspNode> ordered = BuildNearestOrder(leafNodes);
-
             ConnectNodesRecursive(root, connectedPairs, degreeMap);
-
-            //for (int i = 0; i < ordered.Count - 1; i++)
-            //{
-            //    TryConnectRooms(ordered[i], ordered[i + 1], connectedPairs, degreeMap);
-            //}
 
             AddExtraConnections(leafNodes, connectedPairs, degreeMap);
         }
@@ -73,27 +80,231 @@ namespace ModularBSP.Generation
             IntRect roomA = bspNode1.RoomBounds.Value;
             IntRect roomB = bspNode2.RoomBounds.Value;
 
-            DoorDir dirA = GetDoorDirection(roomA, roomB);
-            DoorDir dirB = GetOpposite(dirA);
+            DoorPort portA = SelectBestDoorPort(roomA, roomB);
+            DoorPort portB = SelectBestDoorPort(roomB, roomA);
 
-            Vector2Int roomDoorA = GetRoomDoorCell(roomA, dirA);
-            Vector2Int roomDoorB = GetRoomDoorCell(roomB, dirB);
+            Vector2Int roomDoorA = portA.doorCell;
+            Vector2Int roomDoorB = portB.doorCell;
 
+            Vector2Int start = portA.outsideCell;
+            Vector2Int end = portB.outsideCell;
 
-            Vector2Int start = GetOutsideDoorCell(roomA, dirA);
-            Vector2Int end = GetOutsideDoorCell(roomB, dirB);
+            List<Vector2Int> path = FindCorridorPath(start, end, roomA, roomB);
 
-            context.RoomEnteranceCells.Add(roomDoorA);
-            context.RoomEnteranceCells.Add(roomDoorB);
+            if (!TryFindBestDoorPath(roomA, roomB, out portA, out portB, out path))
+            {
+                Debug.LogWarning($"[Corridor] 연결 실패: {roomA.Center} -> {roomB.Center}");
+                return;
+            }
 
-            RegisterRoomConnection(roomA, dirA);
-            RegisterRoomConnection(roomB, dirB);
+            context.RoomEnteranceCells.Add(portA.doorCell);
+            context.RoomEnteranceCells.Add(portB.doorCell);
 
-            Connect(start, end, dirA);
+            RegisterRoomConnection(roomA, portA.dir);
+            RegisterRoomConnection(roomB, portB.dir);
+
+            ForceAddCorridorCell(portA.outsideCell);
+            ForceAddCorridorCell(portB.outsideCell);
+
+            PaintPath(path);
 
             connectedPairs.Add(key);
             degreeMap[bspNode1]++;
             degreeMap[bspNode2]++;
+        }
+
+        private bool TryFindBestDoorPath(IntRect roomA, IntRect roomB, out DoorPort portA, out DoorPort portB, out List<Vector2Int> bestPath)
+        {
+            DoorPort[] portsA =
+    {
+        MakeDoorPort(roomA, DoorDir.Up),
+        MakeDoorPort(roomA, DoorDir.Right),
+        MakeDoorPort(roomA, DoorDir.Down),
+        MakeDoorPort(roomA, DoorDir.Left),
+    };
+
+            DoorPort[] portsB =
+            {
+        MakeDoorPort(roomB, DoorDir.Up),
+        MakeDoorPort(roomB, DoorDir.Right),
+        MakeDoorPort(roomB, DoorDir.Down),
+        MakeDoorPort(roomB, DoorDir.Left),
+    };
+
+            portA = portsA[0];
+            portB = portsB[0];
+            bestPath = null;
+
+            int bestScore = int.MaxValue;
+
+            foreach (var a in portsA)
+            {
+                foreach (var b in portsB)
+                {
+                    List<Vector2Int> path =
+                        FindCorridorPath(a.outsideCell, b.outsideCell, roomA, roomB);
+
+                    if (path == null || path.Count == 0)
+                        continue;
+
+                    int score = path.Count;
+
+                    if (score < bestScore)
+                    {
+                        bestScore = score;
+                        portA = a;
+                        portB = b;
+                        bestPath = path;
+                    }
+                }
+            }
+
+            return bestPath != null;
+        }
+
+        private void ForceAddCorridorCell(Vector2Int cell)
+        {
+            if (!context.IsInside(cell.x, cell.y))
+                return;
+
+            if (context.Grid[cell.x, cell.y] == CellType.Room)
+                return;
+
+            context.Grid[cell.x, cell.y] = CellType.Corridor;
+
+            if (!context.CorridorCells.Contains(cell))
+                context.CorridorCells.Add(cell);
+        }
+
+        private DoorPort SelectBestDoorPort(IntRect from, IntRect to)
+        {
+            DoorPort[] ports =
+            {
+                MakeDoorPort(from, DoorDir.Up),
+                MakeDoorPort(from, DoorDir.Right),
+                MakeDoorPort(from, DoorDir.Down),
+                MakeDoorPort(from, DoorDir.Left),
+            };
+
+            DoorPort best = ports[0];
+            int bestScore = int.MaxValue;
+
+            Vector2Int target = to.Center;
+
+            foreach (var port in ports)
+            {
+                int dx = Mathf.Abs(port.outsideCell.x - target.x);
+                int dy = Mathf.Abs(port.outsideCell.y - target.y);
+                int score = dx + dy;
+
+                if(score < bestScore)
+                {
+                    bestScore = score;
+                    best = port;
+                }
+            }
+
+            return best;
+        }
+
+        private DoorPort MakeDoorPort(IntRect room, DoorDir dir)
+        {
+            Vector2Int door = GetRoomDoorCell(room, dir);
+            Vector2Int outside = GetOutsideDoorCell(room, dir);
+            return new DoorPort(dir, door, outside);
+        }
+
+        private List<Vector2Int> FindCorridorPath(Vector2Int start, Vector2Int end, IntRect roomA, IntRect roomB)
+        {
+            Vector2Int cornerA = new Vector2Int(end.x, start.y);
+            Vector2Int cornerB = new Vector2Int(start.x, end.y);
+
+            if (IsCorridorLineClear(start, cornerA) &&
+                IsCorridorLineClear(cornerA, end))
+            {
+                return BuildPathFromLines(start, cornerA, end);
+            }
+
+            if (IsCorridorLineClear(start, cornerB) &&
+                IsCorridorLineClear(cornerB, end))
+            {
+                return BuildPathFromLines(start, cornerB, end);
+            }
+
+            return null;
+        }
+
+        private List<Vector2Int> BuildPathFromLines(Vector2Int start, Vector2Int corner, Vector2Int end)
+        {
+            List<Vector2Int> path = new List<Vector2Int>();
+
+            AddLineCells(path, start, corner);
+            AddLineCells(path, corner, end);
+
+            return path;
+        }
+
+        private void AddLineCells(List<Vector2Int> path, Vector2Int start, Vector2Int end)
+        {
+            if (start.x == end.x)
+            {
+                int min = Mathf.Min(start.y, end.y);
+                int max = Mathf.Max(start.y, end.y);
+
+                for (int y = min; y <= max; y++)
+                    AddUnique(path, new Vector2Int(start.x, y));
+            }
+            else if (start.y == end.y)
+            {
+                int min = Mathf.Min(start.x, end.x);
+                int max = Mathf.Max(start.x, end.x);
+
+                for (int x = min; x <= max; x++)
+                    AddUnique(path, new Vector2Int(x, start.y));
+            }
+        }
+
+        private void AddUnique(List<Vector2Int> path, Vector2Int cell)
+        {
+            if (!path.Contains(cell))
+                path.Add(cell);
+        }
+
+        private void PaintPath(List<Vector2Int> path)
+        {
+            if (path == null)
+                return;
+
+            foreach (var cell in path)
+            {
+                PaintCorridor(cell.x, cell.y);
+            }
+        }
+
+        private void PaintCorridor(int centerX, int centerY)
+        {
+            int width = config.corridorWidthInCells;
+
+            int start = -(width / 2);
+            int end = start + width - 1;
+
+            for (int dx = start; dx <= end; dx++)
+            {
+                for (int dy = start; dy <= end; dy++)
+                {
+                    int x = centerX + dx;
+                    int y = centerY + dy;
+
+                    if (!context.IsInside(x, y))
+                        continue;
+
+                    if (context.Grid[x, y] == CellType.Room)
+                        continue;
+
+                    context.Grid[x, y] = CellType.Corridor;
+                    context.CorridorCells.Add(new Vector2Int(x, y));
+                }
+            }
         }
 
         private void AddExtraConnections(List<BspNode> leafNodes, HashSet<string> connectedPairs, Dictionary<BspNode, int> degreeMap)
@@ -122,7 +333,6 @@ namespace ModularBSP.Generation
             }
         }
 
-        // bsp 식 재귀 연결
         private void ConnectNodesRecursive(
             BspNode node,
             HashSet<string> connectedPairs,
@@ -158,7 +368,6 @@ namespace ModularBSP.Generation
 
         }
 
-        // 그리디 방식
         private List<BspNode> GetNearestCandidates(BspNode node, List<BspNode> leafNodes, HashSet<string> connectedPairs, Dictionary<BspNode, int> degreeMap, int maxDegree)
         {
             List<(BspNode node, float dist)> temp = new List<(BspNode, float)>();
@@ -177,7 +386,7 @@ namespace ModularBSP.Generation
 
                 Vector2Int targetCenter = other.RoomBounds.Value.Center;
                 float dist = Vector2Int.Distance(sourceCenter, targetCenter);
-                if (dist > 20f) // 임의값. 거리제한이니 값 조절 필요하면
+                if (dist > 20f) 
                     continue;
                 temp.Add((other, dist));
             }
@@ -193,8 +402,6 @@ namespace ModularBSP.Generation
 
             return candidates;
         }
-
-        
 
         private void CollectLeaves(BspNode node, List<BspNode> leaves)
         {
@@ -212,97 +419,30 @@ namespace ModularBSP.Generation
             CollectLeaves(node.Left, leaves);
             CollectLeaves(node.Right, leaves);
         }
-
-
-        private void Connect(Vector2Int start, Vector2Int end, DoorDir startDir)
+        private bool IsCorridorLineClear(Vector2Int start, Vector2Int end)
         {
-            if (startDir == DoorDir.Left || startDir == DoorDir.Right)
-            {
-                DigHorizontal(start.x, end.x, start.y);
-                DigVertical(start.y, end.y, end.x);
-            }
-            else
-            {
-                DigVertical(start.y, end.y, start.x);
-                DigHorizontal(start.x, end.x, end.y);
-            }
-        }
+            if (start.x != end.x && start.y != end.y)
+                return false;
 
-        private void DigHorizontal(int x1, int x2, int y)
-        {
-            int min = Mathf.Min(x1, x2);
-            int max = Mathf.Max(x1, x2);
-            for (int x = min; x <= max; x++)
+            int minX = Mathf.Min(start.x, end.x);
+            int maxX = Mathf.Max(start.x, end.x);
+            int minY = Mathf.Min(start.y, end.y);
+            int maxY = Mathf.Max(start.y, end.y);
+
+            for (int x = minX; x <= maxX; x++)
             {
-                PaintCorridorWidth(x, y);
-            }
-        }
-
-        private void DigVertical(int y1, int y2, int x)
-        {
-            int min = Mathf.Min(y1, y2);
-            int max = Mathf.Max(y1, y2);
-
-            for (int y = min; y <= max; y++)
-            {
-                PaintCorridorHeight(x, y);
-            }
-        }
-
-        private void PaintCorridorWidth(int centerX, int centerY)
-        {
-            int width = config.corridorWidthInCells;
-            int half = width / 2;
-
-            for (int dx = -half; dx <= half; dx++)
-            {
-                for (int dy = -half; dy <= half; dy++)
+                for (int y = minY; y <= maxY; y++)
                 {
-                    int x = centerX + dx;
-                    int y = centerY + dy;
-
                     if (!context.IsInside(x, y))
-                        continue;
+                        return false;
 
                     if (context.Grid[x, y] == CellType.Room)
-                        continue;
-
-                    if (context.Grid[x, y] == CellType.Empty)
-                    {
-                        context.Grid[x, y] = CellType.Corridor;
-                    }
-                    context.CorridorCells.Add(new Vector2Int(x, y));
+                        return false;
                 }
             }
+
+            return true;
         }
-
-        private void PaintCorridorHeight(int centerX, int centerY)
-        {
-            int height = config.corridorWidthInCells;
-            int half = height / 2;
-
-            for (int dy = -half; dy <= half; dy++)
-            {
-                for (int dx = -half; dx <= half; dx++)
-                {
-                    int x = centerX + dx;
-                    int y = centerY + dy;
-
-                    if (!context.IsInside(x, y))
-                        continue;
-
-                    if (context.Grid[x, y] == CellType.Room)
-                        continue;
-
-                    if (context.Grid[x, y] == CellType.Empty)
-                    {
-                        context.Grid[x, y] = CellType.Corridor;
-                    }
-                    context.CorridorCells.Add(new Vector2Int(x, y));
-                }
-            }
-        }
-
 
         private Vector2Int GetRoomDoorCell(IntRect room, DoorDir dir)
         {
@@ -328,26 +468,6 @@ namespace ModularBSP.Generation
 
         }
 
-        private DoorDir GetDoorDirection(IntRect from, IntRect to)
-        {          
-            bool xOverlap = from.xMin < to.xMax && from.xMax > to.xMin;
-            bool yOverlap = from.yMin < to.yMax && from.yMax > to.yMin;
-
-            if (yOverlap)
-                return (to.Center.x > from.Center.x)? DoorDir.Right : DoorDir.Left;
-
-            if (xOverlap)
-                return (to.Center.y > from.Center.y) ? DoorDir.Up : DoorDir.Down;
-
-            int dx = to.Center.x - from.Center.x;
-            int dy = to.Center.y - from.Center.y;
-
-            if (Mathf.Abs(dx) >= Mathf.Abs(dy))
-                return dx >= 0 ? DoorDir.Right : DoorDir.Left;
-            else
-                return dy >= 0 ? DoorDir.Up : DoorDir.Down;
-        }
-
         private Vector2Int GetOutsideDoorCell(IntRect room, DoorDir dir)
         {
             Vector2Int doorCell = GetRoomDoorCell(room, dir);
@@ -365,21 +485,6 @@ namespace ModularBSP.Generation
             }
             return doorCell;
         }
-
-        private DoorDir GetOpposite(DoorDir dir)
-        {
-            switch (dir)
-            {
-                case DoorDir.Up: return DoorDir.Down;
-                case DoorDir.Down: return DoorDir.Up;
-                case DoorDir.Left: return DoorDir.Right;
-                case DoorDir.Right: return DoorDir.Left;
-            }
-            return DoorDir.Down;
-        }
-
-
-        // vector2Int 정중앙 좌표 방식
         private string GetConnectionKey(IntRect a, IntRect b)
         {
             Vector2Int ca = a.Center;
@@ -412,127 +517,3 @@ namespace ModularBSP.Generation
 
     }
 }
-
-// 그리디 방식
-//private List<BspNode> BuildNearestOrder(List<BspNode> leafNodes)
-//{
-//    List<BspNode> result = new List<BspNode>();
-
-//    if (leafNodes == null || leafNodes.Count == 0)
-//        return result;
-
-//    List<BspNode> remaining = new List<BspNode>();
-
-//    foreach (var node in leafNodes)
-//    {
-//        if (node != null && node.RoomBounds.HasValue)
-//            remaining.Add(node);
-//    }
-
-//    if (remaining.Count == 0)
-//        return result;
-
-//    remaining.Sort((a, b) =>
-//    {
-//        Vector2Int ca = a.RoomBounds.Value.Center;
-//        Vector2Int cb = b.RoomBounds.Value.Center;
-
-//        int yCompare = ca.y.CompareTo(cb.y);
-//        if (yCompare != 0)
-//            return yCompare;
-
-//        return ca.x.CompareTo(cb.x);
-//    });
-
-//    BspNode current = remaining[0];
-//    result.Add(current);
-//    remaining.RemoveAt(0);
-
-//    while (remaining.Count > 0)
-//    {
-//        BspNode nearest = null;
-//        float nestDist = float.MaxValue;
-
-//        Vector2Int currentCenter = current.RoomBounds.Value.Center;
-
-//        foreach (var candidate in remaining)
-//        {
-//            Vector2Int candidateCenter = candidate.RoomBounds.Value.Center;
-//            float dist = Vector2Int.Distance(currentCenter, candidateCenter);
-
-//            if (dist < nestDist)
-//            {
-//                nestDist = dist;
-//                nearest = candidate;
-//            }
-//        }
-
-//        if (nearest == null)
-//            break;
-
-//        result.Add(nearest);
-//        remaining.Remove(nearest);
-//        current = nearest;
-
-//    }
-//    return result;
-//}
-
-//// 연결 키 방식
-//private string GetConnectionKey(BspNode a, BspNode b)
-//{
-//    int ha = a.GetHashCode();
-//    int hb = b.GetHashCode();
-
-//    return ha < hb ? $"{ha}_{hb}" : $"{hb}_{ha}";
-//}
-
-//private Vector2Int GetExitPoint(IntRect room, Vector2Int targetCenter)
-//{
-//    Vector2Int roomCenter = room.Center;
-
-//    int dx = targetCenter.x - roomCenter.x;
-//    int dy = targetCenter.y - roomCenter.y;
-
-//    int left = room.xMin;
-//    int right = room.xMax - 1;
-//    int bottom = room.yMin;
-//    int top = room.yMax - 1;
-
-//    if (Mathf.Abs(dx) >= Mathf.Abs(dy))
-//    {
-//        if (dx >= 0)
-//            return new Vector2Int(right + 1, roomCenter.y);
-//        else
-//            return new Vector2Int(left - 1, roomCenter.y);
-//    }
-//    else
-//    {
-//        if (dy >= 0)
-//            return new Vector2Int(roomCenter.x, top + 1);
-//        else
-//            return new Vector2Int(roomCenter.x, bottom - 1);
-//    }
-//}
-
-//private Vector2Int? FindRoomCenter(BspNode node)
-//{
-//    if (node == null)
-//        return null;
-
-//    if (node.IsLeaf)
-//    {
-//        if (node.RoomBounds.HasValue)
-//            return node.RoomBounds.Value.Center;
-//        return null;
-//    }
-
-//    Vector2Int? left = FindRoomCenter(node.Left);
-//    Vector2Int? right = FindRoomCenter(node.Right);
-//    if (left.HasValue)
-//        return left;
-//    if (right.HasValue)
-//        return right;
-
-//    return null;
-//}

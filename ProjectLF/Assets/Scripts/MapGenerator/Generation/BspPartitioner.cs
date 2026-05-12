@@ -109,11 +109,7 @@ namespace ModularBSP.Generation
             }
             else
             {
-                // 비율 문제로 가로분할을 원했지만 vertical만 가능하거나 그 반대인 경우
-                // 억지로라도 가능한 방향으로 쪼갠다. (빈 영역 차단)
-                if (canSplitVertically) { /* vertical 분할 로직 강제 실행 (상위 코드와 동일) */ }
-                else if (canSplitHorizontally) { /* horizontal 분할 로직 강제 실행 */ }
-                else return;
+                return;
             }
 
             SplitRecursive(node.Left, depth + 1);

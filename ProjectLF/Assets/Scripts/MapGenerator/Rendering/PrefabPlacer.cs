@@ -36,7 +36,6 @@ namespace ModularBSP.Rendering
             PlaceEmptyCells();
             PlaceRooms();
             PlaceCorridors();
-            CleanupIsolatedCorridors(context);
         }
 
         private void PlaceEmptyCells()
@@ -129,20 +128,44 @@ namespace ModularBSP.Rendering
 
         private void PlaceCorridors()
         {
+            int step = config.corridorWidthInCells;
+            HashSet<Vector2Int> placed = new HashSet<Vector2Int>();
+
+            Debug.Log($"[PlaceCorridors] CorridorCells Count = {context.CorridorCells.Count}");
+
+
             foreach (var cell in context.CorridorCells)
             {
-                GameObject roadPrefab = GetCorridorPrefab(cell.x, cell.y);
+                Vector2Int moduleCell = new Vector2Int(
+                    Mathf.FloorToInt(cell.x / (float)step) * step,
+                    Mathf.FloorToInt(cell.y / (float)step) * step
+                    );
+
+                if (placed.Contains(moduleCell))
+                    continue;
+
+                placed.Add(moduleCell);
+
+                Vector2Int centerCell = moduleCell + new Vector2Int(step / 2, step / 2);
+
+                GameObject roadPrefab = GetCorridorPrefab(centerCell.x, centerCell.y);
 
                 if (roadPrefab == null)
-                {
-                    Debug.LogWarning($"No corridor prefab matched at {cell}");
                     continue;
-                }
 
-                Vector3 worldPos = GridToWorldCell(cell.x, cell.y);
-                Object.Instantiate
-                    (roadPrefab, worldPos, Quaternion.identity, roadParent);
+                Vector3 worldPos = GridToWorldForModule(moduleCell, step , step);
+
+                Object.Instantiate(roadPrefab, worldPos, Quaternion.identity, roadParent);
+
             }
+        }
+
+        private Vector3 GridToWorldForModule(Vector2Int moduleCell, int width, int height)
+        {
+            float worldX = moduleCell.x * config.cellSize + width * config.cellSize * 0.5f;
+            float worldY = moduleCell.y * config.cellSize + height * config.cellSize * 0.5f;
+
+            return new Vector3(worldX, worldY, 0f);
         }
 
         private GameObject PickRandomPrefab(GameObject[] roomPrefab)
@@ -155,11 +178,14 @@ namespace ModularBSP.Rendering
 
         private GameObject GetCorridorPrefab(int x, int y)
         {
-            bool up = IsConnectedForPath(context, x, y + 1);
-            bool right = IsConnectedForPath(context, x + 1, y);
-            bool down = IsConnectedForPath(context, x, y - 1);
-            bool left = IsConnectedForPath(context, x - 1, y);
-            bool isRoom = IsConnectedForPath(context, x, y);
+            int step = config.corridorWidthInCells;
+
+            bool up = IsConnectedForPath(context, x, y + step);
+            bool right = IsConnectedForPath(context, x + step, y);
+            bool down = IsConnectedForPath(context, x, y - step);
+            bool left = IsConnectedForPath(context, x - step, y);
+
+            //bool isRoom = IsConnectedForPath(context, x, y);
 
             int mask = 0;
 
@@ -171,7 +197,9 @@ namespace ModularBSP.Rendering
                 mask |= 4;
             if (left)
                 mask |= 8;
-            
+
+            //Debug.Log($"[RoadPF] cell=({x},{y}) up={up}, right={right}, down={down}, left={left}, mask={mask}");
+
             switch (mask)
             {
                 //case 0:
@@ -214,16 +242,6 @@ namespace ModularBSP.Rendering
             Vector2Int pos = new Vector2Int(x, y);
             CellType cell = context.Grid[x, y];
 
-            // 좌표값의 문제인지 눈으로 확인하기 위한 디버깅용 코드
-            //if (context.Grid[x, y] != CellType.Empty)
-            //    return true;
-
-            //if(cell == CellType.Corridor)
-            //    return true;
-
-            //if(cell == CellType.Room)
-            //    return context.RoomEnteranceCells.Contains(pos);
-
             if (context.CorridorCells.Contains(pos))
                 return true;
             if (context.RoomEnteranceCells.Contains(pos))
@@ -247,88 +265,6 @@ namespace ModularBSP.Rendering
             float worldX = room.x * config.cellSize + roomWorldWidth * 0.5f;
             float worldY = room.y * config.cellSize + roomWorldHeight * 0.5f;
             return new Vector3(worldX, worldY, 0f);
-        }
-
-        private HashSet<DoorDir> GetConnectedDirections(IntRect room)
-        {
-            HashSet<DoorDir> result = new HashSet<DoorDir>();
-
-            Vector2Int upOutside = GetOutsideDoorCell(room, DoorDir.Up);
-            Vector2Int rightOutside = GetOutsideDoorCell(room, DoorDir.Right);
-            Vector2Int downOutside = GetOutsideDoorCell(room, DoorDir.Down);
-            Vector2Int leftOutside = GetOutsideDoorCell(room, DoorDir.Left);
-
-            if (IsCorridorCell(upOutside))
-                result.Add(DoorDir.Up);
-            if (IsCorridorCell(rightOutside))
-                result.Add(DoorDir.Right);
-            if (IsCorridorCell(downOutside))
-                result.Add(DoorDir.Down);
-            if (IsCorridorCell(leftOutside))
-                result.Add(DoorDir.Left);
-
-            return result;  
-        }
-
-        private bool IsCorridorCell(Vector2Int pos)
-        {
-            if(!context.IsInside(pos.x, pos.y))
-                return false;
-
-            return context.Grid[pos.x, pos.y] == CellType.Corridor;
-        }
-
-        private Vector2Int GetOutsideDoorCell(IntRect room, DoorDir dir)
-        {
-            int left = room.xMin;
-            int right = room.xMax - 1;
-            int top = room.yMax - 1;
-            int bottom = room.yMin;
-
-            int centerX = room.xMin + (room.width - 1) / 2;
-            int centerY = room.yMin + (room.height - 1) / 2; 
-
-            switch (dir)
-            {
-                case DoorDir.Up: return new Vector2Int(centerX, top + 1);
-                case DoorDir.Right: return new Vector2Int(right + 1, centerY);
-                case DoorDir.Down: return new Vector2Int(centerX, bottom - 1);
-                case DoorDir.Left: return new Vector2Int(left - 1, centerY);
-            }
-
-            return new Vector2Int(centerX, centerY);
-
-        }
-        
-        private void CleanupIsolatedCorridors(DungeonContext context)
-        {
-            List<Vector2Int> corridorsToRemove = new List<Vector2Int>();
-
-            foreach (var pos in context.CorridorCells)
-            {
-                if(GetConnectionCount(context, pos.x, pos.y) == 0)
-                {
-                    corridorsToRemove.Add(pos);
-                }
-            }
-        }
-
-        private int GetConnectionCount(DungeonContext context, int x, int y)
-        {
-            int count = 0;
-            Vector2Int[] neighbors = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right};
-
-            foreach (var neighbor in neighbors)
-            {
-                if(IsConnectedForPath(context, x + neighbor.x, y + neighbor.y))
-                {
-                    count++;
-                }
-            }
-
-            return count;
-
-        }
-       
+        }  
     }
 }

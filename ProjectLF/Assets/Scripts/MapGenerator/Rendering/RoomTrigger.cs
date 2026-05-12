@@ -24,7 +24,7 @@ namespace ModularBSP.Trigger
             if (!collision.CompareTag("Player"))
                 return;
 
-            Debug.Log($"[RoomTrigger] Player 입장 / roomId={roomId}, roomType={roomType}");
+            //Debug.Log($"[RoomTrigger] Player 입장 / roomId={roomId}, roomType={roomType}");
 
             if (dungeonManager == null)
             {

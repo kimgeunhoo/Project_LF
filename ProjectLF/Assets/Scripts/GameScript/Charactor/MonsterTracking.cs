@@ -37,6 +37,7 @@ namespace LegacyGameScrpit
         private Transform visualRoot;
         private Transform player;
         private Rigidbody2D rigid;
+        private MonsterAtk monsterAtk;
 
         private bool isAttacking;
 
@@ -47,6 +48,7 @@ namespace LegacyGameScrpit
             rigid = GetComponent<Rigidbody2D>();
             animator = GetComponentInChildren<Animator>();
             visualRoot = GetComponent<Transform>();
+            monsterAtk = GetComponent<MonsterAtk>();
             //if(rigid == null)
             //{
             //    //Debug.LogError($"[{name}] Rigidbody2D가 없습니다.");
@@ -145,7 +147,9 @@ namespace LegacyGameScrpit
                     if (!isAttacking)
                     {
                         //Debug.Log($"[{name}] Attack 시작");
-                        StartCoroutine(MonsterAttack());
+                        animator.SetBool("Move", false);
+                        StartCoroutine(Cooltime());
+                        StartCoroutine(monsterAtk.OnMonsterAttack(player.transform));
                     }
 
                     if (distance > attackRange)
@@ -156,88 +160,12 @@ namespace LegacyGameScrpit
                     break;
             }
         }
-        //private IEnumerator MonsterAttack()
-        //{
-        //    // Debug.Log("[PlayerAttack] AttackRoutine START");
-        //    isAttacking = true;
 
-        //    Vector2 targetPos = player.position;
-
-        //    attackSprite.transform.position = targetPos;
-        //    attackCollider.transform.position = targetPos;
-
-        //    attackSprite.enabled = true;
-        //    attackCollider.enabled = false;
-
-        //    attackSprite.transform.localScale = Vector3.zero;
-
-        //    float elapsed = 0f;
-        //    while (elapsed < attackWarnningTime)
-        //    {
-        //        elapsed += Time.deltaTime;
-        //        float t = elapsed / attackWarnningTime;
-        //        attackSprite.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
-        //        yield return null;
-        //    }
-
-        //    yield return new WaitForSeconds(attackWarnningTime);
-
-        //    // 공격 활성
-        //    attackCollider.enabled = true;
-
-        //    yield return new WaitForSeconds(attackDuration);
-        //    // Debug.Log($"[PlayerAttack] attackCollider ON / enabled = {attackCollider.enabled}");
-
-        //    // 공격 종료
-        //    attackCollider.enabled = false;
-        //    attackSprite.enabled = false;
-        //    // Debug.Log($"[PlayerAttack] attackCollider OFF / enabled = {attackCollider.enabled}");
-        //    yield return new WaitForSeconds(attackCooldown);
-
-        //    isAttacking = false;
-        //}
-
-        // 이거 유도성 메테오공격 등 으로 써먹을수 있겠다
-        private IEnumerator MonsterAttack()
+        private IEnumerator Cooltime()
         {
-            // Debug.Log("[PlayerAttack] AttackRoutine START");
-            isAttacking = true;
-
-            Vector2 targetPos = player.position;
-
-            attackSprite.transform.position = targetPos;
-            attackCollider.transform.position = targetPos;
-
-            attackSprite.enabled = true;
-            attackCollider.enabled = false;
-
-            attackSprite.transform.localScale = Vector3.zero;
-
-            float elapsed = 0f;
-            while (elapsed < attackWarnningTime)
-            {
-                elapsed += Time.deltaTime;
-                float t = elapsed / attackWarnningTime;
-                attackSprite.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
-                yield return null;
-            }
-
-            // 공격 활성
-            attackCollider.enabled = true;
-            animator.SetTrigger("Attack");
-            yield return new WaitForSeconds(attackDuration);
-            // Debug.Log($"[PlayerAttack] attackCollider ON / enabled = {attackCollider.enabled}");
-
-            // 공격 종료
-            attackCollider.enabled = false;
-            attackSprite.enabled = false;
-            // Debug.Log($"[PlayerAttack] attackCollider OFF / enabled = {attackCollider.enabled}");
-            yield return new WaitForSeconds(attackCooldown);
-
-            isAttacking = false;
+            yield return new WaitForSeconds(0.8f);
         }
-
-
+    
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.blue;
@@ -249,3 +177,45 @@ namespace LegacyGameScrpit
     }
 
 }
+
+// 이거 유도성 메테오공격 등 으로 써먹을수 있겠다
+//private IEnumerator MonsterAttack()
+//{
+//    // Debug.Log("[PlayerAttack] AttackRoutine START");
+//    isAttacking = true;
+
+//    Vector2 targetPos = player.position;
+
+//    attackSprite.transform.position = targetPos;
+//    attackCollider.transform.position = targetPos;
+
+//    attackSprite.enabled = true;
+//    attackCollider.enabled = false;
+
+//    attackSprite.transform.localScale = Vector3.zero;
+
+//    float elapsed = 0f;
+//    while (elapsed < attackWarnningTime)
+//    {
+//        elapsed += Time.deltaTime;
+//        float t = elapsed / attackWarnningTime;
+//        attackSprite.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
+//        yield return null;
+//    }
+
+//    yield return new WaitForSeconds(attackWarnningTime);
+
+//    // 공격 활성
+//    attackCollider.enabled = true;
+
+//    yield return new WaitForSeconds(attackDuration);
+//    // Debug.Log($"[PlayerAttack] attackCollider ON / enabled = {attackCollider.enabled}");
+
+//    // 공격 종료
+//    attackCollider.enabled = false;
+//    attackSprite.enabled = false;
+//    // Debug.Log($"[PlayerAttack] attackCollider OFF / enabled = {attackCollider.enabled}");
+//    yield return new WaitForSeconds(attackCooldown);
+
+//    isAttacking = false;
+//}

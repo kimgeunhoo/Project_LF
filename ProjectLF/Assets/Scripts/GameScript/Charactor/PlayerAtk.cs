@@ -99,7 +99,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"[HitBox] 충돌 감지: {collision.name}, Layer={collision.gameObject.layer}");
+       // Debug.Log($"[HitBox] 충돌 감지: {collision.name}, Layer={collision.gameObject.layer}");
         Monster monster = collision.GetComponentInParent<Monster>();
 
         if (collision.CompareTag("Monster"))

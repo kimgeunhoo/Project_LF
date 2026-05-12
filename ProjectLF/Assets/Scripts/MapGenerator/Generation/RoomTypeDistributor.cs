@@ -33,7 +33,7 @@ namespace MapGenerator.Generation
             int farthestIndex = GetFarthestRoomIndex(result, startIndex);
             result[farthestIndex].RoomType = RoomType.Stairs;
 
-            int shopIndex = GetRandomAvailableRoomIndex(result, startIndex, startIndex);
+            int shopIndex = GetRandomAvailableRoomIndex(result, startIndex, farthestIndex);
             if (shopIndex != -1)
             {
                 result[shopIndex].RoomType = RoomType.Shop;

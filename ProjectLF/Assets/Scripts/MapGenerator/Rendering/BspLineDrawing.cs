@@ -38,19 +38,19 @@ namespace ModularBSP.Rendering
             ClearLines();
             if (dungeonBuilder == null)
             {
-                Debug.LogError("BspLineDrawer: DungeonBuilder is not assigned.");
+                //Debug.LogError("BspLineDrawer: DungeonBuilder is not assigned.");
                 return;
             }
 
             if (dungeonBuilder.Context == null || dungeonBuilder.Context.Root == null)
             {
-                Debug.LogError("BspLineDrawer: DungeonBuilder Context or Root is null. Build first.");
+                //Debug.LogError("BspLineDrawer: DungeonBuilder Context or Root is null. Build first.");
                 return;
             }
 
             DrawNodeRecursive(dungeonBuilder.Context.Root);
 
-            Debug.Log($"Draw Complete line count = {spawnedLines.Count}");
+            //Debug.Log($"Draw Complete line count = {spawnedLines.Count}");
         }
 
         [ContextMenu("Clear BSP Lines")]

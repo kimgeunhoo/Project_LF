@@ -174,8 +174,8 @@ Transform:
   m_GameObject: {fileID: 6570602205873882253}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.34, z: 0}
-  m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
+  m_LocalPosition: {x: -0.3964, y: 0.3148, z: 0}
+  m_LocalScale: {x: 0.7188345, y: 0.7628439, z: 1.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9001035632613865870}
@@ -505,6 +505,10 @@ PrefabInstance:
       propertyPath: matchingTables.Array.size
       value: 43
       objectReference: {fileID: 0}
+    - target: {fileID: 8204859939017656441, guid: c67cd632ec8cbe747ba6cdab57a8eb13, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 92f697d7fb1ea9444a287b28aed9a14a, type: 2}
     - target: {fileID: 8850669576730236440, guid: c67cd632ec8cbe747ba6cdab57a8eb13, type: 3}
       propertyPath: 'ATTACK_List.Array.data[0]'
       value: 

@@ -22,7 +22,7 @@ namespace GameScript.Manager
         public void OnEnterRoom(int roomId, RoomType roomType)
         {
 
-            Debug.Log($"[DungeonManager] OnEnterRoom 호출 / roomId={roomId}, roomType={roomType}");
+            //Debug.Log($"[DungeonManager] OnEnterRoom 호출 / roomId={roomId}, roomType={roomType}");
 
             switch (roomType)
             {

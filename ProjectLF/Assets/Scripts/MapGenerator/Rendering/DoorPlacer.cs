@@ -26,7 +26,7 @@ namespace ModularBSP.Rendering
         public void PlaceDoor()
         {
 
-            Debug.Log($"[DoorPlacer] Rooms={context.Rooms.Count}, ConnectedRoomCount={context.RoomConnectedDirs.Count}");
+            //Debug.Log($"[DoorPlacer] Rooms={context.Rooms.Count}, ConnectedRoomCount={context.RoomConnectedDirs.Count}");
 
             foreach (var room in context.Rooms)
             {
