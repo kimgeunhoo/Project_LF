@@ -22,15 +22,7 @@ namespace LegacyGameScrpit
         private float attackRange = 1.2f;
         [SerializeField]
         private SpriteRenderer attackSprite;
-        [SerializeField]
-        private Collider2D attackCollider;
 
-        [SerializeField]
-        private float attackWarnningTime = 0.8f;
-        [SerializeField]
-        private float attackDuration = 0.2f;
-        [SerializeField]
-        private float attackCooldown = 1f;
 
         private Animator animator;
 
@@ -59,7 +51,6 @@ namespace LegacyGameScrpit
         {
             isAttacking = false;
             attackSprite.enabled = false;
-            attackCollider.enabled = false;
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj == null)
             {

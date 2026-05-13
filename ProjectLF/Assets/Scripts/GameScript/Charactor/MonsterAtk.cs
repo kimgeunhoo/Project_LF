@@ -13,15 +13,14 @@ public class MonsterAtk : MonoBehaviour
     private BoxCollider2D attackCollider;
 
     [SerializeField] 
-    private float attackRange = 3f;
-    [SerializeField] 
-    private float attackWidth = 1f;
-    [SerializeField] 
-    private float attackWarnningTime = 0.8f;
+    private float attackWarningTime = 0.8f;
     [SerializeField] 
     private float attackDuration = 0.5f;
     [SerializeField] 
     private float attackCooldown = 1f;
+
+    [SerializeField]
+    private float attackOffset = 0.5f;
 
     [SerializeField]
     private Animator animator;
@@ -30,6 +29,21 @@ public class MonsterAtk : MonoBehaviour
 
     private bool isAttacking = false;
 
+    private Vector3 maskBaseScale;
+    private Vector3 spriteBaseScale;
+
+    private Vector2 colliderBaseSize;
+    private Vector2 colliderBaseOffset;
+
+    private void Awake()
+    {
+        maskBaseScale = attackMask.transform.localScale;
+        spriteBaseScale = attackSprite.transform.localScale;
+        attackSprite.transform.localPosition = Vector3.zero;
+        attackMask.transform.localPosition = Vector3.zero;
+        attackCollider.transform.localPosition = Vector3.zero;
+
+    }
 
     public IEnumerator OnMonsterAttack(Transform _playerTrs)
     {
@@ -41,55 +55,61 @@ public class MonsterAtk : MonoBehaviour
     private IEnumerator MonsterAttack()
     {
         if (isAttacking == false)
-        { 
+        {
             isAttacking = true;
-            Vector2 dir = ((Vector2)playerTrs.position - (Vector2)transform.position).normalized;
 
-            // 공격 범위의 중심 위치
-            Vector2 centerPos = (Vector2)transform.position + dir * (attackRange * 0.5f);
-
-            attackRoot.position = transform.position;
+            Vector2 dir =((Vector2)playerTrs.position - (Vector2)transform.position).normalized;
 
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+            attackRoot.position = transform.position + (Vector3)(dir * attackOffset);
+
             attackRoot.rotation = Quaternion.Euler(0f, 0f, angle);
 
             attackSprite.enabled = true;
             attackCollider.enabled = false;
 
-            // 공격 범위 전체 크기
-            attackSprite.transform.localScale = new Vector3(attackRange, attackWidth, 1f);
 
-            // Collider도 같은 위치/크기
-            attackCollider.transform.position = centerPos;
-            attackCollider.transform.rotation = attackRoot.rotation;
-            attackCollider.size = new Vector2(attackRange, attackWidth);
+            attackSprite.transform.localScale = spriteBaseScale;
+
+            attackMask.transform.localScale = new Vector3(0f, maskBaseScale.y, maskBaseScale.z);
+
+            attackMask.transform.localPosition = Vector3.zero;
+
+            attackCollider.size = new Vector2(0f, colliderBaseSize.y);
+
+            attackCollider.offset = new Vector2(0f, colliderBaseOffset.y);
 
             float elapsed = 0f;
 
-            while (elapsed < attackWarnningTime)
+            while (elapsed < attackWarningTime)
             {
                 elapsed += Time.deltaTime;
-                float t = elapsed / attackWarnningTime;
 
-                // 왼쪽에서 오른쪽으로 차오르는 효과
-                float currentLength = Mathf.Lerp(0f, attackRange, t);
+                float t = Mathf.Clamp01(elapsed / attackWarningTime);
 
-                attackMask.transform.localScale = new Vector3(currentLength, attackWidth, 1f);
+                float currentScaleX = maskBaseScale.x * t;
 
-                // 마스크 중심을 왼쪽 시작점 기준으로 보정
-                attackMask.transform.localPosition =
-                    new Vector3(
-                        -attackRange * 0.5f + currentLength * 0.5f,
-                        0f,
-                        0f
-                    );
+                attackMask.transform.localScale =
+                    new Vector3(currentScaleX, maskBaseScale.y, maskBaseScale.z);
+
+                attackMask.transform.localPosition = new Vector3(currentScaleX * 0.5f, 0f, 0f);
+
+                attackCollider.size = new Vector2(colliderBaseSize.x * t, colliderBaseSize.y);
+
+                attackCollider.offset = 
+                    new Vector2((colliderBaseSize.x * t) * 0.5f, colliderBaseOffset.y);
 
                 yield return null;
             }
 
             attackCollider.enabled = true;
 
-            animator.SetTrigger("Attack");
+            if (animator != null)
+            {
+                animator.SetTrigger("Attack");
+            }
+            
             yield return new WaitForSeconds(attackDuration);
 
             attackCollider.enabled = false;
@@ -98,7 +118,6 @@ public class MonsterAtk : MonoBehaviour
             yield return new WaitForSeconds(attackCooldown);
 
             isAttacking = false;
-        
         }
     }
 

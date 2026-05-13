@@ -1,12 +1,28 @@
 using GameScript.Manager;
+using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Monster : MonoBehaviour
 {
     [Header("Data")]
     [SerializeField]
     private MonsterData data;
+
+    [Header("Image")]
+    [SerializeField]
+    private Image hpBar;
+    [SerializeField]
+    private Transform hpBarCanvas;
+
+    [Header("Att Method")]
+    [SerializeField]
+    private Collider2D attackCollider;
+    [SerializeField]
+    private SpriteRenderer attackSprite;
+
 
     private int currentHp;
     private bool isDead;
@@ -16,10 +32,14 @@ public class Monster : MonoBehaviour
 
 
     private Animator animator;
+    
+    private Vector3 hpBarBaseScale;
+    private float parentSign;
 
     public MonsterData Data => data;
 
     public int CurrentHp => currentHp;
+
 
     private void Awake()
     {
@@ -30,6 +50,18 @@ public class Monster : MonoBehaviour
         }
         animator = GetComponentInChildren<Animator>();
         currentHp = data.MaxHp;
+        hpBarBaseScale = hpBarCanvas.localScale;
+
+        UpdateHpBar();
+    }
+
+    private void LateUpdate()
+    {
+        hpBarCanvas.transform.rotation = Quaternion.identity;
+
+        parentSign = Mathf.Sign(transform.lossyScale.x);
+
+        hpBarCanvas.localScale = new Vector3(hpBarBaseScale.x * parentSign, hpBarBaseScale.y, hpBarBaseScale.z);
     }
 
     public void Init(int _roomId, DungeonManager _dungeonManager)
@@ -49,6 +81,7 @@ public class Monster : MonoBehaviour
         animator.SetTrigger("Damaged");
         Debug.Log($"[Monster] {name} Damage={finalDamage} / HP={currentHp}");
 
+        UpdateHpBar();
         if(currentHp <= 0)
         {
             Die();
@@ -56,12 +89,24 @@ public class Monster : MonoBehaviour
 
     }
 
+    private void UpdateHpBar()
+    {
+        hpBar.fillAmount = (float)currentHp / data.MaxHp;
+    }
+
+
     public void Die()
     {
         if (isDead)
             return;
 
         isDead = true;
+
+        StopAllCoroutines();
+
+        attackCollider.enabled = false;
+
+        attackSprite.enabled = false;
 
         StartCoroutine(DyingAnimation());
 
