@@ -7364,6 +7364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Monster
   data: {fileID: 11400000, guid: 4463626ca14854d4d9371e20aa470015, type: 2}
+  bodyCollider: {fileID: 1576040035922171179}
   hpBar: {fileID: 1030662012885674061}
   hpBarCanvas: {fileID: 1677586259112382765}
   attackCollider: {fileID: 1961976679032400280}

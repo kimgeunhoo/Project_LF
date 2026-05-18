@@ -10,6 +10,8 @@ public class Monster : MonoBehaviour
     [Header("Data")]
     [SerializeField]
     private MonsterData data;
+    [SerializeField]
+    private Collider2D bodyCollider;
 
     [Header("Image")]
     [SerializeField]
@@ -103,6 +105,8 @@ public class Monster : MonoBehaviour
         isDead = true;
 
         StopAllCoroutines();
+
+        bodyCollider.enabled = false;
 
         attackCollider.enabled = false;
 
