@@ -1,29 +1,51 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 
 public class Player : MonoBehaviour
 {
-    public int[,] inventory;
+    private int[,] inventory;
 
-    public int[] weaponSlot = new int[2];
+    private int[] weaponSlot = new int[2];
 
-    public GameObject atkCol;
-
-    public Animator animator;
-
-    private bool isDead = false;
 
     [Header("Player Data")]
     [SerializeField]
     private PlayerData m_Player;
+    [SerializeField]
+    private PlayerData playerData;
 
-    public int Hp;
+    [Header("Player UI")]
+    [SerializeField]
+    private StatusUI hpUI;
+
+    [Header("Death")]
+    private Animator animator;
+    private int currentHp;
+    private bool isDead = false;
+
+    public int CurrentHp => currentHp;
+    public int MaxHp => m_Player.Hp;
+    public bool IsDead => isDead;
+
 
     private void Awake()
     {
-        Hp = m_Player.Hp;
+        currentHp = MaxHp;
         animator = GetComponentInChildren<Animator>();
+        UpdateHpUI();
+    }
+
+    public void Heal(int amount)
+    {
+        if (isDead)
+            return;
+
+        currentHp += amount;
+        currentHp = Mathf.Clamp(currentHp, 0, MaxHp);
+
+        UpdateHpUI();
     }
 
     public void TakeDamage(int damage)
@@ -31,10 +53,10 @@ public class Player : MonoBehaviour
         if (isDead)
             return;
 
-        Hp -= damage;
+        currentHp -= damage;
         DamageAnimation();
 
-        if (Hp <= 0)
+        if (currentHp <= 0)
         {
             Die();
         }
@@ -43,6 +65,13 @@ public class Player : MonoBehaviour
             StartCoroutine(DamageAnimation());
         }
     }
+
+
+    private void UpdateHpUI()
+    {
+        throw new NotImplementedException();
+    }
+
 
     private void Die()
     {

@@ -16,6 +16,13 @@ public class PlayerHpUI : MonoBehaviour
         if(maxHp > 0)
             ratio = (float) currentHp / maxHp;
 
+        ratio = Mathf.Clamp01(ratio);
+
+        if (hpFillImage != null)
+            hpFillImage.fillAmount = ratio;
+
+        if (hpText != null)
+            hpText.text = $"{currentHp} / {maxHp}";
 
     }
 }

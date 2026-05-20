@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class MonsterAtk : MonoBehaviour
 {
+    [SerializeField]
+    private Monster monster;
+    [SerializeField]
+    private MonsterData data;
+
     [SerializeField] 
     private Transform attackRoot;
     [SerializeField] 
@@ -25,6 +30,8 @@ public class MonsterAtk : MonoBehaviour
     [SerializeField]
     private Animator animator;
 
+    private bool hasHit;
+
     private Transform playerTrs;
 
     private bool isAttacking = false;
@@ -35,14 +42,21 @@ public class MonsterAtk : MonoBehaviour
     private Vector2 colliderBaseSize;
     private Vector2 colliderBaseOffset;
 
+
     private void Awake()
     {
+        data = GetComponent<MonsterData>();
+        monster = GetComponent<Monster>();
         maskBaseScale = attackMask.transform.localScale;
         spriteBaseScale = attackSprite.transform.localScale;
         attackSprite.transform.localPosition = Vector3.zero;
         attackMask.transform.localPosition = Vector3.zero;
         attackCollider.transform.localPosition = Vector3.zero;
+    }
 
+    private void OnEnable()
+    {
+        hasHit = false;
     }
 
     public IEnumerator OnMonsterAttack(Transform _playerTrs)
@@ -119,6 +133,20 @@ public class MonsterAtk : MonoBehaviour
 
             isAttacking = false;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (hasHit)
+            return;
+
+        Player player = collision.gameObject.GetComponent<Player>();
+
+        if (player == null) 
+            return;
+
+        hasHit = true;
+        player.TakeDamage(data.Atk);
     }
 
 }
