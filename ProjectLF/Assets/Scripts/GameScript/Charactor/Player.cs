@@ -12,13 +12,11 @@ public class Player : MonoBehaviour
 
     [Header("Player Data")]
     [SerializeField]
-    private PlayerData m_Player;
-    [SerializeField]
-    private PlayerData playerData;
+    private PlayerData playerdata;
 
     [Header("Player UI")]
     [SerializeField]
-    private StatusUI hpUI;
+    private PlayerHpUI hpUI;
 
     [Header("Death")]
     private Animator animator;
@@ -26,7 +24,7 @@ public class Player : MonoBehaviour
     private bool isDead = false;
 
     public int CurrentHp => currentHp;
-    public int MaxHp => m_Player.Hp;
+    public int MaxHp => playerdata.Hp;
     public bool IsDead => isDead;
 
 
@@ -55,6 +53,7 @@ public class Player : MonoBehaviour
 
         currentHp -= damage;
         DamageAnimation();
+        UpdateHpUI();
 
         if (currentHp <= 0)
         {
@@ -69,7 +68,10 @@ public class Player : MonoBehaviour
 
     private void UpdateHpUI()
     {
-        throw new NotImplementedException();
+        if (hpUI != null)
+        {
+            hpUI.SetHp(CurrentHp, MaxHp);
+        }
     }
 
 
@@ -79,13 +81,15 @@ public class Player : MonoBehaviour
             return;
         isDead = true;
         StartCoroutine(DiyingAnimation());
-        Destroy(gameObject);
+        
     }
 
     public IEnumerator DiyingAnimation()
     {
         animator.SetTrigger("Death");
         yield return new WaitForSeconds(0.5f); // 애니메이션 길이에 맞게 조절
+
+        Destroy(gameObject);
     }
 
     public IEnumerator DamageAnimation()

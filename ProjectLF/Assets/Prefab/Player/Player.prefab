@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7089288844290607504}
   - component: {fileID: 6714697293429553877}
   - component: {fileID: 7062645129253217563}
+  - component: {fileID: 5861124431833900897}
   m_Layer: 5
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -119,6 +120,20 @@ MonoBehaviour:
   hpPanel: {fileID: 7489837396665934050}
   hpText: {fileID: 6787073043401301399}
   player: {fileID: 131522068462033706}
+--- !u!114 &5861124431833900897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419708198735909053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 310853517319e0c439682710264c9ced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHpUI
+  hpFillImage: {fileID: 8057907607436708507}
+  hpText: {fileID: 6787073043401301399}
 --- !u!1 &1542152846774979081
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,11 +508,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c074f2ae988ba6c49a8124ad470e9f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  weaponSlot: 0000000001000000
-  atkCol: {fileID: 6570602205873882253}
-  animator: {fileID: 0}
-  m_Player: {fileID: 11400000, guid: c0ec1a5541526364b87d79e7aaede801, type: 2}
-  Hp: 0
+  playerdata: {fileID: 11400000, guid: c0ec1a5541526364b87d79e7aaede801, type: 2}
+  hpUI: {fileID: 5861124431833900897}
 --- !u!1 &2585455562605049096
 GameObject:
   m_ObjectHideFlags: 0

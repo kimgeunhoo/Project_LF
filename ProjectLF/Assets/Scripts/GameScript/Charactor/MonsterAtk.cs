@@ -31,7 +31,7 @@ public class MonsterAtk : MonoBehaviour
     private Animator animator;
 
     private bool hasHit;
-
+    private int damage;
     private Transform playerTrs;
 
     private bool isAttacking = false;
@@ -45,8 +45,8 @@ public class MonsterAtk : MonoBehaviour
 
     private void Awake()
     {
-        data = GetComponent<MonsterData>();
         monster = GetComponent<Monster>();
+        damage = data.Atk;
         maskBaseScale = attackMask.transform.localScale;
         spriteBaseScale = attackSprite.transform.localScale;
         attackSprite.transform.localPosition = Vector3.zero;
@@ -90,9 +90,9 @@ public class MonsterAtk : MonoBehaviour
 
             attackMask.transform.localPosition = Vector3.zero;
 
-            attackCollider.size = new Vector2(0f, colliderBaseSize.y);
+            //attackCollider.size = new Vector2(0f, colliderBaseSize.y);
 
-            attackCollider.offset = new Vector2(0f, colliderBaseOffset.y);
+            //attackCollider.offset = new Vector2(0f, colliderBaseOffset.y);
 
             float elapsed = 0f;
 
@@ -109,10 +109,10 @@ public class MonsterAtk : MonoBehaviour
 
                 attackMask.transform.localPosition = new Vector3(currentScaleX * 0.5f, 0f, 0f);
 
-                attackCollider.size = new Vector2(colliderBaseSize.x * t, colliderBaseSize.y);
+                //attackCollider.size = new Vector2(colliderBaseSize.x * t, colliderBaseSize.y);
 
-                attackCollider.offset = 
-                    new Vector2((colliderBaseSize.x * t) * 0.5f, colliderBaseOffset.y);
+                //attackCollider.offset = 
+                //    new Vector2((colliderBaseSize.x * t) * 0.5f, colliderBaseOffset.y);
 
                 yield return null;
             }
@@ -137,16 +137,14 @@ public class MonsterAtk : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (hasHit)
-            return;
 
         Player player = collision.gameObject.GetComponent<Player>();
-
-        if (player == null) 
+        if (player == null)
             return;
 
-        hasHit = true;
-        player.TakeDamage(data.Atk);
+        Debug.Log("플레이어 접촉");
+        //hasHit = true;
+        player.TakeDamage(damage);
     }
 
 }
