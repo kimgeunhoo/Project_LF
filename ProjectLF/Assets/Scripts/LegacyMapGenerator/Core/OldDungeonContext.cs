@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using BSPDungeonGenrator.Config;
-using LegacyGameScrpit;
 
 namespace BSPDungeonGenrator.Core
 {

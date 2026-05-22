@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56f63ab79057ef544bf08ce59d4cfd14, type: 3}
+  m_Name: Skeleton_Boss
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterData
+  hp: 100
+  mana: 20
+  atk: 8
+  def: 1
+  speed: 7
+  monsterPF: {fileID: 4802309533147781188, guid: 8a5034f0d48ab1146b5a883265c44d2f, type: 3}
+  gold: 300

@@ -1,6 +1,5 @@
 using BSPDungeonGenrator.Config;
 using BSPDungeonGenrator.Core;
-using LegacyGameScrpit;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
