@@ -131,7 +131,7 @@ namespace ModularBSP.Rendering
             int step = config.corridorWidthInCells;
             HashSet<Vector2Int> placed = new HashSet<Vector2Int>();
 
-            Debug.Log($"[PlaceCorridors] CorridorCells Count = {context.CorridorCells.Count}");
+            //Debug.Log($"[PlaceCorridors] CorridorCells Count = {context.CorridorCells.Count}");
 
 
             foreach (var cell in context.CorridorCells)

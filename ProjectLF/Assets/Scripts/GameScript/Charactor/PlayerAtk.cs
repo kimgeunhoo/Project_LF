@@ -48,7 +48,11 @@ public class PlayerAttack : MonoBehaviour
 
       
     }
-
+    private void Start()
+    {
+        Debug.Log($"Animator Object : {animator.gameObject.name}");
+        Debug.Log($"Controller : {animator.runtimeAnimatorController}");
+    }
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))

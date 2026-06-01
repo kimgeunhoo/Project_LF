@@ -28,7 +28,8 @@ public class PlayerMove : MonoBehaviour
     private void Start()
     {
         moveInput = Vector2.zero;
-
+        Debug.Log($"Animator Object : {animator.gameObject.name}");
+        Debug.Log($"Controller : {animator.runtimeAnimatorController}");
     }
 
 

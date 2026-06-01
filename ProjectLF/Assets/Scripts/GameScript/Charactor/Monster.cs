@@ -18,6 +18,8 @@ public class Monster : MonoBehaviour
     private Image hpBar;
     [SerializeField]
     private Transform hpBarCanvas;
+    [SerializeField]
+    private RectTransform hpBarFill;
 
     [Header("Att Method")]
     [SerializeField]
@@ -42,6 +44,7 @@ public class Monster : MonoBehaviour
 
     public int CurrentHp => currentHp;
 
+    private float maxWidth;
 
     private void Awake()
     {
@@ -53,8 +56,8 @@ public class Monster : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         currentHp = data.MaxHp;
         hpBarBaseScale = hpBarCanvas.localScale;
-
-        UpdateHpBar();
+        maxWidth = hpBarFill.sizeDelta.x;
+        SetHp();
     }
 
     private void LateUpdate()
@@ -83,7 +86,7 @@ public class Monster : MonoBehaviour
         animator.SetTrigger("Damaged");
         Debug.Log($"[Monster] {name} Damage={finalDamage} / HP={currentHp}");
 
-        UpdateHpBar();
+        SetHp();
         if(currentHp <= 0)
         {
             Die();
@@ -91,9 +94,11 @@ public class Monster : MonoBehaviour
 
     }
 
-    private void UpdateHpBar()
+    private void SetHp()
     {
-        hpBar.fillAmount = (float)currentHp / data.MaxHp;
+        float ratio = Mathf.Clamp01((float)currentHp / data.MaxHp);
+
+        hpBarFill.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxWidth * ratio);
     }
 
 
