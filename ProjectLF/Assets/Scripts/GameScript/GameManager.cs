@@ -17,6 +17,10 @@ namespace GameScript.Manager
         [SerializeField]
         private DungeonContext ctx;
 
+        [Header("GameOverUI")]
+        [SerializeField]
+        private GameOverUI gameOverUI;
+
         private bool isGameStarted;
 
         private void Awake()
@@ -47,6 +51,16 @@ namespace GameScript.Manager
             }
 
             Debug.Log("[GameManager] Game Start");
+        }
+
+        public void RegisterPlayer(Player player)
+        {
+            player.OnDead += HandlePlayerDead;
+        }
+
+        private void HandlePlayerDead()
+        {
+            gameOverUI.ShowGameOver();
         }
 
         public void OnEnterRoom(int roomId)

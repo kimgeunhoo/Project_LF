@@ -23,15 +23,26 @@ public class Player : MonoBehaviour
     private int currentHp;
     private bool isDead = false;
 
+    [Header("GameOver")]
+    [SerializeField]
+    private GameObject playerPF;
+    [SerializeField]
+    private GameOverUI playerPanel;
+    [SerializeField] 
+    private GameOverUI gameOverUI;
+
     public int CurrentHp => currentHp;
     public int MaxHp => playerdata.Hp;
     public bool IsDead => isDead;
 
+    public event Action OnDead;
 
     private void Awake()
     {
         currentHp = MaxHp;
         animator = GetComponentInChildren<Animator>();
+        if (gameOverUI == null)
+            gameOverUI = FindFirstObjectByType<GameOverUI>();
         UpdateHpUI();
     }
 
@@ -80,8 +91,9 @@ public class Player : MonoBehaviour
         if (isDead)
             return;
         isDead = true;
+        OnDead?.Invoke();
         StartCoroutine(DiyingAnimation());
-        
+        gameOverUI.ShowGameOver();
     }
 
     public IEnumerator DiyingAnimation()
@@ -89,7 +101,8 @@ public class Player : MonoBehaviour
         animator.SetTrigger("Death");
         yield return new WaitForSeconds(0.5f); // 애니메이션 길이에 맞게 조절
 
-        Destroy(gameObject);
+        playerPF.SetActive(false);
+        //Destroy(gameObject);
     }
 
     public IEnumerator DamageAnimation()
